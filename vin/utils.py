@@ -36,7 +36,8 @@ def process_gridworld_data(data_in, imsize):
     Xval_data = Xval_data.reshape(-1, 1, im_size[0], im_size[1])
     Xdata = np.append(Xim_data, Xval_data, axis=1)
     # Need to transpose because Theano is NCHW, while TensorFlow is NHWC
-    Xdata = np.transpose(Xdata,  (0, 2, 3, 1))
+    # use Theano dimension
+    #  Xdata = np.transpose(Xdata,  (0, 2, 3, 1))
     S1data = state1_data.astype('int8')
     S2data = state2_data.astype('int8')
 
