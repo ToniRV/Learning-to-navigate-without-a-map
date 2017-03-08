@@ -18,9 +18,16 @@ im_size = 8
 radius = 2
 idx = 4
 
-data_path = os.path.join(rlvision.RLVISION_DATA, data_dir, data_fn)
-save_path = os.path.join(rlvision.RLVISION_DATA, data_dir, img_fn)
-masked_save_path = os.path.join(rlvision.RLVISION_DATA, data_dir,
+#data_path = os.path.join(rlvision.RLVISION_DATA, data_dir, data_fn)
+file_path = os.getcwd();
+data_path = os.path.join(file_path, "../data/", data_dir, data_fn)
+
+#save_path = os.path.join(rlvision.RLVISION_DATA, data_dir, img_fn)
+#masked_save_path = os.path.join(rlvision.RLVISION_DATA, data_dir,
+#                                masked_img_fn)
+
+save_path = os.path.join(file_path, "../data/", data_dir, img_fn)
+masked_save_path = os.path.join(file_path, "../data/", data_dir,
                                 masked_img_fn)
 
 Xdata, S1data, S2data, ydata, _, _, _, _, _, _, _, _ = \
