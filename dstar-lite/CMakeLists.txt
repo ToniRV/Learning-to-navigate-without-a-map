@@ -19,7 +19,7 @@ include_directories(include)
 link_directories(${DSTAR_LITE_BINARY_DIR})
 
 add_library(dstar_lite src/dstar.cpp)
-target_link_libraries(dstar_lite ${GLUT_LIBRARY} ${OPENGL_LIBRARY})
+target_link_libraries(dstar_lite)
 
 add_executable(dstar_draw src/dstar.cpp src/dstar_draw.cpp)
-target_link_libraries(dstar_draw dstar_lite)
+target_link_libraries(dstar_draw dstar_lite ${GLUT_LIBRARY} ${OPENGL_LIBRARY})
