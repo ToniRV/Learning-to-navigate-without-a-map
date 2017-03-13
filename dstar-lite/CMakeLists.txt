@@ -23,3 +23,6 @@ target_link_libraries(dstar_lite)
 
 add_executable(dstar_draw src/dstar.cpp src/dstar_draw.cpp)
 target_link_libraries(dstar_draw dstar_lite ${GLUT_LIBRARY} ${OPENGL_LIBRARY})
+
+add_executable(dstar_from_grid src/dstar_from_grid.cpp)
+target_link_libraries(dstar_from_grid dstar_lite ${GLUT_LIBRARY} ${OPENGL_LIBRARY})
