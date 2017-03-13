@@ -1,6 +1,4 @@
-/* DstarDraw.cpp
- * James Neufeld (neufeld@cs.ualberta.ca)
- * Compilation fixed by Arek Sredzki (arek@sredzki.com)
+/* dstar_from_grid.cpp
  */
 
 #ifdef MACOS
@@ -17,6 +15,10 @@
 #include <unistd.h>
 #include "dstar.h"
 
+namespace dstar {
+class DstarInterface () {
+};
+} // End dstar namespace.
 int hh, ww;
 
 int window;
@@ -41,7 +43,6 @@ void InitGL(int Width, int Height)
   glLoadIdentity();
   glOrtho(0,Width,0,Height,-100,100);
   glMatrixMode(GL_MODELVIEW);
-
 }
 
 void ReSizeGLScene(int Width, int Height)
