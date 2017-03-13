@@ -5,10 +5,17 @@
 + Drawing
 """
 from __future__ import print_function
+import os
+import h5py
 import numpy as np
 import scipy.io as sio
 
 import rlvision
+
+# for the dataset labels
+data_dict = ['batch_im_data', 'value_data', 'state_onehot_data',
+             'state_xy_data', 'batch_value_data', 'batch_label_data',
+             'label_data', 'state_y_data', 'im_data', 'state_x_data']
 
 
 def process_gridworld_data(data_in, imsize):
@@ -64,3 +71,98 @@ def process_gridworld_data(data_in, imsize):
     ytrain = ytrain.flatten()
     return (Xdata, S1data, S2data, ydata, Xtrain,
             S1train, S2train, ytrain, Xtest, S1test, S2test, ytest)
+
+
+def load_mat_data(file_path):
+    """Load Matlab data and return all data objects.
+
+    Parameters
+    ----------
+    file_path : str
+        the file path of the dataset
+
+    Returns
+    -------
+    mat_data : dict
+        The dictionary with all the data.
+    """
+    if not os.path.isfile(file_path):
+        raise ValueError("The file is not existed %s" % (file_path))
+
+    return sio.loadmat(file_path)
+
+
+def init_h5_db(db_name, save_dir):
+    """Init a HDF5 database.
+
+    Parameters
+    ----------
+    db_name : str
+        a database name (with extension)
+    save_dir : str
+        a valid directory
+
+    Returns
+    -------
+    database : h5py.File
+        a HDF5 file object
+    """
+    # append extension if needed
+    if db_name[-5:] != ".hdf5" and db_name[-3:] != ".h5":
+        db_name += ".hdf5"
+
+    # create destination folder if needed
+    if not os.path.isdir(save_dir):
+        os.mkdir(save_dir)
+
+    db_name = os.path.join(save_dir, db_name)
+    database = h5py.File(db_name, "a")
+
+    return database
+
+
+def add_h5_ds(data, ds_name, db, group_name=None, data_type=np.float32,
+              renew=False):
+    """Add a HDF5 dataset.
+
+    Parameters
+    ----------
+    data : numpy.ndarry
+        The data to be stored
+    ds_name : str
+        The name of the dataset
+    db : h5py.File
+        the database file object
+    group_name : str
+        Optional, the dataset will be placed under the
+        group if it's vailable, otherwise will be
+        with root group
+    data_type : str
+        Optional, Numpy supported data type
+    renew : bool
+        if True, the data will override the existing one.
+
+    Returns
+    -------
+    None
+    """
+    dt = data_type
+    if group_name is not None:
+        if group_name not in db:
+            group_name = None
+            print ("[MESSAGE] the group %s is not existed, data will be save"
+                   " at the root group" % (group_name))
+            gp = db
+        else:
+            gp = db[group_name]
+    else:
+        gp = db
+
+    if renew is True and ds_name in gp:
+        del gp[ds_name]
+
+    gp.create_dataset(ds_name, data=data.astype(dt),
+                      data_type=dt)
+
+    # flush the data
+    db.flush()

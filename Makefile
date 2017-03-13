@@ -20,4 +20,8 @@ test:
 data-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/data_test.py
 
+load-test:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/data_load_test.py
+
+
 cleanall:
