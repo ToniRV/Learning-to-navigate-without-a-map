@@ -12,15 +12,22 @@ import rlvision.utils as utils
 
 # file path
 
-file_name = "gridworld_16_3d_vision_1.mat"
+# for 8x8
+#  file_name = "gridworld_8_3d_vision_50000.mat"
+#  file_path = os.path.join(rlvision.RLVISION_DATA,
+#                           "gridworld_8",
+#                           file_name)
+
+# for 16x16
+file_name = "gridworld_40_3d_vision_"
 file_path = os.path.join(rlvision.RLVISION_DATA,
-                         "gridworld_16",
+                         "gridworld_40",
                          file_name)
 
-data = utils.load_mat_data(file_path)
+save_dir = os.path.join(rlvision.RLVISION_DATA, "HDF5")
 
-print (type(data))
-print (data.keys())
-print (data['__globals__'])
-print (data['__header__'])
-print (data['__version__'])
+# save data
+#  utils.create_grid_8_dataset(file_path, "gridworld_8.hdf5", save_dir)
+#  utils.create_grid_16_dataset(file_path, "gridworld_16.hdf5", save_dir)
+#  utils.create_grid_28_dataset(file_path, "gridworld_28.hdf5", save_dir)
+utils.create_grid_40_dataset(file_path, "gridworld_40.hdf5", save_dir)

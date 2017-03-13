@@ -23,5 +23,9 @@ data-test:
 load-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/data_load_test.py
 
+hdf5-data-test:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/hdf5_data_test.py
+
+
 
 cleanall:

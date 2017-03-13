@@ -9,6 +9,7 @@ import os
 import h5py
 import numpy as np
 import scipy.io as sio
+import matplotlib.pyplot as plt
 
 import rlvision
 
@@ -16,6 +17,16 @@ import rlvision
 data_dict = ['batch_im_data', 'value_data', 'state_onehot_data',
              'state_xy_data', 'batch_value_data', 'batch_label_data',
              'label_data', 'state_y_data', 'im_data', 'state_x_data']
+
+
+def plot_grid(data, imsize):
+    """Plot a single grid with a vector representation"""
+    print (data)
+    img = data.reshape(imsize[0], imsize[1])
+    img *= 255
+    print (img)
+    plt.imshow(img, cmap="gray")
+    plt.show()
 
 
 def process_gridworld_data(data_in, imsize):
@@ -121,7 +132,39 @@ def init_h5_db(db_name, save_dir):
     return database
 
 
-def add_h5_ds(data, ds_name, db, group_name=None, data_type=np.float32,
+def add_h5_group(group_name, db, db_path=None):
+    """Create a HDF5 group.
+
+    Parameters
+    ----------
+    group_name : str
+        the group name
+    db : h5py.File
+        the target database
+    db_path : str
+        assume to create group under
+        db[db_path],
+        create with root group if it's None
+    """
+    if db_path is None:
+        gp = db
+    else:
+        if db_path not in db:
+            print ("[MESSAGE] The path %s is not existed in this database" %
+                   (db_path))
+            gp = db
+        else:
+            gp = db[db_path]
+
+    # add group if it's not existed
+    if group_name not in gp:
+        gp.create_group(group_name)
+        print ("[MESSAGE] The group %s is created" % (group_name))
+
+    db.flush()
+
+
+def add_h5_ds(data, ds_name, db, group_name=None, data_type=np.uint8,
               renew=False):
     """Add a HDF5 dataset.
 
@@ -162,7 +205,275 @@ def add_h5_ds(data, ds_name, db, group_name=None, data_type=np.float32,
         del gp[ds_name]
 
     gp.create_dataset(ds_name, data=data.astype(dt),
-                      data_type=dt)
+                      compression="gzip", dtype=dt)
 
     # flush the data
     db.flush()
+
+
+def create_grid_8_dataset(mat_file_path, db_name, save_dir):
+    """Convert grid 8x8 dataset from mat file to hdf5 format.
+
+    Parameters
+    ----------
+    mat_file_path : str
+        the path to the mat file
+    db_name : str
+        the name of the dataset
+    save_dir : str
+        the directory of the output path (must exist)
+    """
+    # load matlab data
+    mat_data = load_mat_data(mat_file_path)
+    print ("[MESSAGE] The Matlab data is loaded.")
+
+    # init HDF5 database
+    db = init_h5_db(db_name, save_dir)
+
+    # save dataset
+    for key in data_dict:
+        add_h5_ds(mat_data[key], key, db)
+        print ("[MESSAGE] Saved %s" % (key))
+
+    db.flush()
+    db.close()
+    print ("[MESSAGE] The grid 8x8 dataset is saved at %s" % (save_dir))
+
+
+def create_ds_from_splits(mat_file_prefix, db, splits):
+    """Create datasets from splits of data.
+
+    This function is created because of splits from larger datasets
+    """
+    for batch_idx in xrange(1, splits+1):
+        # load data
+        temp_data = load_mat_data(mat_file_prefix+str(batch_idx)+".mat")
+        print ("[MESSAGE] Loaded %d-th split" % batch_idx)
+
+        group_name = "grid_data_split_"+str(batch_idx)
+
+        # save data within splits
+        for key in data_dict:
+            add_h5_group(group_name, db)
+            add_h5_ds(temp_data[key], key, db, group_name)
+            print ("[MESSAGE] %s: Saved %s" % (group_name, key))
+
+
+def create_grid_16_dataset(mat_file_prefix, db_name, save_dir, splits=5):
+    """Create 16x16 grid dataset in HDF5.
+
+    Assume data file name as mat_file_prefix+str(index)+.mat
+
+    Parameters
+    ----------
+    mat_file_prefix : str
+        the prefix of the file name, such as
+        /path/to/file/gridworld_16_3d_vision_
+    db_name : str
+        the name of the database
+    save_dir : str
+        the directory of the saved dataset
+    splits : int
+        number of splits for the dataset
+    """
+    # init HDF5 database
+    db = init_h5_db(db_name, save_dir)
+
+    # processing
+    create_ds_from_splits(mat_file_prefix, db, splits)
+
+    db.flush()
+    db.close()
+    print ("[MESSAGE] The grid 16x16 dataset is saved at %s" % (save_dir))
+
+
+def create_grid_28_dataset(mat_file_prefix, db_name, save_dir, splits=20):
+    """Create 28x28 grid dataset in HDF5.
+
+    Assume data file name as mat_file_prefix+str(index)+.mat
+
+    Parameters
+    ----------
+    mat_file_prefix : str
+        the prefix of the file name, such as
+        /path/to/file/gridworld_28_3d_vision_
+    db_name : str
+        the name of the database
+    save_dir : str
+        the directory of the saved dataset
+    splits : int
+        number of splits for the dataset
+    """
+    # init HDF5 database
+    db = init_h5_db(db_name, save_dir)
+
+    # processing
+    create_ds_from_splits(mat_file_prefix, db, splits)
+
+    db.flush()
+    db.close()
+    print ("[MESSAGE] The grid 28x28 dataset is saved at %s" % (save_dir))
+
+
+def create_grid_40_dataset(mat_file_prefix, db_name, save_dir, splits=100):
+    """Create 40x40 grid dataset in HDF5.
+
+    Assume data file name as mat_file_prefix+str(index)+.mat
+
+    Parameters
+    ----------
+    mat_file_prefix : str
+        the prefix of the file name, such as
+        /path/to/file/gridworld_40_3d_vision_
+    db_name : str
+        the name of the database
+    save_dir : str
+        the directory of the saved dataset
+    splits : int
+        number of splits for the dataset
+    """
+    # init HDF5 database
+    db = init_h5_db(db_name, save_dir)
+
+    # processing
+    create_ds_from_splits(mat_file_prefix, db, splits)
+
+    db.flush()
+    db.close()
+    print ("[MESSAGE] The grid 40x40 dataset is saved at %s" % (save_dir))
+
+
+# default dataset loading function
+# assume default location RLVISION_DATA/HDF5/data.hdf5
+def load_grid8(return_imsize=True):
+    """Load grid 8x8.
+
+    Parameters
+    ----------
+    return_imsize : bool
+        return a tuple with grid size if True
+
+    Returns
+    -------
+    db : h5py.File
+        a HDF5 file object
+    imsize : tuple
+        (optional) grid size
+    """
+    file_path = os.path.join(rlvision.RLVISION_DATA,
+                             "HDF5", "gridworld_8.hdf5")
+    if not os.path.isfile(file_path):
+        raise ValueError("The dataset %s is not existed!" % (file_path))
+
+    if return_imsize is True:
+        return h5py.File(file_path, mode="r"), (8, 8)
+    else:
+        return h5py.File(file_path, mode="r")
+
+
+def load_grid16(split=None, return_imsize=True):
+    """Load grid 16x16.
+
+    Parameters
+    ----------
+    split : int
+        if not None and in the range of [1, 5]
+        then return the specific split of data
+    return_imsize : bool
+        return a tuple with grid size if True
+
+    Returns
+    -------
+    db : h5py.File
+        a HDF5 file object
+    imsize : tuple
+        (optional) grid size
+    """
+    file_path = os.path.join(rlvision.RLVISION_DATA,
+                             "HDF5", "gridworld_16.hdf5")
+    if not os.path.isfile(file_path):
+        raise ValueError("The dataset %s is not existed!" % (file_path))
+
+    db = h5py.File(file_path, mode="r")
+    if split is not None and split in xrange(1, 6):
+        if return_imsize is True:
+            return db["grid_data_split_"+str(split)], (16, 16)
+        else:
+            return db["grid_data_split_"+str(split)]
+    else:
+        if return_imsize is True:
+            return db, (16, 16)
+        else:
+            return db
+
+
+def load_grid28(split=None, return_imsize=True):
+    """Load grid 28x28.
+
+    Parameters
+    ----------
+    split : int
+        if not None and in the range of [1, 20]
+        then return the specific split of data
+    return_imsize : bool
+        return a tuple with grid size if True
+
+    Returns
+    -------
+    db : h5py.File
+        a HDF5 file object
+    imsize : tuple
+        (optional) grid size
+    """
+    file_path = os.path.join(rlvision.RLVISION_DATA,
+                             "HDF5", "gridworld_28.hdf5")
+    if not os.path.isfile(file_path):
+        raise ValueError("The dataset %s is not existed!" % (file_path))
+
+    db = h5py.File(file_path, mode="r")
+    if split is not None and split in xrange(1, 21):
+        if return_imsize is True:
+            return db["grid_data_split_"+str(split)], (28, 28)
+        else:
+            return db["grid_data_split_"+str(split)]
+    else:
+        if return_imsize is True:
+            return db, (28, 28)
+        else:
+            return db
+
+
+def load_grid40(split=None, return_imsize=True):
+    """Load grid 40x40.
+
+    Parameters
+    ----------
+    split : int
+        if not None and in the range of [1, 100]
+        then return the specific split of data
+    return_imsize : bool
+        return a tuple with grid size if True
+
+    Returns
+    -------
+    db : h5py.File
+        a HDF5 file object
+    imsize : tuple
+        (optional) grid size
+    """
+    file_path = os.path.join(rlvision.RLVISION_DATA,
+                             "HDF5", "gridworld_40.hdf5")
+    if not os.path.isfile(file_path):
+        raise ValueError("The dataset %s is not existed!" % (file_path))
+
+    db = h5py.File(file_path, mode="r")
+    if split is not None and split in xrange(1, 101):
+        if return_imsize is True:
+            return db["grid_data_split_"+str(split)], (40, 40)
+        else:
+            return db["grid_data_split_"+str(split)]
+    else:
+        if return_imsize is True:
+            return db, (40, 40)
+        else:
+            return db
