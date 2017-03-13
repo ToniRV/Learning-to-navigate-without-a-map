@@ -21,10 +21,9 @@ data_dict = ['batch_im_data', 'value_data', 'state_onehot_data',
 
 def plot_grid(data, imsize):
     """Plot a single grid with a vector representation"""
-    print (data)
     img = data.reshape(imsize[0], imsize[1])
     img *= 255
-    print (img)
+
     plt.imshow(img, cmap="gray")
     plt.show()
 
