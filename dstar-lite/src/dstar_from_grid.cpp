@@ -12,26 +12,27 @@
 #endif
 
 #include <stdlib.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <algorithm>
 #include <unistd.h>
-#include "dstar.h"
 
-namespace dstar {
-class DstarInterface () {
-};
-} // End dstar namespace.
+#include "dstar_lite/dstar.h"
+
 int hh, ww;
 
 int window;
 Dstar *dstar;
 
-int scale = 6;
+int scale = 50;
 int mbutton = 0;
 int mstate = 0;
 
-bool b_autoreplan = true;
+bool b_autoreplan = false;
 
-void InitGL(int Width, int Height)
-{
+void InitGL(int Width, int Height) {
   hh = Height;
   ww = Width;
 
@@ -45,8 +46,7 @@ void InitGL(int Width, int Height)
   glMatrixMode(GL_MODELVIEW);
 }
 
-void ReSizeGLScene(int Width, int Height)
-{
+void ReSizeGLScene(int Width, int Height) {
   hh = Height;
   ww = Width;
 
@@ -55,12 +55,9 @@ void ReSizeGLScene(int Width, int Height)
   glLoadIdentity();
   glOrtho(0,Width,0,Height,-100,100);
   glMatrixMode(GL_MODELVIEW);
-
 }
 
-void DrawGLScene()
-{
-
+void DrawGLScene() {
   usleep(100);
 
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
@@ -75,12 +72,9 @@ void DrawGLScene()
 
   glPopMatrix();
   glutSwapBuffers();
-
 }
 
-
-void keyPressed(unsigned char key, int x, int y)
-{
+void keyPressed(unsigned char key, int x, int y) {
   usleep(100);
 
   switch(key) {
@@ -99,14 +93,12 @@ void keyPressed(unsigned char key, int x, int y)
     break;
   case 'c':
   case 'C':
-    dstar->init(40,50,140, 90);
+    dstar->init(1, 1, 3, 3);
     break;
   }
-
 }
 
 void mouseFunc(int button, int state, int x, int y) {
-
   y = hh -y+scale/2;
   x += scale/2;
 
@@ -123,8 +115,7 @@ void mouseFunc(int button, int state, int x, int y) {
   }
 }
 
-void mouseMotionFunc(int x, int y)  {
-
+void mouseMotionFunc(int x, int y) {
   y = hh -y+scale/2;
   x += scale/2;
 
@@ -140,15 +131,58 @@ void mouseMotionFunc(int x, int y)  {
       dstar->updateGoal(x, y);
     }
   }
-
 }
 
 int main(int argc, char **argv) {
-
+  // Init GLUT
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-  glutInitWindowSize(1000, 800);
-  glutInitWindowPosition(50, 20);
+
+  // Parse csv file with world grids.
+  // Currently only loads the first grid in the csv file...
+  ifstream file("../resources/gridworld_8.csv");
+  std::vector<string> value;
+  string tmp;
+  if (file.is_open()) {
+    while (getline(file, tmp)) {
+      value.push_back(tmp);
+    }
+    file.close();
+  } else {
+    cout << "Could not open the csv file." << endl;
+  }
+
+  // Construct a grid.
+  const uint grid_size = (uint)std::sqrt(value.size());
+  std::vector<std::vector<int>> occupancy_grid (grid_size, vector<int>(grid_size));
+
+  uint i = 0;
+  uint j = 0;
+  bool first = true;
+
+  // Reshape input to a grid with x, y coordinates
+  for (uint k = 0; k < value.size(); k++) {
+    j = k % ((uint)std::sqrt(value.size()));
+
+    // Check that we are not out of bounds.
+    if ( i < grid_size && j < grid_size) {
+      occupancy_grid[i][j] = std::atoi(&value.at(k).at(0));
+    } else {
+      cerr << "Index out of bounds, check that input grid is squared." << endl;
+    }
+
+    if (j == 0) {
+      if (first) {
+        first = false;
+      } else {
+        i++;
+      }
+    }
+  }
+
+  // Initialize window for visualization.
+  glutInitWindowSize(500, 500);
+  glutInitWindowPosition(20, 20);
 
   window = glutCreateWindow("Dstar Visualizer");
 
@@ -159,10 +193,20 @@ int main(int argc, char **argv) {
   glutMouseFunc(&mouseFunc);
   glutMotionFunc(&mouseMotionFunc);
 
-  InitGL(800, 600);
+  InitGL(30, 20);
 
   dstar = new Dstar();
-  dstar->init(40,50,140, 90);
+  dstar->init(3, 2, 6, 6);
+  for (uint i = 0; i < occupancy_grid.size(); i++) {
+    for (uint j = 0; j < occupancy_grid.at(i).size(); j++) {
+      std::cout << "Occ grid vals: " << occupancy_grid[i][j] << '\n';
+      if (occupancy_grid.at(i).at(j) == 1) {
+        dstar->updateCell(i+1, j+1, -1);
+      }
+    }
+  }
+  dstar->draw();
+
 
   printf("----------------------------------\n");
   printf("Dstar Visualizer\n");
