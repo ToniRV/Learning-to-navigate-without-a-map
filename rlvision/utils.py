@@ -9,6 +9,7 @@ import os
 import h5py
 import numpy as np
 import scipy.io as sio
+from skimage import draw
 import matplotlib.pyplot as plt
 
 import rlvision
@@ -17,6 +18,67 @@ import rlvision
 data_dict = ['batch_im_data', 'value_data', 'state_onehot_data',
              'state_xy_data', 'batch_value_data', 'batch_label_data',
              'label_data', 'state_y_data', 'im_data', 'state_x_data']
+
+
+def mask_grid(pos, grid, radius, one_is_free=True):
+    """Mask a grid.
+
+    Parameters
+    ----------
+    pos : tuple
+        the center of the circle (row, col)
+        e.g. (2,3) = center at 3rd row, 4th column
+    grid : numpy.ndarray
+        should be a 2d matrix
+        e.g. 8x8, 16x16, 28x28, 40x40
+    imsize : tuple
+        the grid size
+    radius : int
+        the length of the radius
+    one_is_free : bool
+        if True, then 1 is freezone, 0 is block
+        if False, then 0 is freezone, 1 is block
+
+    Returns
+    -------
+    masked_grid : numpy.ndarray
+        the masked grid
+    """
+    mask = np.zeros_like(grid)
+    rr, cc = draw.circle(pos[0], pos[1], radius=radius,
+                         shape=mask.shape)
+    mask[rr, cc] = 1
+    if one_is_free:
+        return grid*mask
+    else:
+        masked_img = np.ones_like(grid)
+        masked_img[rr, cc] = grid[rr, cc]
+        return masked_img
+
+
+def accumulate_map(source_grid, new_grid, one_is_free=True):
+    """Accumulate map.
+
+    This function basically aggregate two grid.
+
+    Parameters
+    ----------
+    source_grid : numpy.ndarray
+        the source grid, assume 2d
+    new_grid : numpy.ndarray
+        the new grid to add on, assume 2d
+
+    Returns
+    -------
+    acc_grid : numpy.ndarray
+        the accumulated map
+    """
+    if one_is_free:
+        acc_grid = source_grid+new_grid
+        acc_grid[acc_grid > 0] = 1
+        return acc_grid
+    else:
+        return source_grid*new_grid
 
 
 def plot_grid(data, imsize):

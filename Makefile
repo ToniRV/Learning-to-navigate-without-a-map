@@ -26,6 +26,10 @@ load-test:
 hdf5-data-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/hdf5_data_test.py
 
+grid-test:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/grid_test.py
+
+
 
 
 cleanall:
