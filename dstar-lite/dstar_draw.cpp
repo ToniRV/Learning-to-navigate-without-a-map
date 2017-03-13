@@ -15,7 +15,7 @@
 
 #include <stdlib.h>
 #include <unistd.h>
-#include "Dstar.h"
+#include "dstar.h"
 
 int hh, ww;
 

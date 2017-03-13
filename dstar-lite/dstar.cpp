@@ -3,7 +3,7 @@
  * Compilation fixed by Arek Sredzki (arek@sredzki.com)
  */
 
-#include "Dstar.h"
+#include "dstar.h"
 
 #ifdef USE_OPEN_GL
 #ifdef MACOS
