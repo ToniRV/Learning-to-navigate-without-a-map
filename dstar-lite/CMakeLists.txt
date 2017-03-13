@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 2.6)
 project(DSTAR_LITE)
 
+# Make sure we build with c++11 support.
+add_definitions(-std=c++11)
+
+# Make sure warnings are reported and treated as errors.
+# UNCOMMENT THIS, the dstar is full of warnings...
+#add_definitions(-Wall -Werror)
+
 add_definitions(-DUSE_OPEN_GL)
 
 find_package(GLUT)

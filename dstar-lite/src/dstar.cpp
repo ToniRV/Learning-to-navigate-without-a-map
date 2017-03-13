@@ -158,7 +158,7 @@ void Dstar::setG(state u, double g) {
  * --------------------------
  * Sets the rhs value for state u
  */
-double Dstar::setRHS(state u, double rhs) {
+void Dstar::setRHS(state u, double rhs) {
 
   makeNewCell(u);
   cellHash[u].rhs = rhs;
@@ -170,7 +170,6 @@ double Dstar::setRHS(state u, double rhs) {
  * Returns the 8-way distance between state a and state b.
  */
 double Dstar::eightCondist(state a, state b) {
-  double temp;
   double min = fabs(a.x - b.x);
   double max = fabs(a.y - b.y);
   if (min > max) {
@@ -199,8 +198,8 @@ int Dstar::computeShortestPath() {
 
   int k=0;
   while ((!openList.empty()) &&
-         (openList.top() < (s_start = calculateKey(s_start))) ||
-         (getRHS(s_start) != getG(s_start))) {
+         ((openList.top() < (s_start = calculateKey(s_start))) ||
+         (getRHS(s_start) != getG(s_start)))) {
 
     if (k++ > maxSteps) {
       fprintf(stderr, "At maxsteps\n");
@@ -254,7 +253,7 @@ int Dstar::computeShortestPath() {
  */
 bool Dstar::close(double x, double y) {
 
-  if (isinf(x) && isinf(y)) return true;
+  if ((std::isinf(x)) && (std::isinf(y))) return true;
   return (fabs(x-y) < 0.00001);
 
 }
@@ -277,7 +276,9 @@ void Dstar::updateVertex(state u) {
       tmp2 = getG(*i) + cost(u,*i);
       if (tmp2 < tmp) tmp = tmp2;
     }
-    if (!close(getRHS(u),tmp)) setRHS(u,tmp);
+    if (!close(getRHS(u),tmp)) {
+      setRHS(u,tmp);
+    }
   }
 
   if (!close(getG(u),getRHS(u))) insert(u);
@@ -378,8 +379,7 @@ double Dstar::cost(state a, state b) {
  * As per [S. Koenig, 2002]
  */
 void Dstar::updateCell(int x, int y, double val) {
-
-   state u;
+  state u;
 
   u.x = x;
   u.y = y;
@@ -554,7 +554,7 @@ bool Dstar::replan() {
 
   state cur = s_start;
 
-  if (isinf(getG(s_start))) {
+  if (std::isinf(getG(s_start))) {
     fprintf(stderr, "NO PATH TO GOAL\n");
     return false;
   }
@@ -570,7 +570,7 @@ bool Dstar::replan() {
     }
 
     double cmin = INFINITY;
-    double tmin;
+    double tmin = 0;
     state smin;
 
     for (i=n.begin(); i!=n.end(); i++) {

@@ -18,6 +18,10 @@ using namespace __gnu_cxx;
 
 class state {
  public:
+  explicit state()
+    : x(0),
+      y(0) {}
+
   int x;
   int y;
   pair<double,double> k;
@@ -109,7 +113,7 @@ class Dstar {
   double getG(state u);
   double getRHS(state u);
   void   setG(state u, double g);
-  double setRHS(state u, double rhs);
+  void setRHS(state u, double rhs);
   double eightCondist(state a, state b);
   int    computeShortestPath();
   void   updateVertex(state u);
