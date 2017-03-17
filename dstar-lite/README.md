@@ -1,3 +1,12 @@
+
+## References:
+This code was mainly imported from
+https://github.com/ArekSredzki/dstar-lite
+
+Here we just tweaked the interface such that it is suitable to our needs. Implementation details and references can be read [here](https://github.com/ArekSredzki/dstar-lite).
+
+Below is provided part of the README of the repository used as reference.
+
 # D*-Lite Class
 
 This software is an implementation of the D*-Lite algorithm as explained in [Koenig, 2002].
@@ -33,35 +42,6 @@ $ ./dstar
 * Yellow - start cell
 * Purple - goal cell
 
-## Using in your own source:
-Here is a simple working test program that uses the Dstar class:
-
-```cpp
-#include "Dstar.h"
-
-int main() {
- Dstar *dstar = new Dstar();
- list<state> mypath;
-
- dstar->init(0,0,10,5);         // set start to (0,0) and goal to (10,5)
- dstar->updateCell(3,4,-1);     // set cell (3,4) to be non traversable
- dstar->updateCell(2,2,42.432); // set set (2,2) to have cost 42.432
-
- dstar->replan();               // plan a path
- mypath = dstar->getPath();     // retrieve path
-
- dstar->updateStart(10,2);      // move start to (10,2)
- dstar->replan();               // plan a path
- mypath = dstar->getPath();     // retrieve path
-
- dstar->updateGoal(0,1);        // move goal to (0,1)
- dstar->replan();               // plan a path
- mypath = dstar->getPath();     // retrieve path
-
- return 0;
-}
-```
-
 ## Implementational Details:
 Here is a list of the more interesting tweaks that we applied to improve the D* Lite algorithm explained in [Koenig, 2002].
 
@@ -83,13 +63,3 @@ This means we break ties by choosing the cell that lies closest to the straight 
 4. Max Steps
  If there is no path to the goal D* can have a hard time detecting it and will likely loop forever. In order to partially deal with this issue the search will automatically return after a set number of node expansions (set to 'maxsteps'). After the search returns it can start again where it left off with another call to replan().
 
-## References:
-Improved Fast Replanning for Robot Navigation in Unknown Terrain<br>
-Sven Koenig, Maxim Likhachev<br>
-Technical Report GIT-COGSCI-2002/3,<br>
-Georgia Institute of Technology, 2002.
-
-## Author Info
-This utility was created by James Neufeld of the University of Alberta.
-
-I, Arek Sredzki, only fixed a few bugs which prevented compilation.
