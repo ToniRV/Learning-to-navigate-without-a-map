@@ -91,5 +91,8 @@ ENV/
 # Ignore qtcreator files
 *.user
 
-# Ignore video
+# Video
 *.mp4
+
+# Anaconda stuff
+bin/*
