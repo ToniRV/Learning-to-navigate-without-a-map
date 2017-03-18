@@ -26,3 +26,6 @@ target_link_libraries(dstar_draw dstar_lite)
 
 add_executable(dstar_from_grid src/dstar_from_grid.cpp)
 target_link_libraries(dstar_from_grid dstar_lite)
+
+add_executable(dstar_from_input src/dstar_from_input.cpp)
+target_link_libraries(dstar_from_input dstar_lite)
