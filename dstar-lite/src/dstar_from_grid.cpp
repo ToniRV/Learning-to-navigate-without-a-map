@@ -135,10 +135,6 @@ void mouseMotionFunc(int x, int y) {
 
 int main(int argc, char **argv) {
 
-  if (argc > 1) {
-    std::cout << argv[1] << std::endl;
-  }
-
   // Init GLUT
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
@@ -161,12 +157,10 @@ int main(int argc, char **argv) {
   const uint grid_size = (uint)std::sqrt(value.size());
   std::vector<std::vector<int>> occupancy_grid (grid_size, vector<int>(grid_size));
 
-  uint i = 0;
-  uint j = 0;
-  bool first = true;
 
   // Reshape input to a grid with x, y coordinates
-  for (uint k = 0; k < value.size(); k++) {
+  bool first = true;
+  for (uint i, j, k = 0; k < value.size(); k++) {
     j = k % ((uint)std::sqrt(value.size()));
 
     // Check that we are not out of bounds.
