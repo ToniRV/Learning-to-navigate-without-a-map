@@ -53,14 +53,16 @@ grid[goal_index] = 200
 stringify = lambda x: str(x).strip('[()]').replace(',', '').replace(' ', '').replace('\n', '')
 
 # Run dstar algorithm in c++
-# Send start_index, goal_index, size of the grid and the grid through std input.
+# Send start_index, goal_index, size of the grid and the grid through std input
 # All inputs must be flattened, aka string of int or ints (no matrices)
 # I.e. a 2x2 grid would be given as a string of 4 ints (row-major, C style).
 dstar_subprocess = sp.Popen([dir+"/dstar-lite/build/dstar_from_input",
-                            stringify(start_index), stringify(goal_index), stringify(batch_im_data[grid_id, :])],
+                            stringify(start_index), stringify(goal_index),
+                            stringify(batch_im_data[grid_id, :])],
                             stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
 
-# Answer from dstar algorithm, it is send through stdout but also catches stderr.
+# Answer from dstar algorithm.
+# It is send through stdout but also catches stderr.
 response = dstar_subprocess.communicate()
 
 # TODO Handle errors!
