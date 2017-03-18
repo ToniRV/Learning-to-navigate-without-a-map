@@ -20,11 +20,17 @@ Please note this is an early release and the software still has small bugs.
 ## Running the dstar test program:
 you will need to have the OpenGL/GLUT libraries installed for this to work. But you do not need them to use the Dstar class in your own program.
 ```
-$ tar -xzf dstar.tgz
-$ cd dstar
+$ git clone git@github.com:ToniRV/Learning-to-navigate-without-a-map.git
+$ cd Learning-to-navigate-without-a-map/dstar-lite
+$ mkdir build
+$ cd build
+$ cmake ..
 $ make
-$ ./dstar
+$ ./dstar_draw # Use the Commands below.
 ```
+### Given a grid map
+First, follow the instructions [here](https://github.com/ToniRV/Learning-to-navigate-without-a-map#instructions-to-use-the-dataset) to download sample datasets.
+Second, TODO
 
 ### Commands
 * [q/Q] - Quit
