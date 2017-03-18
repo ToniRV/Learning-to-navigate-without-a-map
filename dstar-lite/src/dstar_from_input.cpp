@@ -22,17 +22,14 @@ int main(int argc, char **argv) {
   // Retrieve start position
   const uint start = std::atoi(argv[1]);
   std::array<uint, 2> start_indices;
-  start_indices[0] = start % grid_size; //x index
-  start_indices[1] = start - start_indices[0]; //y index
-
+  start_indices[0] = std::floor(start / grid_size); //x index
+  start_indices[1] = start - start_indices[0] * grid_size; //y index
 
   // Retrieve goal position
   const uint goal = std::atoi(argv[2]);
   std::array<uint, 2> goal_indices;
-  goal_indices[0] = goal % grid_size; //x index
-  goal_indices[1] = goal - goal_indices[0]; //y index
-
-  bool first = true;
+  goal_indices[0] = std::floor(goal / grid_size); //x index
+  goal_indices[1] = goal - goal_indices[0] * grid_size; //y index
 
   // Reshape input to a grid with x, y coordinates
   for (uint i = 0, j = 0, k = 0; k < flat_grid.size(); k++) {
