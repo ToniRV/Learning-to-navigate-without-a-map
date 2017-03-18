@@ -54,9 +54,8 @@ int main(int argc, char **argv) {
   dstar->init(start_indices[0], start_indices[1], goal_indices[0], goal_indices[1]);
   for (uint i = 0; i < occupancy_grid.size(); i++) {
     for (uint j = 0; j < occupancy_grid.at(i).size(); j++) {
-      std::cout << "Occ grid vals: " << occupancy_grid[i][j] << '\n';
       if (occupancy_grid.at(i).at(j) == 1) {
-        dstar->updateCell(i+1, j+1, -1);
+        dstar->updateCell(i, j, -1);
       }
     }
   }
