@@ -134,6 +134,11 @@ void mouseMotionFunc(int x, int y) {
 }
 
 int main(int argc, char **argv) {
+
+  if (argc > 1) {
+    std::cout << argv[1] << std::endl;
+  }
+
   // Init GLUT
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
