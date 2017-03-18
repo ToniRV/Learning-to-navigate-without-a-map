@@ -90,3 +90,6 @@ ENV/
 
 # Ignore qtcreator files
 *.user
+
+# Ignore video
+*.mp4
