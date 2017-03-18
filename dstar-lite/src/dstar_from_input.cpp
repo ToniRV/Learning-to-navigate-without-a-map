@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
 
     // Check that we are not out of bounds.
     if ( i < grid_size && j < grid_size) {
-      const int a = (int)flat_grid.at(k) - 48;
+      const int a = 1 - ((int)flat_grid.at(k) - 48);
       occupancy_grid[i][j] = a;
     } else {
       std::cerr << "Index out of bounds, check that"
