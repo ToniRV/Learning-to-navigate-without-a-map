@@ -45,12 +45,8 @@ int main(int argc, char **argv) {
       return EXIT_FAILURE;
     }
 
-    if (j == 0) {
-      if (first) {
-        first = false;
-      } else {
-        i++;
-      }
+    if (j == (grid_size - 1)) {
+      i++;
     }
   }
 
