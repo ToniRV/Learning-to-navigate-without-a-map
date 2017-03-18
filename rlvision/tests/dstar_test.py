@@ -72,6 +72,13 @@ response = dstar_subprocess.communicate()
 answer = response[0].splitlines()
 errors = response[1].splitlines()
 
+if len(errors) == 0:
+    for a in answer:
+        grid[int(a)] = 150
+else:
+    print("[ERROR] Errors found.")
+    print(errors)
+
 # Let's plot Dstar ouput on the grid
 utils.plot_grid(grid, imsize)
 
