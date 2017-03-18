@@ -45,3 +45,28 @@ make hdf5-data-test
 
 You will see some lines of messages printed in the console,
 and finally a plot for one grid.
+
+4. In case you want to run the dstar algorithm with the dataset checkout `dstar_test.py` in `tests` folder
+First, you will need to build the c++ source code, for that do the following:
+* Move the dstar-lite directory
+* Create a build directory:
+```
+mkdir build
+```
+* Run cmake:
+```
+cmake ..
+```
+* Compile:
+```
+make
+```
+* Now you can return to the root directory of this repo where the Makefile is.
+```
+cd ../..
+```
+
+Second, to run the dstar example script, simpy type
+```
+make dstar_test.py
+```
