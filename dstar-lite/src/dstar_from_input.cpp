@@ -68,9 +68,30 @@ int main(int argc, char **argv) {
 
   list<state> path = dstar->getPath();
   for(const state& waypoint: path) {
-    std::cout << "Waypoint: "
-              << waypoint.x << ", "
-              << waypoint.y << std::endl;
+    // Send path to cout.
+    std::cout << waypoint.x * grid_size + waypoint.y << std::endl;
+  }
+
+  if (debug_gui) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+    glutInitWindowSize(1000, 800);
+    glutInitWindowPosition(50, 20);
+
+    window = glutCreateWindow("Dstar Visualizer");
+
+    glutDisplayFunc(&DrawGLScene);
+    glutIdleFunc(&DrawGLScene);
+    glutReshapeFunc(&ReSizeGLScene);
+    glutKeyboardFunc(&keyPressed);
+    glutMouseFunc(&mouseFunc);
+    glutMotionFunc(&mouseMotionFunc);
+
+    InitGL(800, 600);
+
+    dstar->draw();
+
+    glutMainLoop();
   }
 
   return EXIT_SUCCESS;
