@@ -52,9 +52,6 @@ grid[goal_index] = 200
 # Utility function.
 stringify = lambda x: str(x).strip('[()]').replace(',', '').replace(' ', '').replace('\n', '')
 
-print(batch_im_data[grid_id, :])
-print(len(stringify(batch_im_data[grid_id, :])))
-
 # Run dstar algorithm in c++
 # Send start_index, goal_index, size of the grid and the grid through std input.
 # All inputs must be flattened, aka string of int or ints (no matrices)
@@ -72,8 +69,6 @@ response = dstar_subprocess.communicate()
 # Response == (stdout answer, None)
 answer = response[0].splitlines()
 errors = response[1].splitlines()
-print(answer)
-print(errors)
 
 # Let's plot Dstar ouput on the grid
 utils.plot_grid(grid, imsize)
