@@ -29,6 +29,8 @@ hdf5-data-test:
 grid-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/grid_test.py
 
+dstar-test:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/dstar_test.py
 
 
 
