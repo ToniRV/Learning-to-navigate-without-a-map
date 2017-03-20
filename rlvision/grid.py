@@ -42,11 +42,11 @@ class Grid(object):
             "one-is-free"
             "zero-is-free"
         """
-        if grid_type == "one_is_free":
+        if grid_type == "one-is-free":
             self.one_is_free = True
             self.empty_value = 1
             self.ob_value = 0  # obstacle value in map
-        elif grid_type == "zero_is_free":
+        elif grid_type == "zero-is-free":
             self.one_is_free = False
             self.empty_value = 0
             self.ob_value = 1
@@ -82,7 +82,7 @@ class Grid(object):
 
         # check value data
         if value_map.ndim == 1:
-            if self.im_size[0]*self.im_size[1] == self.value_map.shape[0]:
+            if self.im_size[0]*self.im_size[1] == value_map.shape[0]:
                 self.value_map = np.reshape(value_map, self.im_size)
             else:
                 raise ValueError("The number of elements in the value map"
@@ -123,6 +123,8 @@ class Grid(object):
             true if valid (one empty position)
             false if invalid
         """
+        if pos is None:
+            pos = (0, 0)
         assert isinstance(pos, tuple)
 
         if self.grid_map[pos[0], pos[1]] == self.empty_value:
@@ -156,7 +158,7 @@ class Grid(object):
             self.pos_history = [start_pos]
         else:
             print ("[MESSAGE] WARNING: The position is not valid, nothing"
-                   " changes.")
+                   " changes. (by set_start_pos)")
 
     def set_goal_pos(self):
         """Set goal position based on the value map."""
@@ -168,7 +170,8 @@ class Grid(object):
         if self.is_pos_valid(curr_pos):
             self.curr_pos = curr_pos
         else:
-            print ("[MESSAGE] WARNING: The position is not a vaild point")
+            print ("[MESSAGE] WARNING: The position is not a vaild point"
+                   " (by set_curr_pos)")
 
     def update_curr_map(self, map_update):
         """Update current map.
@@ -178,8 +181,8 @@ class Grid(object):
         map_update : numpy.ndarray
             the update to the current map
         """
-        utils.accumulate_map(self.curr_map, map_update,
-                             one_is_free=self.one_is_free)
+        self.curr_map = utils.accumulate_map(self.curr_map, map_update,
+                                             one_is_free=self.one_is_free)
 
     def get_curr_visible_map(self, pos):
         """Get current visible field by given a valid position.
@@ -225,9 +228,9 @@ class Grid(object):
             self.update_curr_map(self.get_curr_visible_map(pos_update))
         else:
             print ("[MESSAGE] WARNING: The position is not valid, nothing"
-                   " is updated")
+                   " is updated (by update_state)")
 
-    def update_state_from_action(self, action):
+    def update_state_from_action(self, action, verbose=0):
         """Update state from action space.
 
         0 1 2
@@ -241,7 +244,7 @@ class Grid(object):
         action : int
             sample from 0 - 7
         """
-        pos_update = self.curr_pos
+        pos_update = list(self.curr_pos)
         if action in [0, 1, 2]:
             pos_update[0] -= 1
         elif action in [5, 6, 7]:
@@ -252,7 +255,11 @@ class Grid(object):
         elif action in [2, 4, 7]:
             pos_update[1] += 1
 
-        self.update_state(pos_update)
+        if verbose == 1:
+            print ("[MESSAGE] Original pos: ", self.curr_pos)
+            print ("[MESSAGE] Updated pos : ", pos_update)
+
+        self.update_state(tuple(pos_update))
 
     def get_time(self):
         """Get the number of states."""
