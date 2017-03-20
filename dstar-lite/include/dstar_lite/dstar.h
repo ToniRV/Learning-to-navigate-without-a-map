@@ -15,6 +15,8 @@
 
 using namespace std;
 using namespace __gnu_cxx;
+// redefine uint
+typedef unsigned int uint;
 
 class state {
  public:

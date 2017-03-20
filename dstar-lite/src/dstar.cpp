@@ -7,7 +7,6 @@
 
 #ifdef USE_OPEN_GL
 #ifdef MACOS
-#include <OpenGL/gl.h>
 #else
 #include <GL/gl.h>
 #endif
@@ -599,8 +598,10 @@ bool Dstar::replan() {
   return true;
 }
 
-#ifdef USE_OPEN_GL
-
+#ifdef MACOS
+void Dstar::draw() {}
+void Dstar::drawCell(state s, float z) {}
+#else
 void Dstar::draw() {
 
   ds_ch::iterator iter;
@@ -654,8 +655,4 @@ void Dstar::drawCell(state s, float size) {
 
 
 }
-
-#else
-void Dstar::draw() {}
-void Dstar::drawCell(state s, float z) {}
 #endif
