@@ -68,17 +68,6 @@ class Dstar:
             size of the grid sides. It corresponds to
             the grids width/height since the grid is
             squared.
-
-        Returns
-        -------
-        updated_grid : list of ints
-            flattened grid with a list of ints equal to
-            0, 1, and other values representing obstacles,
-            free space and the shortest path respectively.
-        send_error : bool
-            flag indicating whether a path between start
-            and goal could be found or not (returns true
-            no matter what the error is)
         """
         # Get start index
         start_index = np.ravel_multi_index(start, imsize, order='F')
@@ -117,36 +106,63 @@ class Dstar:
         # Send start_index, goal_index, size of the grid and the grid through std input
         # All inputs must be flattened, aka string of int or ints (no matrices)
         # I.e. a 2x2 grid would be given as a string of 4 ints (row-major, C style).
-        dstar_subprocess = sp.Popen([exe_path,
+        self.dstar_subprocess = sp.Popen([exe_path,
                                     stringify(start_index), stringify(goal_index),
                                     stringify(grid)],
                                     stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
 
-        # Answer from dstar algorithm.
-        # It is send through stdout but also catches stderr.
-        response = dstar_subprocess.communicate()
-
-        # Response is given as (stdout , stderr)
-        answer = response[0].splitlines()
-        errors = response[1].splitlines()
-
-        send_error = False
-        if len(errors) == 0:
-            for a in answer:
-                grid[int(a)] = 150
+    def __process_path__(self, path):
+        if len(path) != 0:
+            path = path[:-1]
+            print("Received reply: %s" %(path))
+            # Clear last path
+            for idx, value in enumerate(self.grid):
+                if value == 150:
+                    self.grid[idx] = 1
+            # Print new path
+            for a in path.split('.'):
+                print(a)
+                self.grid[int(a)] = 150
         else:
             print("[ERROR] Errors found while running dstar algorithm.")
-            print(errors)
-            send_error = True
+            return False
 
-        return dstar_subprocess, grid, send_error
+        return True
+
 
     def __init__(self, start, goal, grid, imsize):
+        #  Socket to talk to server
+        self.context = zmq.Context()
+        print("Connecting to hello world server")
+        self.socket = self.context.socket(zmq.REQ)
+        self.socket.connect("tcp://localhost:5555")
+
         self.start = start
         self.goal = goal
         self.grid = grid
         self.imsize = imsize
-        self.dstar_subprocess, self.grid, self.errors = self.__runDstar(start, goal, grid, imsize)
-        if self.errors is True:
-            print("Got errors when initializing Dstar")
+
+        self.__spawnDstar(start, goal, grid, imsize)
+
+        # Requesting the first planning.
+        print("Sending replanning request")
+        self.socket.send(b"replan")
+
+        #  Get the reply.
+        path = self.socket.recv()
+
+        self.__process_path__(path)
+
+    def __del__(self):
+        self.socket.close()
+        self.context.term()
+        self.dstar_subprocess.kill()
+        response = self.dstar_subprocess.communicate()
+        print("Subprocess cout:"+response[0])
+        print("Subprocess cerr:"+response[1])
+        print ("Clean up done")
+
+
+
+
 
