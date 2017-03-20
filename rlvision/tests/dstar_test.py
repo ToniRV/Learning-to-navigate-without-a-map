@@ -32,13 +32,23 @@ goal = [14, 14]
 # Make a dstar
 dstar_instance = dstar.Dstar(start, goal, grid, imsize)
 
-# Run dstar
-grid_with_path = dstar_instance.grid
-errors = dstar_instance.errors
+dstar_instance.add_obstacle(5, 2)
+dstar_instance.add_obstacle(6, 2)
+dstar_instance.add_obstacle(7, 2)
+dstar_instance.add_obstacle(8, 2)
+dstar_instance.add_obstacle(5, 2)
+dstar_instance.add_obstacle(5, 3)
+dstar_instance.add_obstacle(5, 4)
+dstar_instance.add_obstacle(5, 5)
+
+dstar_instance.replan()
+dstar_instance.replan()
+
+errors = False
 
 # Let's plot dstar ouput on the grid
 if errors is False:
-    utils.plot_grid(grid_with_path, imsize)
+    utils.plot_grid(dstar_instance.grid, imsize)
 else:
     print("[ERROR] Did not plot grid with path because of found errors.")
 
