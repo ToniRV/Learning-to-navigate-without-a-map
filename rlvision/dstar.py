@@ -6,44 +6,51 @@ Email : tonirosinol
 import subprocess as sp
 import os
 import numpy as np
+import zmq
 
 class Dstar:
 
+    def add_obstacle(self, x, y):
+        msg = str(x)+" "+str(y)
 
-    def addObstacle(x, y):
-        msg = str(x)+str(y)
-        # Todo: handle when the added obstacle is already something like a
-        # goal, start or even an obstacle already.
-        response = self.dstar_subprocess.communicate(input=msg)
-        errors = response[1]
+         # Request a cell update
+        print("Sending cell update request")
+        self.socket.send(b"update")
 
-        send_error = False
-        if len(errors) !=0:
-            print("[ERROR] Errors found while adding obstacle.")
-            print(errors)
-            send_error = True
-
-        return send_error
-
-    def replan():
-        response = self.dstar_subprocess.communicate(input="replan")
-
-        answer = response[0]
-        errors = response[1]
-
-        send_error = False
-        if len(errors) == 0:
-            for a in answer:
-                self.grid[int(a)] = 150
+        #  Get the reply.
+        errors = False
+        if (self.socket.recv() != "go"):
+            print("Socket could not process update request.")
+            errors = True
+            self.socket.send(b"")
         else:
-            print("[ERROR] Errors found while running dstar algorithm.")
-            print(errors)
-            send_error = True
+            self.socket.send(msg)
 
-        return self.grid, errors
+        if (self.socket.recv() != "ok"):
+            print("Socket was not able to update given cell.")
+            errors =True
+        else:
+            index = np.ravel_multi_index((x, y), self.imsize, order='F')
+            print('GOT NEW OBS')
+            self.grid[index] = 0
 
-    def __runDstar (self, start, goal, grid, imsize):
-        """Run dstar algorithm: computes shortest
+        return errors
+
+    def replan(self):
+        # Request a replan
+        print("Sending replanning request")
+        self.socket.send(b"replan")
+
+        #  Get the reply.
+        path = self.socket.recv()
+
+        errors = self.__process_path__(path)
+
+        return errors
+
+
+    def __spawnDstar (self, start, goal, grid, imsize):
+        """Spawn dstar algorithm: computes shortest
             path from start to goal given a grid with
             obstacles information.
 
