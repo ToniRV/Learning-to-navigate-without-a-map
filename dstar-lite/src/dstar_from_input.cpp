@@ -3,9 +3,6 @@
 #include "dstar_lite/dstar.h"
 
 #ifdef MACOS
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
 #include <GL/gl.h>
@@ -14,7 +11,7 @@
 
 #include <stdlib.h>
 #include <unistd.h>
-#include "dstar_lite/dstar.h"
+#include <array>
 
 bool constexpr debug_gui = false;
 
@@ -29,6 +26,8 @@ int mstate = 0;
 
 bool b_autoreplan = true;
 
+#ifdef MACOS
+#else
 void InitGL(int Width, int Height)
 {
   hh = Height;
@@ -85,21 +84,21 @@ void keyPressed(unsigned char key, int x, int y)
   switch(key) {
   case 'q':
   case 'Q':
-    glutDestroyWindow(window);
-    exit(0);
-    break;
+	glutDestroyWindow(window);
+	exit(0);
+	break;
   case 'r':
   case 'R':
-    dstar->replan();
-    break;
+	dstar->replan();
+	break;
   case 'a':
   case 'A':
-    b_autoreplan = !b_autoreplan;
-    break;
+	b_autoreplan = !b_autoreplan;
+	break;
   case 'c':
   case 'C':
-    dstar->init(40,50,140, 90);
-    break;
+	dstar->init(40,50,140, 90);
+	break;
   }
 }
 
@@ -111,13 +110,13 @@ void mouseFunc(int button, int state, int x, int y) {
   mbutton = button;
 
   if ((mstate = state) == GLUT_DOWN) {
-    if (button == GLUT_LEFT_BUTTON) {
-      dstar->updateCell(x/scale, y/scale, -1);
-    } else if (button == GLUT_RIGHT_BUTTON) {
-      dstar->updateStart(x/scale, y/scale);
-    } else if (button == GLUT_MIDDLE_BUTTON) {
-      dstar->updateGoal(x/scale, y/scale);
-    }
+	if (button == GLUT_LEFT_BUTTON) {
+	  dstar->updateCell(x/scale, y/scale, -1);
+	} else if (button == GLUT_RIGHT_BUTTON) {
+	  dstar->updateStart(x/scale, y/scale);
+	} else if (button == GLUT_MIDDLE_BUTTON) {
+	  dstar->updateGoal(x/scale, y/scale);
+	}
   }
 }
 
@@ -130,16 +129,17 @@ void mouseMotionFunc(int x, int y)  {
   x /= scale;
 
   if (mstate == GLUT_DOWN) {
-    if (mbutton == GLUT_LEFT_BUTTON) {
-      dstar->updateCell(x, y, -1);
-    } else if (mbutton == GLUT_RIGHT_BUTTON) {
-      dstar->updateStart(x, y);
-    } else if (mbutton == GLUT_MIDDLE_BUTTON) {
-      dstar->updateGoal(x, y);
-    }
+	if (mbutton == GLUT_LEFT_BUTTON) {
+	  dstar->updateCell(x, y, -1);
+	} else if (mbutton == GLUT_RIGHT_BUTTON) {
+	  dstar->updateStart(x, y);
+	} else if (mbutton == GLUT_MIDDLE_BUTTON) {
+	  dstar->updateGoal(x, y);
+	}
   }
 
 }
+#endif
 
 int main(int argc, char **argv) {
   // Check that there are 3 arguments, aka argc == 4.
@@ -211,6 +211,8 @@ int main(int argc, char **argv) {
     std::cout << waypoint.x * grid_size + waypoint.y << std::endl;
   }
 
+  #ifdef MACOS
+  #else
   if (debug_gui) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
@@ -232,6 +234,7 @@ int main(int argc, char **argv) {
 
     glutMainLoop();
   }
+  #endif
 
   return EXIT_SUCCESS;
 }
