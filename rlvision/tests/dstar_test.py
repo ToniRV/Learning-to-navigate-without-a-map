@@ -29,8 +29,12 @@ start = [1, 1]
 # Get a random goal index.
 goal = [14, 14]
 
+# Make a dstar
+dstar_instance = dstar.Dstar(start, goal, grid, imsize)
+
 # Run dstar
-grid_with_path, errors = dstar.run_dstar(start, goal, grid, imsize)
+grid_with_path = dstar_instance.grid
+errors = dstar_instance.errors
 
 # Let's plot dstar ouput on the grid
 if errors is False:
