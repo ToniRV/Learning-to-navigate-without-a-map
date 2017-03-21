@@ -35,7 +35,7 @@ dstar_instance = dstar.Dstar(start, goal, grid, imsize)
 
 # Ask for a path
 if dstar_instance.replan():
-    utils.plot_grid(copy.deepcopy(dstar_instance.grid), imsize)
+    utils.plot_grid(dstar_instance.grid, imsize)
 else:
     print("[ERROR] Did not plot grid with path because of errors.")
 
@@ -47,7 +47,7 @@ dstar_instance.add_obstacle(8, 2)
 
 # Ask for a path
 if dstar_instance.replan():
-    utils.plot_grid(copy.deepcopy(dstar_instance.grid), imsize)
+    utils.plot_grid(dstar_instance.grid, imsize)
 else:
     print("[ERROR] Did not plot grid with path because of errors.")
 
@@ -59,6 +59,6 @@ dstar_instance.add_obstacle(5, 5)
 
 # Ask for a path
 if dstar_instance.replan():
-    utils.plot_grid(copy.deepcopy(dstar_instance.grid), imsize)
+    utils.plot_grid(dstar_instance.grid, imsize)
 else:
     print("[ERROR] Did not plot grid with path because of errors.")
