@@ -275,8 +275,9 @@ int main(int argc, char **argv) {
         memcpy (reply.data (), "Expected 2 coordinates", 2);
         socket.send (reply);
       } else {
-        dstar->updateCell(std::atoi(x_y_coords.at(0).c_str()),
-                          std::atoi(x_y_coords.at(1).c_str()), -1);
+        // Dstar has an inverted representation of x y coords (y x instead).
+        dstar->updateCell(std::atoi(x_y_coords.at(1).c_str()),
+                          std::atoi(x_y_coords.at(0).c_str()), -1);
         // Send reply back to client of success.
         zmq::message_t reply (2);
         memcpy (reply.data (), "ok", 2);
