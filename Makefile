@@ -32,6 +32,10 @@ grid-test:
 dstar-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/dstar_test.py
 
+grid-class-test:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/grid_class_test.py
+
+
 
 
 cleanall:

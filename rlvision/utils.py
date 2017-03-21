@@ -81,12 +81,37 @@ def accumulate_map(source_grid, new_grid, one_is_free=True):
         return source_grid*new_grid
 
 
-def plot_grid(data, imsize):
-    """Plot a single grid with a vector representation"""
-    img = data.reshape(imsize[0], imsize[1])
+def plot_grid(data, imsize, pos=None, goal=None, title=None):
+    """Plot a single grid with a vector representation.
+
+    Parameters
+    ----------
+    data : numpy.ndarray
+        the grid
+    imsize : tuple
+        the grid size
+    pos : list
+        list of tuple one want to draw
+    goal : tuple
+        the single goal
+    """
+    img = data.copy().reshape(imsize[0], imsize[1])
     img *= 255
 
-    plt.imshow(img, cmap="gray")
+    if pos is not None:
+        assert isinstance(pos, list)
+        for pos_element in pos:
+            plt.scatter(x=[pos_element[1]], y=[pos_element[0]],
+                        marker=".", c="blue", s=50)
+
+    if pos is not None:
+        assert isinstance(goal, tuple)
+        plt.scatter(x=[goal[1]], y=[goal[0]], marker="*", c="r", s=50)
+
+    plt.imshow(data, cmap="gray")
+    if title is not None:
+        assert isinstance(title, str)
+        plt.title(title)
     plt.show()
 
 
