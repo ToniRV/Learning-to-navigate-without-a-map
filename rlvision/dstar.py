@@ -14,31 +14,31 @@ class Dstar:
         msg = str(x)+" "+str(y)
 
          # Request a cell update
-        print("Sending cell update request")
+        print("[INFO] Sending cell update request")
         self.socket.send(b"update")
 
         #  Get the reply.
         errors = False
         if (self.socket.recv() != "go"):
-            print("Socket could not process update request.")
+            print("[ERROR] Socket could not process update request.")
             errors = True
             self.socket.send(b"")
         else:
             self.socket.send(msg)
 
         if (self.socket.recv() != "ok"):
-            print("Socket was not able to update given cell.")
+            print("[ERROR] Socket was not able to update given cell.")
             errors =True
         else:
             index = np.ravel_multi_index((x, y), self.imsize, order='F')
-            print('GOT NEW OBS')
+            print("[INFO] Updating new obstacle")
             self.grid[index] = 0
 
         return errors
 
     def replan(self):
         # Request a replan
-        print("Sending replanning request")
+        print("[INFO] Sending replanning request")
         self.socket.send(b"replan")
 
         #  Get the reply.
@@ -124,14 +124,13 @@ class Dstar:
     def __process_path__(self, path):
         if len(path) != 0:
             path = path[:-1]
-            print("Received reply: %s" %(path))
+            print("[INFO] Received path: %s" %(path))
             # Clear last path
             for idx, value in enumerate(self.grid):
                 if value == 150:
                     self.grid[idx] = 1
             # Print new path
             for a in path.split('.'):
-                print(a)
                 self.grid[int(a)] = 150
         else:
             print("[ERROR] Errors found while running dstar algorithm.")
@@ -143,7 +142,7 @@ class Dstar:
     def __init__(self, start, goal, grid, imsize):
         #  Socket to talk to server
         self.context = zmq.Context()
-        print("Connecting to hello world server")
+        print("[INFO] Connecting to dstar server")
         self.socket = self.context.socket(zmq.REQ)
         self.socket.connect("tcp://localhost:5555")
 
@@ -155,13 +154,14 @@ class Dstar:
         self.__spawnDstar(start, goal, grid, imsize)
 
     def __del__(self):
+        print("[INFO] Killing subprocess")
         self.socket.close()
         self.context.term()
         self.dstar_subprocess.kill()
         response = self.dstar_subprocess.communicate()
-        print("Subprocess cout:"+response[0])
-        print("Subprocess cerr:"+response[1])
-        print ("Clean up done")
+        print("[LOG] Subprocess logged cout:\n"+response[0])
+        print("[LOG] Subprocess logged cerr:\n"+response[1])
+        print ("[INFO] Clean up done")
 
 
 
