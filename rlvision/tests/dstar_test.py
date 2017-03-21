@@ -4,6 +4,7 @@ Author: Antoni Rosinol
 Email : tonirosinol
 """
 from __future__ import print_function
+import copy
 import rlvision.utils as utils
 import rlvision.dstar as dstar
 
@@ -29,27 +30,35 @@ start = [1, 1]
 # Get a random goal index.
 goal = [14, 14]
 
-# Make a dstar
+# Make a dstar.
 dstar_instance = dstar.Dstar(start, goal, grid, imsize)
 
+# Ask for a path
+if dstar_instance.replan():
+    utils.plot_grid(copy.deepcopy(dstar_instance.grid), imsize)
+else:
+    print("[ERROR] Did not plot grid with path because of errors.")
+
+# Lets add some new obstacles.
 dstar_instance.add_obstacle(5, 2)
 dstar_instance.add_obstacle(6, 2)
 dstar_instance.add_obstacle(7, 2)
 dstar_instance.add_obstacle(8, 2)
+
+# Ask for a path
+if dstar_instance.replan():
+    utils.plot_grid(copy.deepcopy(dstar_instance.grid), imsize)
+else:
+    print("[ERROR] Did not plot grid with path because of errors.")
+
+# Lets add some more new obstacles.
 dstar_instance.add_obstacle(5, 2)
 dstar_instance.add_obstacle(5, 3)
 dstar_instance.add_obstacle(5, 4)
 dstar_instance.add_obstacle(5, 5)
 
-dstar_instance.replan()
-dstar_instance.replan()
-
-errors = False
-
-# Let's plot dstar ouput on the grid
-if errors is False:
-    utils.plot_grid(dstar_instance.grid, imsize)
+# Ask for a path
+if dstar_instance.replan():
+    utils.plot_grid(copy.deepcopy(dstar_instance.grid), imsize)
 else:
-    print("[ERROR] Did not plot grid with path because of found errors.")
-
-
+    print("[ERROR] Did not plot grid with path because of errors.")
