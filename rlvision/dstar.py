@@ -154,15 +154,6 @@ class Dstar:
 
         self.__spawnDstar(start, goal, grid, imsize)
 
-        # Requesting the first planning.
-        print("Sending replanning request")
-        self.socket.send(b"replan")
-
-        #  Get the reply.
-        path = self.socket.recv()
-
-        self.__process_path__(path)
-
     def __del__(self):
         self.socket.close()
         self.context.term()
