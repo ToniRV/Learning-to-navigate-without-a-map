@@ -48,6 +48,16 @@ class Dstar:
 
         return errors
 
+    def kill_subprocess(self):
+        # Request subprocess dead
+        self.socket.send(b"kill")
+
+        #  Get the reply.
+        if (self.socket.recv() == "ok"):
+            print("[INFO] Subprocess confirmed dead.")
+        else:
+            print("[ERROR] Subprocess did not respond to kill request")
+
 
     def __spawnDstar (self, start, goal, grid, imsize):
         """Spawn dstar algorithm: computes shortest
