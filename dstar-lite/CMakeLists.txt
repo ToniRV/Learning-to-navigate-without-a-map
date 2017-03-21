@@ -53,5 +53,6 @@ elseif(UNIX AND "${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
     target_link_libraries(dstar_from_grid dstar_lite)
 endif()
 
+add_definitions(-L/usr/local/lib -lzmq)
 add_executable(dstar_from_input src/dstar_from_input.cpp)
-target_link_libraries(dstar_from_input dstar_lite)
+target_link_libraries(dstar_from_input dstar_lite zmq)
