@@ -108,7 +108,7 @@ def plot_grid(data, imsize, pos=None, goal=None, title=None):
         assert isinstance(goal, tuple)
         plt.scatter(x=[goal[1]], y=[goal[0]], marker="*", c="r", s=50)
 
-    plt.imshow(data, cmap="gray")
+    plt.imshow(img, cmap="gray")
     if title is not None:
         assert isinstance(title, str)
         plt.title(title)
