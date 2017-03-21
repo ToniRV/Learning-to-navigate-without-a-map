@@ -11,7 +11,20 @@
 
 #include <stdlib.h>
 #include <unistd.h>
+#include <zmq.hpp>
+#include <string>
+#include <iostream>
+#include <sstream>
 #include <array>
+#ifndef _WIN32
+#include <unistd.h>
+#else
+#include <windows.h>
+
+#define sleep(n)    Sleep(n)
+#endif
+
+#include "dstar_lite/dstar.h"
 
 bool constexpr debug_gui = false;
 
@@ -142,6 +155,12 @@ void mouseMotionFunc(int x, int y)  {
 #endif
 
 int main(int argc, char **argv) {
+  // Prepare our context and socket
+  // for request/reply communication with client.
+  zmq::context_t context (1);
+  zmq::socket_t socket (context, ZMQ_REP);
+  socket.bind ("tcp://*:5555");
+
   // Check that there are 3 arguments, aka argc == 4.
   if (argc != 4) {
     std::cerr << "Terminating. Incorrect number of arguments."
@@ -200,15 +219,86 @@ int main(int argc, char **argv) {
     }
   }
 
-  if (!dstar->replan()) {
-    std::cerr << "No found path to goal" << std::endl;
-    return EXIT_FAILURE;
-  }
+  uint replan_counter = 0;
+  uint update_counter = 0;
+  while (true) {
+    zmq::message_t request;
 
-  list<state> path = dstar->getPath();
-  for(const state& waypoint: path) {
-    // Send path to cout.
-    std::cout << waypoint.x * grid_size + waypoint.y << std::endl;
+    // Wait for next request from client
+    socket.recv(&request);
+    std::string rpl = std::string(
+        static_cast<char*>(request.data()), request.size());
+
+    if (rpl == "replan") {
+      replan_counter++;
+      std::cout << "[Dstar cpp] Requested to replan ["
+                << replan_counter << "]" << std::endl;
+
+      if (!dstar->replan()) {
+        std::cerr << "No found path to goal." << std::endl;
+        return EXIT_FAILURE;
+      }
+
+      // Parse calculated path.
+      list<state> path = dstar->getPath();
+      std::string path_string;
+      std::ostringstream convert;   // stream used for the conversion
+      for(const state& waypoint: path) {
+        // Make message reply.
+        convert << waypoint.x * grid_size + waypoint.y << '.';
+      }
+      path_string = convert.str();
+
+      // Send reply back to client
+      zmq::message_t reply (path_string.size());
+      memcpy (reply.data (), path_string.c_str(), path_string.size());
+      socket.send (reply);
+    } else if (rpl == "update") {
+      update_counter++;
+      std::cout << "[Dstar cpp] Requested to update cell ["
+                << update_counter << "]" << std::endl;
+      // Send reply back to client to acknowledge request.
+      zmq::message_t reply (2);
+      memcpy (reply.data (), "go", 2);
+      socket.send (reply);
+
+      // Wait for cell coordinates to be updated.
+      socket.recv(&request);
+      std::string rpl = std::string(
+      static_cast<char*>(request.data()), request.size());
+      istringstream iss(rpl);
+      vector<string> x_y_coords{istream_iterator<string>{iss},
+                      istream_iterator<string>{}};
+      if (x_y_coords.size() != 2) {
+        // Send reply back to client with error.
+        zmq::message_t reply (2);
+        memcpy (reply.data (), "Expected 2 coordinates", 2);
+        socket.send (reply);
+      } else {
+        // Dstar has an inverted representation of x y coords (y x instead).
+        dstar->updateCell(std::atoi(x_y_coords.at(1).c_str()),
+                          std::atoi(x_y_coords.at(0).c_str()), -1);
+        // Send reply back to client of success.
+        zmq::message_t reply (2);
+        memcpy (reply.data (), "ok", 2);
+        socket.send (reply);
+      }
+    } else if (rpl == "kill") {
+        // Send reply back to client of success.
+        zmq::message_t reply (2);
+        memcpy (reply.data (), "ok", 2);
+        socket.send (reply);
+
+        // Break loop.
+        break;
+    } else {
+      std::cerr << "[Dstar cpp] Error, could not understand command: "
+                << rpl << std::endl;
+      // Send reply back to client
+      zmq::message_t reply (5);
+      memcpy (reply.data (), "fail", 5);
+      socket.send (reply);
+    }
   }
 
   #ifdef MACOS

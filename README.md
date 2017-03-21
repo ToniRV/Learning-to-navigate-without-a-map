@@ -48,7 +48,12 @@ and finally a plot for one grid.
 
 4. In case you want to run the dstar algorithm with the dataset checkout `dstar_test.py` in `tests` folder
 First, you will need to build the c++ source code, for that do the following:
-* Move the dstar-lite directory
+* Install zeromq (\ØMQ\:): (this is only for ubuntu users, for others, please refer to (zeromq)[http://zeromq.org/intro:get-the-software])
+```
+sudo apt-get install libzmq3-dev
+```
+(**NOTE**: Currently the CMakeLists.txt assumes that libzmq is at /usr/local/lib, if you have issues while linking please refer to google: search for things like "link zmq library" zmq stands for (zeromq)[http://zeromq.org/]
+* Move to the dstar-lite directory
 * Create a build directory:
 ```
 mkdir build
