@@ -283,6 +283,14 @@ int main(int argc, char **argv) {
         memcpy (reply.data (), "ok", 2);
         socket.send (reply);
       }
+    } else if (rpl == "kill") {
+        // Send reply back to client of success.
+        zmq::message_t reply (2);
+        memcpy (reply.data (), "ok", 2);
+        socket.send (reply);
+
+        // Break loop.
+        break;
     } else {
       std::cerr << "[Dstar cpp] Error, could not understand command: "
                 << rpl << std::endl;
