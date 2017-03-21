@@ -229,8 +229,6 @@ int main(int argc, char **argv) {
     std::string rpl = std::string(
         static_cast<char*>(request.data()), request.size());
 
-    std::cout << rpl << std::endl;
-
     if (rpl == "replan") {
       replan_counter++;
       std::cout << "[Dstar cpp] Requested to replan ["
@@ -277,9 +275,6 @@ int main(int argc, char **argv) {
         memcpy (reply.data (), "Expected 2 coordinates", 2);
         socket.send (reply);
       } else {
-        std::cerr << "X coord of obstacle: " << std::atoi(x_y_coords.at(0).c_str())
-                  << "Y coord of obstacle: " << std::atoi(x_y_coords.at(1).c_str())
-                  << std::endl;
         dstar->updateCell(std::atoi(x_y_coords.at(0).c_str()),
                           std::atoi(x_y_coords.at(1).c_str()), -1);
         // Send reply back to client of success.
