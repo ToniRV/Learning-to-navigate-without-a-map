@@ -81,7 +81,8 @@ def accumulate_map(source_grid, new_grid, one_is_free=True):
         return source_grid*new_grid
 
 
-def plot_grid(data, imsize, pos=None, goal=None, title=None):
+def plot_grid(data, imsize, pos=None, goal=None, title=None,
+              one_is_free=True):
     """Plot a single grid with a vector representation.
 
     Parameters
@@ -96,7 +97,10 @@ def plot_grid(data, imsize, pos=None, goal=None, title=None):
         the single goal
     """
     img = data.copy().reshape(imsize[0], imsize[1])
-    img *= 255
+    if not one_is_free:
+        img = (1-img)*255
+    else:
+        img *= 255
 
     if pos is not None:
         assert isinstance(pos, list)
