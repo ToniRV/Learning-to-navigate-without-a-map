@@ -287,3 +287,104 @@ class Grid(object):
             return -self.value_map[self.goal_pos[0], self.goal_pos[1]], -1
         else:
             return self.value_map[recent_pos[0], recent_pos[1]], 0
+
+
+class GridDataSampler(object):
+    """A grid data sampler from the raw data."""
+
+    def __init__(self, grid_data, value_data, im_size, states_xy,
+                 label_data):
+        """Init grid data sampler.
+
+        Pararmeters
+        -----------
+        im_data : numpy.ndarray
+            The image data
+        value_data : numpy.ndarray
+            the value data
+        im_size : tuple
+            the size of the map
+        states_xy : numpy.ndarry
+            the one that encode the paths (n_states, 2)
+        """
+        self.grid_data = grid_data
+        self.value_data = value_data
+
+        if im_size[0]*im_size[1] == grid_data.shape[1]:
+            self.im_size = im_size
+
+        self.states_xy = states_xy
+        self.label_data = label_data
+        self.curr_idx = 0
+
+    def compare_pos(self, pos1, pos2):
+        """Compare position."""
+        if pos1[0] == pos2[0] and pos1[1] == pos2[1]:
+            return True
+        return False
+
+    def get_next_state(self, pos, action):
+        """Get next state according to action."""
+        new_pos = [0, 0]
+        if new_pos[0] in [5, 0, 4]:
+            new_pos[0] = pos[0]-1
+        elif new_pos[0] in [7, 1, 6]:
+            new_pos[0] = pos[0]+1
+        else:
+            new_pos[0] = pos[0]
+
+        if new_pos[1] in [5, 3, 7]:
+            new_pos[1] = pos[1]-1
+        elif new_pos[1] in [4, 2, 6]:
+            new_pos[1] = pos[1]+1
+        else:
+            new_pos[1] = pos[1]
+        return tuple(new_pos)
+
+    def get_goal_pos(self, value_grid):
+        """Get goal position."""
+        value_map = np.reshape(value_grid.copy(), self.im_size)
+        goal_list = np.where(value_map == value_map.max())
+        # assume the first one
+        return (goal_list[0][0], goal_list[1][0])
+
+    def next(self):
+        """Sample next sample."""
+        grid = self.grid_data[self.curr_idx]
+        value = self.value_data[self.curr_idx]
+        goal_pos = self.get_goal_pos(value)
+        print ("[MESSAGE] GOAL POSITION:", goal_pos)
+
+        # find end block idx
+        curr_idx = self.curr_idx
+        while np.array_equal(grid, self.grid_data[curr_idx]):
+            curr_idx += 1
+
+        # parse grid traj
+        start_pos_list = []
+        pos_traj = []
+        flag = True
+        for idx in xrange(self.curr_idx, curr_idx):
+            if flag is True:
+                print ((self.states_xy[idx][0], self.states_xy[idx][1]))
+                temp_pos_traj = [(self.states_xy[idx][0],
+                                  self.states_xy[idx][1])]
+                start_pos_list.append((self.states_xy[idx][0],
+                                       self.states_xy[idx][1]))
+                flag = False
+            else:
+                temp_pos_traj.append((self.states_xy[idx][0],
+                                      self.states_xy[idx][1]))
+                new_pos = self.get_next_state((self.states_xy[idx][0],
+                                               self.states_xy[idx][1]),
+                                              self.label_data[idx])
+                print ((self.states_xy[idx][0], self.states_xy[idx][1]),
+                       new_pos, self.label_data[idx])
+                if self.compare_pos(goal_pos, new_pos):
+                    flag = True
+                    pos_traj.append(temp_pos_traj)
+
+        # update current idx
+        self.curr_idx = curr_idx
+
+        return grid, value, start_pos_list, pos_traj
