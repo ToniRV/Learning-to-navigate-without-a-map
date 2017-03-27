@@ -64,10 +64,10 @@ while grid_id <= n_samples and grid_sampler.grid_available:
         # carry out game
         for step in xrange(n_steps):
             print ("[MESSAGE] [IN GAME] Step:", step+1)
-            utils.plot_grid(game.curr_map, im_size,
-                            start=game.start_pos,
-                            goal=game.goal_pos)
             # TODO sample one action from D*
+            errors, next_move = planner.replan()
+            print (errors)
+            print (next_move)
 
             # TODO convert to (x, y) representation
 
@@ -75,7 +75,7 @@ while grid_id <= n_samples and grid_sampler.grid_available:
 
             # TODO end game if reach the target and plot the path
 
-            if planner.replan():
+            if errors:
                 utils.plot_grid(planner.grid, game.im_size,
                                 start=game.start_pos,
                                 goal=game.goal_pos)

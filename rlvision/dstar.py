@@ -31,13 +31,13 @@ class Dstar:
             print("[ERROR] Socket was not able to update given cell.")
             errors = True
         else:
-            index = np.ravel_multi_index((x, y), self.imsize, order='F')
+            index = np.ravel_multi_index((x, y), self.imsize, order='C')
             print("[INFO] Updating new obstacle")
             self.grid[index] = 0
 
         return errors
 
-    def replan(self):
+    def replan(self, next_move_only=True):
         # Request a replan
         print("[INFO] Sending replanning request")
         self.socket.send(b"replan")
@@ -45,9 +45,9 @@ class Dstar:
         #  Get the reply.
         path = self.socket.recv()
 
-        errors = self.__process_path__(path)
+        errors, solution_path = self.__process_path__(path, next_move_only)
 
-        return errors
+        return errors, solution_path
 
     def kill_subprocess(self):
         # Request subprocess dead
@@ -80,7 +80,7 @@ class Dstar:
             squared.
         """
         # Get start index
-        start_index = np.ravel_multi_index(start, imsize, order='F')
+        start_index = np.ravel_multi_index(start, imsize, order='C')
         if grid[start_index] == 0:
             print("[ERROR] start position falls over an obstacle")
         else:
@@ -93,7 +93,7 @@ class Dstar:
         # TODO Get value data containing the reward values.
         # The database puts a number 10 wherever the goal is (I think)
         # value_data = db["value_data"]
-        goal_index = np.ravel_multi_index(goal, imsize, order='F')
+        goal_index = np.ravel_multi_index(goal, imsize, order='C')
         if grid[goal_index] == 0:
             print("[ERROR] goal position falls over an obstacle")
         else:
@@ -124,17 +124,28 @@ class Dstar:
              stringify(grid)],
             stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
 
-    def __process_path__(self, path):
+    def __process_path__(self, path, next_move_only=True):
         if len(path) != 0:
             path = path[:-1]
             print("[INFO] Received path: %s" % (path))
             # Clear last path
-            for idx, value in enumerate(self.grid):
-                if value == 150:
-                    self.grid[idx] = 1
+            #  for idx, value in enumerate(self.grid):
+            #      if value == 150:
+            #          self.grid[idx] = 1
             # Print new path
+            path_list = []
             for a in path.split('.'):
-                self.grid[int(a)] = 150
+                path_list.append(int(a))
+                #  self.grid[int(a)] = 150
+            path_list = np.unravel_index(path_list, self.imsize)
+            solution_list = []
+            for i in xrange(path_list[0].shape[0]):
+                solution_list.append((path_list[0][i],
+                                      path_list[1][i]))
+            if next_move_only:
+                return True, [solution_list[1]]
+            else:
+                return True, solution_list
         else:
             print("[ERROR] Errors found while running dstar algorithm.")
             return False
