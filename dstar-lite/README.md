@@ -28,6 +28,19 @@ $ cmake ..
 $ make
 $ ./dstar_draw # Use the Commands below.
 ```
+## About `zeromq` on Mac
+
+First, install `zeromq` via `homebrew`
+
+```
+$ brew install zeromq
+```
+
+Second, copy C++ bindings to `/usr/local/include`, to do so,
+get `zmq.hpp` from [here](https://github.com/zeromq/cppzmq)
+
+You should be all set
+
 ### Given a grid map
 First, follow the instructions [here](https://github.com/ToniRV/Learning-to-navigate-without-a-map#instructions-to-use-the-dataset) to download sample datasets.
 Second, TODO

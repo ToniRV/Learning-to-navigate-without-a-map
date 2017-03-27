@@ -81,7 +81,7 @@ def accumulate_map(source_grid, new_grid, one_is_free=True):
         return source_grid*new_grid
 
 
-def plot_grid(data, imsize, pos=None, goal=None, title=None):
+def plot_grid(data, imsize, start=None, pos=None, goal=None, title=None):
     """Plot a single grid with a vector representation.
 
     Parameters
@@ -98,13 +98,17 @@ def plot_grid(data, imsize, pos=None, goal=None, title=None):
     img = data.copy().reshape(imsize[0], imsize[1])
     img *= 255
 
+    if start is not None:
+        assert isinstance(start, tuple)
+        plt.scatter(x=[start[1]], y=[start[0]], marker="*", c="orange", s=50)
+
     if pos is not None:
         assert isinstance(pos, list)
         for pos_element in pos:
             plt.scatter(x=[pos_element[1]], y=[pos_element[0]],
                         marker=".", c="blue", s=50)
 
-    if pos is not None:
+    if goal is not None:
         assert isinstance(goal, tuple)
         plt.scatter(x=[goal[1]], y=[goal[0]], marker="*", c="r", s=50)
 
