@@ -326,16 +326,16 @@ class GridDataSampler(object):
     def get_next_state(self, pos, action):
         """Get next state according to action."""
         new_pos = [0, 0]
-        if new_pos[0] in [5, 0, 4]:
+        if action in [5, 0, 4]:
             new_pos[0] = pos[0]-1
-        elif new_pos[0] in [7, 1, 6]:
+        elif action in [7, 1, 6]:
             new_pos[0] = pos[0]+1
         else:
             new_pos[0] = pos[0]
 
-        if new_pos[1] in [5, 3, 7]:
+        if action in [5, 3, 7]:
             new_pos[1] = pos[1]-1
-        elif new_pos[1] in [4, 2, 6]:
+        elif action in [4, 2, 6]:
             new_pos[1] = pos[1]+1
         else:
             new_pos[1] = pos[1]
@@ -365,24 +365,27 @@ class GridDataSampler(object):
         pos_traj = []
         flag = True
         for idx in xrange(self.curr_idx, curr_idx):
+            curr_pos = (self.states_xy[idx][0], self.states_xy[idx][1])
+            next_pos = self.get_next_state(curr_pos, self.label_data[idx])
+
             if flag is True:
-                print ((self.states_xy[idx][0], self.states_xy[idx][1]))
-                temp_pos_traj = [(self.states_xy[idx][0],
-                                  self.states_xy[idx][1])]
-                start_pos_list.append((self.states_xy[idx][0],
-                                       self.states_xy[idx][1]))
+                # when find a new start
+                print ("[MESSAGE] A START POINT:", curr_pos)
+                # append the new start to the list
+                start_pos_list.append(curr_pos)
+                # construct a new pos traj
+                temp_pos_traj = []
+                # start searching
                 flag = False
-            else:
-                temp_pos_traj.append((self.states_xy[idx][0],
-                                      self.states_xy[idx][1]))
-                new_pos = self.get_next_state((self.states_xy[idx][0],
-                                               self.states_xy[idx][1]),
-                                              self.label_data[idx])
-                print ((self.states_xy[idx][0], self.states_xy[idx][1]),
-                       new_pos, self.label_data[idx])
-                if self.compare_pos(goal_pos, new_pos):
-                    flag = True
-                    pos_traj.append(temp_pos_traj)
+            # evaluate if the next state is the goal position
+            if self.compare_pos(goal_pos, next_pos):
+                # if yes, for next state, a new start begin
+                flag = True
+                # append the temp pos traj to collector
+                pos_traj.append(temp_pos_traj)
+
+            print (curr_pos, next_pos, self.label_data[idx])
+            temp_pos_traj.append(curr_pos)
 
         # update current idx
         self.curr_idx = curr_idx
