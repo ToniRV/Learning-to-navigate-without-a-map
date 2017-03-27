@@ -316,6 +316,7 @@ class GridDataSampler(object):
         self.states_xy = states_xy
         self.label_data = label_data
         self.curr_idx = 0
+        self.grid_available = True
 
     def compare_pos(self, pos1, pos2):
         """Compare position."""
@@ -350,44 +351,49 @@ class GridDataSampler(object):
 
     def next(self):
         """Sample next sample."""
-        grid = self.grid_data[self.curr_idx]
-        value = self.value_data[self.curr_idx]
-        goal_pos = self.get_goal_pos(value)
-        print ("[MESSAGE] GOAL POSITION:", goal_pos)
+        if self.grid_available:
+            grid = self.grid_data[self.curr_idx]
+            value = self.value_data[self.curr_idx]
+            goal_pos = self.get_goal_pos(value)
 
-        # find end block idx
-        curr_idx = self.curr_idx
-        while np.array_equal(grid, self.grid_data[curr_idx]):
-            curr_idx += 1
+            # find end block idx
+            curr_idx = self.curr_idx
+            while curr_idx != self.grid_data.shape[0]:
+                if np.array_equal(grid, self.grid_data[curr_idx]):
+                    curr_idx += 1
+                else:
+                    break
 
-        # parse grid traj
-        start_pos_list = []
-        pos_traj = []
-        flag = True
-        for idx in xrange(self.curr_idx, curr_idx):
-            curr_pos = (self.states_xy[idx][0], self.states_xy[idx][1])
-            next_pos = self.get_next_state(curr_pos, self.label_data[idx])
+            # parse grid traj
+            start_pos_list = []
+            pos_traj = []
+            flag = True
+            for idx in xrange(self.curr_idx, curr_idx):
+                curr_pos = (self.states_xy[idx][0], self.states_xy[idx][1])
+                next_pos = self.get_next_state(curr_pos, self.label_data[idx])
 
-            if flag is True:
-                # when find a new start
-                print ("[MESSAGE] A START POINT:", curr_pos)
-                # append the new start to the list
-                start_pos_list.append(curr_pos)
-                # construct a new pos traj
-                temp_pos_traj = []
-                # start searching
-                flag = False
-            # evaluate if the next state is the goal position
-            if self.compare_pos(goal_pos, next_pos):
-                # if yes, for next state, a new start begin
-                flag = True
-                # append the temp pos traj to collector
-                pos_traj.append(temp_pos_traj)
+                if flag is True:
+                    # when find a new start
+                    # append the new start to the list
+                    start_pos_list.append(curr_pos)
+                    # construct a new pos traj
+                    temp_pos_traj = []
+                    # start searching
+                    flag = False
+                # evaluate if the next state is the goal position
+                if self.compare_pos(goal_pos, next_pos):
+                    # if yes, for next state, a new start begin
+                    flag = True
+                    # append the temp pos traj to collector
+                    pos_traj.append(temp_pos_traj)
 
-            print (curr_pos, next_pos, self.label_data[idx])
-            temp_pos_traj.append(curr_pos)
+                temp_pos_traj.append(curr_pos)
 
-        # update current idx
-        self.curr_idx = curr_idx
+            # update current idx
+            self.curr_idx = curr_idx
+            if self.curr_idx == self.grid_data.shape[0]:
+                self.grid_available = False
 
-        return grid, value, start_pos_list, pos_traj
+            return grid, value, start_pos_list, pos_traj, goal_pos
+        else:
+            print ("[MESSAGE] No grid available""")
