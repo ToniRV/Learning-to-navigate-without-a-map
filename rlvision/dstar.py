@@ -8,12 +8,13 @@ import os
 import numpy as np
 import zmq
 
-class Dstar:
 
+class Dstar:
+    """A central class to carry out D* algorithm with binary."""
     def add_obstacle(self, x, y):
         msg = str(x)+" "+str(y)
 
-         # Request a cell update
+        # Request a cell update
         print("[INFO] Sending cell update request")
         self.socket.send(b"update")
 
@@ -28,7 +29,7 @@ class Dstar:
 
         if (self.socket.recv() != "ok"):
             print("[ERROR] Socket was not able to update given cell.")
-            errors =True
+            errors = True
         else:
             index = np.ravel_multi_index((x, y), self.imsize, order='F')
             print("[INFO] Updating new obstacle")
@@ -58,8 +59,7 @@ class Dstar:
         else:
             print("[ERROR] Subprocess did not respond to kill request")
 
-
-    def __spawnDstar (self, start, goal, grid, imsize):
+    def __spawnDstar(self, start, goal, grid, imsize):
         """Spawn dstar algorithm: computes shortest
             path from start to goal given a grid with
             obstacles information.
@@ -85,7 +85,7 @@ class Dstar:
             print("[ERROR] start position falls over an obstacle")
         else:
             # Color in grey the start position
-            #TODO Copy grid and use updated_grid
+            # TODO Copy grid and use updated_grid
             # Right now, do not set this to an int of 2 or more digits
             grid[start_index] = 1
 
@@ -98,7 +98,7 @@ class Dstar:
             print("[ERROR] goal position falls over an obstacle")
         else:
             # Color in grey the start position
-            #TODO Copy grid and use updated_grid
+            # TODO Copy grid and use updated_grid
             # Right now, do not set this to an int of 2 or more digits
             grid[goal_index] = 1
 
@@ -110,21 +110,24 @@ class Dstar:
             raise ValueError("The executable %s does not exist!" % (exe_path))
 
         # Utility function.
-        stringify = lambda x: str(x).strip('[()]').replace(',', '').replace(' ', '').replace('\n', '')
+        stringify = lambda x: str(x).strip('[()]').replace(
+            ',', '').replace(' ', '').replace('\n', '')
 
         # Run dstar algorithm in c++
-        # Send start_index, goal_index, size of the grid and the grid through std input
+        # Send start_index, goal_index, size of the grid and the grid
+        # through std input
         # All inputs must be flattened, aka string of int or ints (no matrices)
-        # I.e. a 2x2 grid would be given as a string of 4 ints (row-major, C style).
-        self.dstar_subprocess = sp.Popen([exe_path,
-                                    stringify(start_index), stringify(goal_index),
-                                    stringify(grid)],
-                                    stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
+        # I.e. a 2x2 grid would be given as a string of 4 ints
+        # (row-major, C style).
+        self.dstar_subprocess = sp.Popen(
+            [exe_path, stringify(start_index), stringify(goal_index),
+             stringify(grid)],
+            stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
 
     def __process_path__(self, path):
         if len(path) != 0:
             path = path[:-1]
-            print("[INFO] Received path: %s" %(path))
+            print("[INFO] Received path: %s" % (path))
             # Clear last path
             for idx, value in enumerate(self.grid):
                 if value == 150:
@@ -137,7 +140,6 @@ class Dstar:
             return False
 
         return True
-
 
     def __init__(self, start, goal, grid, imsize):
         #  Socket to talk to server
@@ -162,8 +164,3 @@ class Dstar:
         print("[LOG] Subprocess logged cout:\n"+response[0])
         print("[LOG] Subprocess logged cerr:\n"+response[1])
         print ("[INFO] Clean up done")
-
-
-
-
-
