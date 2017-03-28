@@ -56,6 +56,7 @@ while grid_id <= n_samples and grid_sampler.grid_available:
     # carry out games
     print ("[MESSAGE] Carry out games...")
     result_pos_traj = []
+    step = 1
     for start_pos in start_pos_list:
         # start a new game
         game = Grid(grid, value, im_size=im_size,
@@ -63,16 +64,12 @@ while grid_id <= n_samples and grid_sampler.grid_available:
                     dstar=True)
         planner = Dstar(game.start_pos, game.goal_pos,
                         game.dstar_curr_map.flatten(), game.im_size)
-        print (game.start_pos)
         # carry out game
         game_status = 0
-        step = 1
+        print ("[MESSAGE] [IN GAME %d] Traj: %d" % (grid_id, step))
         while True:
-            print ("[MESSAGE] [IN GAME] Step:", step)
             errors, next_move = planner.replan()
-            print (next_move)
 
-            # TODO update game info
             # update game
             game.update_state(next_move)
             # update start position
@@ -81,8 +78,7 @@ while grid_id <= n_samples and grid_sampler.grid_available:
                 utils.plot_grid(game.curr_map, game.im_size,
                                 start=game.start_pos,
                                 pos=game.pos_history,
-                                goal=game.goal_pos,
-                                update_map=False)
+                                goal=game.goal_pos)
             # update grid
             change = np.where(np.logical_xor(
                 planner.grid, game.dstar_curr_map.flatten()))[0]
@@ -96,17 +92,16 @@ while grid_id <= n_samples and grid_sampler.grid_available:
             if game_status == 1:
                 # success
                 print ("[MESSAGE] The game is completed")
+                print ("[MESSAGE] The path:", game.pos_history)
                 break
             elif game_status == -1:
                 print ("[MESSAGE] The game is failed")
+                print ("[MESSAGE] The path:", game.pos_history)
                 break
-
-            else:
-                print("[ERROR] Did not plot grid with path because of errors.")
-            step += 1
 
         # save game
         result_pos_traj.append([game.pos_history, game_status])
+        step += 1
     # save game result, save everything in a file
     if save_model:
         model_file = os.path.join(model_path, "dstar-16-%i.pkl" % (grid_id))
