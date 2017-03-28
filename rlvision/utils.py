@@ -81,7 +81,8 @@ def accumulate_map(source_grid, new_grid, one_is_free=True):
         return source_grid*new_grid
 
 
-def plot_grid(data, imsize, start=None, pos=None, goal=None, title=None):
+def plot_grid(data, imsize, start=None, pos=None, goal=None, title=None,
+              update_map=False):
     """Plot a single grid with a vector representation.
 
     Parameters
@@ -116,7 +117,10 @@ def plot_grid(data, imsize, start=None, pos=None, goal=None, title=None):
     if title is not None:
         assert isinstance(title, str)
         plt.title(title)
-    plt.show()
+    if update_map:
+        plt.pause(0.0001)
+    else:
+        plt.show()
 
 
 def process_gridworld_data(data_in, imsize):

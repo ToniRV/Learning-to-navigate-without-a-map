@@ -63,6 +63,7 @@ while grid_id <= n_samples and grid_sampler.grid_available:
                     dstar=True)
         planner = Dstar(game.start_pos, game.goal_pos,
                         game.dstar_curr_map.flatten(), game.im_size)
+        print (game.start_pos)
         # carry out game
         game_status = 0
         step = 1
@@ -76,6 +77,12 @@ while grid_id <= n_samples and grid_sampler.grid_available:
             game.update_state(next_move)
             # update start position
             planner.reset_start_pos(next_move)
+            if not errors and enable_vis:
+                utils.plot_grid(game.curr_map, game.im_size,
+                                start=game.start_pos,
+                                pos=game.pos_history,
+                                goal=game.goal_pos,
+                                update_map=False)
             # update grid
             change = np.where(np.logical_xor(
                 planner.grid, game.dstar_curr_map.flatten()))[0]
@@ -94,11 +101,6 @@ while grid_id <= n_samples and grid_sampler.grid_available:
                 print ("[MESSAGE] The game is failed")
                 break
 
-            if not errors:
-                utils.plot_grid(game.curr_map, game.im_size,
-                                start=game.start_pos,
-                                pos=game.pos_history,
-                                goal=game.goal_pos)
             else:
                 print("[ERROR] Did not plot grid with path because of errors.")
             step += 1
