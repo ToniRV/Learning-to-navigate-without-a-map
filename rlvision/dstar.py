@@ -59,6 +59,40 @@ class Dstar:
         else:
             print("[ERROR] Subprocess did not respond to kill request")
 
+    def reset_start_pos(self, start):
+        """Reset a start pos.
+
+        The position is always valid as it's calculated from
+        the path before.
+
+        Parameters
+        ----------
+        start : tuple
+            the new start
+        """
+        self.start = start
+        msg = str(start[0])+" "+str(start[1])
+        # Request a cell update
+        print("[INFO] Sending cell update request")
+        self.socket.send(b"setstart")
+
+        #  Get the reply.
+        errors = False
+        if (self.socket.recv() != "go"):
+            print("[ERROR] Socket could not process update request.")
+            errors = True
+            self.socket.send(b"")
+        else:
+            self.socket.send(msg)
+
+        if (self.socket.recv() != "ok"):
+            print("[ERROR] Socket was not able to update given start.")
+            errors = True
+        else:
+            print("[INFO] New start updated")
+
+        return errors
+
     def __spawnDstar(self, start, goal, grid, imsize):
         """Spawn dstar algorithm: computes shortest
             path from start to goal given a grid with
@@ -143,14 +177,12 @@ class Dstar:
                 solution_list.append((path_list[0][i],
                                       path_list[1][i]))
             if next_move_only:
-                return True, [solution_list[1]]
+                return False, solution_list[1]
             else:
-                return True, solution_list
+                return False, solution_list
         else:
             print("[ERROR] Errors found while running dstar algorithm.")
-            return False
-
-        return True
+            return True
 
     def __init__(self, start, goal, grid, imsize):
         #  Socket to talk to server

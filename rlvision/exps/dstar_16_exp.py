@@ -7,6 +7,7 @@ Email : duguyue100@gmail.com
 from __future__ import print_function
 import os
 import cPickle as pickle
+import numpy as np
 
 import rlvision
 from rlvision import utils
@@ -58,32 +59,52 @@ while grid_id <= n_samples and grid_sampler.grid_available:
     for start_pos in start_pos_list:
         # start a new game
         game = Grid(grid, value, im_size=im_size,
-                    start_pos=start_pos, mask_radius=3)
+                    start_pos=start_pos, mask_radius=3,
+                    dstar=True)
         planner = Dstar(game.start_pos, game.goal_pos,
-                        game.curr_map.flatten(), game.im_size)
+                        game.dstar_curr_map.flatten(), game.im_size)
         # carry out game
-        for step in xrange(n_steps):
-            print ("[MESSAGE] [IN GAME] Step:", step+1)
-            # TODO sample one action from D*
+        game_status = 0
+        step = 1
+        while True:
+            print ("[MESSAGE] [IN GAME] Step:", step)
             errors, next_move = planner.replan()
-            print (errors)
             print (next_move)
 
-            # TODO convert to (x, y) representation
-
             # TODO update game info
+            # update game
+            game.update_state(next_move)
+            # update start position
+            planner.reset_start_pos(next_move)
+            # update grid
+            change = np.where(np.logical_xor(
+                planner.grid, game.dstar_curr_map.flatten()))[0]
+            block_list = np.unravel_index(change, planner.imsize)
+            print (block_list)
+            for idx in xrange(block_list[0].shape[0]):
+                planner.add_obstacle(block_list[0][idx], block_list[1][idx])
 
-            # TODO end game if reach the target and plot the path
+            # see if the game is ended
+            _, game_status = game.get_state_reward()
+            if game_status == 1:
+                # success
+                print ("[MESSAGE] The game is completed")
+                break
+            elif game_status == -1:
+                print ("[MESSAGE] The game is failed")
+                break
 
-            if errors:
-                utils.plot_grid(planner.grid, game.im_size,
+            if not errors:
+                utils.plot_grid(game.curr_map, game.im_size,
                                 start=game.start_pos,
+                                pos=game.pos_history,
                                 goal=game.goal_pos)
             else:
                 print("[ERROR] Did not plot grid with path because of errors.")
+            step += 1
 
         # save game
-        result_pos_traj.append(game.pos_history)
+        result_pos_traj.append([game.pos_history, game_status])
     # save game result, save everything in a file
     if save_model:
         model_file = os.path.join(model_path, "dstar-16-%i.pkl" % (grid_id))
