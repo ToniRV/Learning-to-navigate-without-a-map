@@ -16,7 +16,7 @@ class Grid(object):
 
     def __init__(self, grid_map, value_map, im_size=None,
                  start_pos=None, is_po=True, mask_radius=3,
-                 grid_type="one-is-free"):
+                 grid_type="one-is-free", dstar=False):
         """Init function.
 
         Parameters
@@ -41,6 +41,9 @@ class Grid(object):
         grid_type : string
             "one-is-free"
             "zero-is-free"
+        dstar : bool
+            D* explores the states in a different way,
+            if True, there will be a dual state map
         """
         if grid_type == "one-is-free":
             self.one_is_free = True
@@ -53,6 +56,12 @@ class Grid(object):
         else:
             raise ValueError("The grid type should be either 'one-is-free'"
                              " or 'zero-is-free'")
+
+        self.dstar = dstar
+        if self.dstar:
+            self.dstar_one_is_free = not self.one_is_free
+            self.dstar_empty_value = 1-self.empty_value
+            self.dstar_ob_value = 1-self.ob_value
 
         # set if it's partially observable
         self.is_po = is_po
@@ -155,6 +164,9 @@ class Grid(object):
             # clear all the history caches TODO
             self.set_curr_pos(start_pos)
             self.curr_map = self.get_curr_visible_map(self.start_pos)
+            if self.dstar:
+                self.dstar_curr_map = self.get_curr_dstar_visible_map(
+                    self.start_pos)
             self.pos_history = [start_pos]
         else:
             print ("[MESSAGE] WARNING: The position is not valid, nothing"
@@ -173,7 +185,7 @@ class Grid(object):
             print ("[MESSAGE] WARNING: The position is not a vaild point"
                    " (by set_curr_pos)")
 
-    def update_curr_map(self, map_update):
+    def update_curr_map(self, map_update, dstar_map_update=None):
         """Update current map.
 
         Parameters
@@ -183,6 +195,34 @@ class Grid(object):
         """
         self.curr_map = utils.accumulate_map(self.curr_map, map_update,
                                              one_is_free=self.one_is_free)
+        if self.dstar:
+            self.dstar_curr_map = utils.accumulate_map(
+                self.dstar_curr_map, dstar_map_update,
+                one_is_free=self.dstar_one_is_free)
+
+    def get_curr_dstar_visible_map(self, pos):
+        """Get current visible field by given a valid position.
+
+        For D* algorithm
+
+        Parameters
+        ----------
+        pos : tuple
+            a valid position (x, y)
+
+        Returns
+        -------
+        curr_vis_map : numpy.ndarray
+            return a partially visible map by given position.
+            Not if it's fully observable,
+            this function will report the entire map
+        """
+        if self.is_pos_valid(pos):
+            if self.is_po:
+                return utils.mask_grid(pos, self.grid_map, self.mask_radius,
+                                       one_is_free=self.dstar_one_is_free)
+            else:
+                return self.grid_map
 
     def get_curr_visible_map(self, pos):
         """Get current visible field by given a valid position.
@@ -225,7 +265,8 @@ class Grid(object):
             # update the current position
             self.set_curr_pos(pos_update)
             # update current map
-            self.update_curr_map(self.get_curr_visible_map(pos_update))
+            self.update_curr_map(self.get_curr_visible_map(pos_update),
+                                 self.get_curr_dstar_visible_map(pos_update))
         else:
             print ("[MESSAGE] WARNING: The position is not valid, nothing"
                    " is updated (by update_state)")
@@ -265,7 +306,7 @@ class Grid(object):
         """Get the number of states."""
         return len(self.pos_history)
 
-    def get_state_reward(self):
+    def get_state_reward(self, max_num_steps=None):
         """Return reward for the state.
 
         Returns
@@ -277,13 +318,127 @@ class Grid(object):
            -1 : fail
             0 : continue
         """
+        if max_num_steps is not None:
+            num_steps = max_num_steps
+        else:
+            num_steps = self.im_size[0]+self.im_size[1]
         recent_pos = self.pos_history[-1]
         if recent_pos == self.goal_pos and \
-           self.get_time() <= self.im_size[0]+self.im_size[1]:
+           self.get_time() <= num_steps+1:
             # success
             return self.value_map[recent_pos[0], recent_pos[1]], 1
-        elif self.get_time() > self.im_size[0]+self.im_size[1]:
+        elif self.get_time() > num_steps+1:
             # failed
             return -self.value_map[self.goal_pos[0], self.goal_pos[1]], -1
         else:
             return self.value_map[recent_pos[0], recent_pos[1]], 0
+
+
+class GridDataSampler(object):
+    """A grid data sampler from the raw data."""
+
+    def __init__(self, grid_data, value_data, im_size, states_xy,
+                 label_data):
+        """Init grid data sampler.
+
+        Pararmeters
+        -----------
+        im_data : numpy.ndarray
+            The image data
+        value_data : numpy.ndarray
+            the value data
+        im_size : tuple
+            the size of the map
+        states_xy : numpy.ndarry
+            the one that encode the paths (n_states, 2)
+        """
+        self.grid_data = grid_data
+        self.value_data = value_data
+
+        if im_size[0]*im_size[1] == grid_data.shape[1]:
+            self.im_size = im_size
+
+        self.states_xy = states_xy
+        self.label_data = label_data
+        self.curr_idx = 0
+        self.grid_available = True
+
+    def compare_pos(self, pos1, pos2):
+        """Compare position."""
+        if pos1[0] == pos2[0] and pos1[1] == pos2[1]:
+            return True
+        return False
+
+    def get_next_state(self, pos, action):
+        """Get next state according to action."""
+        new_pos = [0, 0]
+        if action in [5, 0, 4]:
+            new_pos[0] = pos[0]-1
+        elif action in [7, 1, 6]:
+            new_pos[0] = pos[0]+1
+        else:
+            new_pos[0] = pos[0]
+
+        if action in [5, 3, 7]:
+            new_pos[1] = pos[1]-1
+        elif action in [4, 2, 6]:
+            new_pos[1] = pos[1]+1
+        else:
+            new_pos[1] = pos[1]
+        return tuple(new_pos)
+
+    def get_goal_pos(self, value_grid):
+        """Get goal position."""
+        value_map = np.reshape(value_grid.copy(), self.im_size)
+        goal_list = np.where(value_map == value_map.max())
+        # assume the first one
+        return (goal_list[0][0], goal_list[1][0])
+
+    def next(self):
+        """Sample next sample."""
+        if self.grid_available:
+            grid = self.grid_data[self.curr_idx]
+            value = self.value_data[self.curr_idx]
+            goal_pos = self.get_goal_pos(value)
+
+            # find end block idx
+            curr_idx = self.curr_idx
+            while curr_idx != self.grid_data.shape[0]:
+                if np.array_equal(grid, self.grid_data[curr_idx]):
+                    curr_idx += 1
+                else:
+                    break
+
+            # parse grid traj
+            start_pos_list = []
+            pos_traj = []
+            flag = True
+            for idx in xrange(self.curr_idx, curr_idx):
+                curr_pos = (self.states_xy[idx][0], self.states_xy[idx][1])
+                next_pos = self.get_next_state(curr_pos, self.label_data[idx])
+
+                if flag is True:
+                    # when find a new start
+                    # append the new start to the list
+                    start_pos_list.append(curr_pos)
+                    # construct a new pos traj
+                    temp_pos_traj = []
+                    # start searching
+                    flag = False
+                # evaluate if the next state is the goal position
+                if self.compare_pos(goal_pos, next_pos):
+                    # if yes, for next state, a new start begin
+                    flag = True
+                    # append the temp pos traj to collector
+                    pos_traj.append(temp_pos_traj)
+
+                temp_pos_traj.append(curr_pos)
+
+            # update current idx
+            self.curr_idx = curr_idx
+            if self.curr_idx == self.grid_data.shape[0]:
+                self.grid_available = False
+
+            return grid, value, start_pos_list, pos_traj, goal_pos
+        else:
+            print ("[MESSAGE] No grid available""")

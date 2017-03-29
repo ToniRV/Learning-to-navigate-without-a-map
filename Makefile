@@ -35,7 +35,10 @@ dstar-test:
 grid-class-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/grid_class_test.py
 
+restructure-data-test:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/restructure_dataset.py
 
-
+dstar-16-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_16_exp.py
 
 cleanall:

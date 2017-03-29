@@ -81,7 +81,7 @@ def accumulate_map(source_grid, new_grid, one_is_free=True):
         return source_grid*new_grid
 
 
-def plot_grid(data, imsize, pos=None, goal=None, title=None):
+def plot_grid(data, imsize, start=None, pos=None, goal=None, title=None):
     """Plot a single grid with a vector representation.
 
     Parameters
@@ -98,13 +98,17 @@ def plot_grid(data, imsize, pos=None, goal=None, title=None):
     img = data.copy().reshape(imsize[0], imsize[1])
     img *= 255
 
+    if start is not None:
+        assert isinstance(start, tuple)
+        plt.scatter(x=[start[1]], y=[start[0]], marker="*", c="orange", s=50)
+
     if pos is not None:
         assert isinstance(pos, list)
         for pos_element in pos:
             plt.scatter(x=[pos_element[1]], y=[pos_element[0]],
                         marker=".", c="blue", s=50)
 
-    if pos is not None:
+    if goal is not None:
         assert isinstance(goal, tuple)
         plt.scatter(x=[goal[1]], y=[goal[0]], marker="*", c="r", s=50)
 
@@ -187,6 +191,43 @@ def load_mat_data(file_path):
         raise ValueError("The file is not existed %s" % (file_path))
 
     return sio.loadmat(file_path)
+
+
+def find_layout(data, verbose=0):
+    """Find layout from repetitive raw data.
+
+    This is to extract all grid from original data.
+
+    Parameters
+    ----------
+    data : numpy.ndarray
+        the data in row order
+
+    Returns
+    -------
+    layout : numpy.ndarray
+        the unique layouts
+    """
+    assert data.ndim == 2, "The array must has 2 dimension"
+
+    layout = []
+    n_data = data.shape[0]
+
+    if verbose == 1:
+        print ("[MESSAGE] The number of data point: ", n_data)
+
+    ref_layout = data[0]
+    for idx in xrange(1, n_data):
+        if not np.array_equal(ref_layout, data[idx]):
+            layout.append(ref_layout)
+            if verbose == 1:
+                print ("[MESSAGE] Found new layout at: ", idx)
+        ref_layout = data[idx]
+
+    if verbose == 1:
+        print ("[MESSAGE] The size of layout: ", len(layout))
+
+    return np.asarray(layout, dtype=data.dtype)
 
 
 def init_h5_db(db_name, save_dir):

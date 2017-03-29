@@ -8,12 +8,13 @@ import os
 import numpy as np
 import zmq
 
-class Dstar:
 
+class Dstar:
+    """A central class to carry out D* algorithm with binary."""
     def add_obstacle(self, x, y):
         msg = str(x)+" "+str(y)
 
-         # Request a cell update
+        # Request a cell update
         print("[INFO] Sending cell update request")
         self.socket.send(b"update")
 
@@ -28,15 +29,15 @@ class Dstar:
 
         if (self.socket.recv() != "ok"):
             print("[ERROR] Socket was not able to update given cell.")
-            errors =True
+            errors = True
         else:
-            index = np.ravel_multi_index((x, y), self.imsize, order='F')
+            index = np.ravel_multi_index((x, y), self.imsize, order='C')
             print("[INFO] Updating new obstacle")
             self.grid[index] = 0
 
         return errors
 
-    def replan(self):
+    def replan(self, next_move_only=True):
         # Request a replan
         print("[INFO] Sending replanning request")
         self.socket.send(b"replan")
@@ -44,9 +45,9 @@ class Dstar:
         #  Get the reply.
         path = self.socket.recv()
 
-        errors = self.__process_path__(path)
+        errors, solution_path = self.__process_path__(path, next_move_only)
 
-        return errors
+        return errors, solution_path
 
     def kill_subprocess(self):
         # Request subprocess dead
@@ -58,8 +59,41 @@ class Dstar:
         else:
             print("[ERROR] Subprocess did not respond to kill request")
 
+    def reset_start_pos(self, start):
+        """Reset a start pos.
 
-    def __spawnDstar (self, start, goal, grid, imsize):
+        The position is always valid as it's calculated from
+        the path before.
+
+        Parameters
+        ----------
+        start : tuple
+            the new start
+        """
+        self.start = start
+        msg = str(start[0])+" "+str(start[1])
+        # Request a cell update
+        print("[INFO] Sending cell update request")
+        self.socket.send(b"setstart")
+
+        #  Get the reply.
+        errors = False
+        if (self.socket.recv() != "go"):
+            print("[ERROR] Socket could not process update request.")
+            errors = True
+            self.socket.send(b"")
+        else:
+            self.socket.send(msg)
+
+        if (self.socket.recv() != "ok"):
+            print("[ERROR] Socket was not able to update given start.")
+            errors = True
+        else:
+            print("[INFO] New start updated")
+
+        return errors
+
+    def __spawnDstar(self, start, goal, grid, imsize):
         """Spawn dstar algorithm: computes shortest
             path from start to goal given a grid with
             obstacles information.
@@ -80,12 +114,12 @@ class Dstar:
             squared.
         """
         # Get start index
-        start_index = np.ravel_multi_index(start, imsize, order='F')
+        start_index = np.ravel_multi_index(start, imsize, order='C')
         if grid[start_index] == 0:
             print("[ERROR] start position falls over an obstacle")
         else:
             # Color in grey the start position
-            #TODO Copy grid and use updated_grid
+            # TODO Copy grid and use updated_grid
             # Right now, do not set this to an int of 2 or more digits
             grid[start_index] = 1
 
@@ -93,12 +127,12 @@ class Dstar:
         # TODO Get value data containing the reward values.
         # The database puts a number 10 wherever the goal is (I think)
         # value_data = db["value_data"]
-        goal_index = np.ravel_multi_index(goal, imsize, order='F')
+        goal_index = np.ravel_multi_index(goal, imsize, order='C')
         if grid[goal_index] == 0:
             print("[ERROR] goal position falls over an obstacle")
         else:
             # Color in grey the start position
-            #TODO Copy grid and use updated_grid
+            # TODO Copy grid and use updated_grid
             # Right now, do not set this to an int of 2 or more digits
             grid[goal_index] = 1
 
@@ -110,34 +144,45 @@ class Dstar:
             raise ValueError("The executable %s does not exist!" % (exe_path))
 
         # Utility function.
-        stringify = lambda x: str(x).strip('[()]').replace(',', '').replace(' ', '').replace('\n', '')
+        stringify = lambda x: str(x).strip('[()]').replace(
+            ',', '').replace(' ', '').replace('\n', '')
 
         # Run dstar algorithm in c++
-        # Send start_index, goal_index, size of the grid and the grid through std input
+        # Send start_index, goal_index, size of the grid and the grid
+        # through std input
         # All inputs must be flattened, aka string of int or ints (no matrices)
-        # I.e. a 2x2 grid would be given as a string of 4 ints (row-major, C style).
-        self.dstar_subprocess = sp.Popen([exe_path,
-                                    stringify(start_index), stringify(goal_index),
-                                    stringify(grid)],
-                                    stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
+        # I.e. a 2x2 grid would be given as a string of 4 ints
+        # (row-major, C style).
+        self.dstar_subprocess = sp.Popen(
+            [exe_path, stringify(start_index), stringify(goal_index),
+             stringify(grid)],
+            stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
 
-    def __process_path__(self, path):
+    def __process_path__(self, path, next_move_only=True):
         if len(path) != 0:
             path = path[:-1]
-            print("[INFO] Received path: %s" %(path))
+            print("[INFO] Received path: %s" % (path))
             # Clear last path
-            for idx, value in enumerate(self.grid):
-                if value == 150:
-                    self.grid[idx] = 1
+            #  for idx, value in enumerate(self.grid):
+            #      if value == 150:
+            #          self.grid[idx] = 1
             # Print new path
+            path_list = []
             for a in path.split('.'):
-                self.grid[int(a)] = 150
+                path_list.append(int(a))
+                #  self.grid[int(a)] = 150
+            path_list = np.unravel_index(path_list, self.imsize)
+            solution_list = []
+            for i in xrange(path_list[0].shape[0]):
+                solution_list.append((path_list[0][i],
+                                      path_list[1][i]))
+            if next_move_only:
+                return False, solution_list[1]
+            else:
+                return False, solution_list
         else:
             print("[ERROR] Errors found while running dstar algorithm.")
-            return False
-
-        return True
-
+            return True
 
     def __init__(self, start, goal, grid, imsize):
         #  Socket to talk to server
@@ -162,8 +207,3 @@ class Dstar:
         print("[LOG] Subprocess logged cout:\n"+response[0])
         print("[LOG] Subprocess logged cerr:\n"+response[1])
         print ("[INFO] Clean up done")
-
-
-
-
-

@@ -276,8 +276,8 @@ int main(int argc, char **argv) {
         socket.send (reply);
       } else {
         // Dstar has an inverted representation of x y coords (y x instead).
-        dstar->updateCell(std::atoi(x_y_coords.at(1).c_str()),
-                          std::atoi(x_y_coords.at(0).c_str()), -1);
+        dstar->updateCell(std::atoi(x_y_coords.at(0).c_str()),
+                          std::atoi(x_y_coords.at(1).c_str()), -1);
         // Send reply back to client of success.
         zmq::message_t reply (2);
         memcpy (reply.data (), "ok", 2);
@@ -291,6 +291,31 @@ int main(int argc, char **argv) {
 
         // Break loop.
         break;
+    } else if (rpl == "setstart"){
+        // TODO sort out from command
+        zmq::message_t reply (2);
+        memcpy (reply.data (), "go", 2);
+        socket.send (reply);
+        socket.recv(&request);
+        std::string start = std::string(
+            static_cast<char*>(request.data()), request.size());
+        istringstream iss(start);
+        vector<string> x_y_coords{istream_iterator<string>{iss},
+                        istream_iterator<string>{}};
+          if (x_y_coords.size() != 2) {
+              // Send reply back to client with error.
+            zmq::message_t reply (2);
+            memcpy (reply.data (), "Expected 2 coordinates", 2);
+            socket.send (reply);
+          } else {
+            // Dstar has an inverted representation of x y coords (y x instead).
+            dstar->updateStart(std::atoi(x_y_coords.at(0).c_str()),
+                               std::atoi(x_y_coords.at(1).c_str()));
+            // Send reply back to client of success.
+            zmq::message_t reply (2);
+            memcpy (reply.data (), "ok", 2);
+            socket.send (reply);
+          }
     } else {
       std::cerr << "[Dstar cpp] Error, could not understand command: "
                 << rpl << std::endl;

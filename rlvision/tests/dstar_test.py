@@ -23,18 +23,21 @@ grid = batch_im_data[grid_id, :]
 # Select a start position
 start = [1, 1]
 
- # I think that a goal index is given in the datasets.
+# I think that a goal index is given in the datasets.
 # Goal has always a value of 10 in the value_data? or just positive? or what?
 # goal_index = int(np.nonzero(value_data[grid_id, :] == 10)[0])
 
 # Get a random goal index.
-goal = [14, 14]
+goal = [14, 11]
 
 # Make a dstar.
 dstar_instance = dstar.Dstar(start, goal, grid, imsize)
 
+errors, solution_path = dstar_instance.replan()
+
 # Ask for a path
-if dstar_instance.replan():
+if errors:
+    print (solution_path)
     utils.plot_grid(dstar_instance.grid, imsize)
 else:
     print("[ERROR] Did not plot grid with path because of errors.")
@@ -46,7 +49,8 @@ dstar_instance.add_obstacle(7, 2)
 dstar_instance.add_obstacle(8, 2)
 
 # Ask for a path
-if dstar_instance.replan():
+errors, solution_path = dstar_instance.replan()
+if errors:
     utils.plot_grid(dstar_instance.grid, imsize)
 else:
     print("[ERROR] Did not plot grid with path because of errors.")
@@ -58,7 +62,8 @@ dstar_instance.add_obstacle(5, 4)
 dstar_instance.add_obstacle(5, 5)
 
 # Ask for a path
-if dstar_instance.replan():
+errors, solution_path = dstar_instance.replan()
+if errors:
     utils.plot_grid(dstar_instance.grid, imsize)
 else:
     print("[ERROR] Did not plot grid with path because of errors.")
