@@ -87,3 +87,12 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Ignore qtcreator files
+*.user
+
+# Video
+*.mp4
+
+# Anaconda stuff
+bin/*

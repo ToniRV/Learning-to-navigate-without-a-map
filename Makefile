@@ -20,4 +20,25 @@ test:
 data-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/data_test.py
 
+load-test:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/data_load_test.py
+
+hdf5-data-test:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/hdf5_data_test.py
+
+grid-test:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/grid_test.py
+
+dstar-test:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/dstar_test.py
+
+grid-class-test:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/grid_class_test.py
+
+restructure-data-test:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/restructure_dataset.py
+
+dstar-16-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_16_exp.py
+
 cleanall:
