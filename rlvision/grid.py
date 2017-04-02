@@ -246,7 +246,7 @@ class Grid(object):
             else:
                 return self.grid_map
 
-    def update_state(self, pos_update):
+    def update_state(self, pos_before, pos_update):
         """Update state by given position.
 
         This describe the transition between states.
@@ -262,12 +262,19 @@ class Grid(object):
         if self.is_pos_valid(pos_update):
             # append to the history
             self.pos_history.append(pos_update)
+            print (self.pos_history)
+            print ('append new position to history, len of new history is', len(self.pos_history))
             # update the current position
             self.set_curr_pos(pos_update)
             # update current map
             self.update_curr_map(self.get_curr_visible_map(pos_update),
                                  self.get_curr_dstar_visible_map(pos_update))
         else:
+            # append the previous position to the history
+            self.pos_history.append(pos_before)
+            print (self.pos_history)
+            print ('append unchanged position to history, len of new history is', len(self.pos_history))
+            print (pos_before)
             print ("[MESSAGE] WARNING: The position is not valid, nothing"
                    " is updated (by update_state)")
 
@@ -297,10 +304,12 @@ class Grid(object):
             pos_update[1] += 1
 
         if verbose == 1:
-            print ("[MESSAGE] Original pos: ", self.curr_pos)
+            print ("[MESSAGE] Original pos : ", self.curr_pos)
             print ("[MESSAGE] Updated pos : ", pos_update)
 
-        self.update_state(tuple(pos_update))
+        self.update_state(self.curr_pos, tuple(pos_update))
+        print (self.curr_pos)
+        print (tuple(pos_update))
 
     def get_time(self):
         """Get the number of states."""
