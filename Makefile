@@ -41,4 +41,7 @@ restructure-data-test:
 dstar-16-exp:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_16_exp.py
 
+dstar-40-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_40_exp.py
+
 cleanall:
