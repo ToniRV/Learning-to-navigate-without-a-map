@@ -96,3 +96,7 @@ ENV/
 
 # Anaconda stuff
 bin/*
+
+# ignore development files
+development.ipynb
+drl_model_checkpoint.h5
