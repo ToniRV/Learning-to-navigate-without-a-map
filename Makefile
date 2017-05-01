@@ -15,7 +15,7 @@ clean:
 run:
 
 test:
-	PYTHONPATH=$(PYTHONPATH) python 
+	PYTHONPATH=$(PYTHONPATH) python
 
 data-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/data_test.py
@@ -40,5 +40,8 @@ restructure-data-test:
 
 dstar-16-exp:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_16_exp.py
+
+world-generator:
+	PYTHONPATH=$(PYTHONPATH) python ./world_generator/scripts/world_generator.py
 
 cleanall:
