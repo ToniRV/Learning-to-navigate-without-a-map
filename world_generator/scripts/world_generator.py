@@ -39,6 +39,8 @@ class world_model:
                 self.default_cone = copy.deepcopy(model)
             if model.attrib["name"] == "asphalt_plane":
                 self.default_tarmac = copy.deepcopy(model)
+            if model.attrib["name"] == "grey_wall":
+                self.default_wall = copy.deepcopy(model)
 
     def add_point(self, x, y):
         model = copy.deepcopy(self.default_box_node)
@@ -61,6 +63,14 @@ class world_model:
         size_node.text = str(length) + " " + str(width) + " 0.1"
         self.world_node.append(model)
 
+    def add_wall(self, x, y, theta, length, width):
+        model = copy.deepcopy(self.default_wall)
+        pose_node      = model.find("pose")
+        pose_node.text = str(x) + " " + str(y) + " 0 0 0 " + str(theta)
+        size_node = model.find("link").find("visual").find("geometry").find("box").find("size")
+        size_node.text = str(length) + " " + str(width) + " 2"
+        self.world_node.append(model)
+
     def stringToXml(self, string):
         print("STRING")
         children = ElementTree.fromstring(string.data)
@@ -70,7 +80,6 @@ class world_model:
 	    self.world_tree.write(self.dir_path + "/../world_models/python_generated.world", encoding='utf-8')
 
 def main(args):
-    print("theheck")
     wm = world_model()
 
     # setup result folder
@@ -79,10 +88,8 @@ def main(args):
     if not os.path.isdir(model_path):
         os.makedirs(model_path)
     print ("[MESSAGE] The model path is created at %s" % (model_path))
-
     # load data
     db, im_size = utils.load_grid16(split=1)
-    print(im_size)
 
     # prepare relevant data
     im_data = db['im_data']
@@ -90,7 +97,6 @@ def main(args):
     states = db['state_xy_data']
     label_data = db['label_data']
     print ("[MESSAGE] The data is loaded.")
-
     print ("[MESSAGE] Get data sampler...")
     grid_sampler = GridDataSampler(im_data, value_data, im_size, states,
                                    label_data)
@@ -102,17 +108,35 @@ def main(args):
     print ("[MESSAGE] New Grid is sampled.")
     print ("[MESSAGE] Number of trajectories:", len(start_pos_list))
 
+    utils.plot_grid(grid, im_size)
     # Create gazebo world out of the grid
-    i = 0
-    j = 0
+    scale = 2.0
+
+    # Build walls around the field
+    wall_width = 0.5
+    wm.add_wall(scale*(im_size[0]-1)/2.0, 0, 0, scale*(im_size[0]-1), wall_width)
+    wm.add_wall(0, scale*(im_size[1]-1)/2.0, pi / 2.0, scale*(im_size[0]-1), wall_width)
+    wm.add_wall(scale*(im_size[0]-1), scale*(im_size[1]-1)/2.0, - pi / 2.0, scale*(im_size[0]-1), wall_width)
+    wm.add_wall(scale*(im_size[0]-1)/2.0, scale*(im_size[1]-1), pi, scale*(im_size[0]-1), wall_width)
+
+    # Add asphalt
+    wm.add_tarmac(scale*(im_size[0]-1)/2.0, scale*(im_size[1]-1)/2.0, 0, scale*(im_size[0]-1), scale*(im_size[1]-1))
+
+
+    i = 1
+    j = 1
+    obstacle_indices = np.where(grid != 1)
+    unraveled_indices = np.unravel_index(obstacle_indices, im_size, order='C')
     for x in grid:
-        if (grid[j+i] == 1):
-            wm.add_cone(j, i)
+        if (grid[j+i*im_size[0]] != 1):
+            wm.add_cone(scale*j, scale*i)
             wm.write()
         j += 1
-        if (j % (im_size[1] - 1)) == 0:
-            j = 0
+        if (j % (im_size[1]-1)) == 0:
+            j = 1
             i +=1
+            if (i == im_size[0]-1):
+                break
 
 if __name__ == '__main__':
     main(sys.argv)
