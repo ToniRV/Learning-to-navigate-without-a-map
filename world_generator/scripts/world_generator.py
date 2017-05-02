@@ -110,7 +110,7 @@ def main(args):
 
     utils.plot_grid(grid, im_size)
     # Create gazebo world out of the grid
-    scale = 2.0
+    scale = 0.75
 
     # Build walls around the field
     wall_width = 0.5
