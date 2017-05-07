@@ -56,15 +56,15 @@ def discount_rewards(r):
 # define model
 model = Sequential()
 if network_type == "conv":
-    model.add(Conv2D(16, (3, 3), padding="same",
+    model.add(Conv2D(32, (7, 7), padding="same",
                      input_shape=(2, imsize[0], imsize[1]),
                      data_format=data_format))
     model.add(Activation("relu"))
-    model.add(Conv2D(16, (3, 3), padding="same",
+    model.add(Conv2D(32, (5, 5), padding="same",
                      data_format=data_format))
     model.add(Activation("relu"))
     model.add(AveragePooling2D(2, 2))
-    model.add(Conv2D(16, (3, 3), padding="same",
+    model.add(Conv2D(32, (3, 3), padding="same",
                      data_format=data_format))
     model.add(Activation("relu"))
     model.add(Flatten())
