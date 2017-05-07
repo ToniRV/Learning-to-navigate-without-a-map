@@ -84,62 +84,64 @@ running_reward = None
 episode_number = 0
 xs, dlogps, drs, probs = [], [], [], []
 train_X, train_Y = [], []
+training_repeat = 10
 # go through entire game space
-for game_idx in xrange(num_test):
-    for start_pos in start_tot[game_idx]:
-        game = grid.Grid(data[game_idx], value[game_idx], imsize,
-                         start_pos)
-        # until the game is failed
-        while True:
-            # compute probability
-            aprob = model.predict(game.get_state()).flatten()
-            # sample feature
-            xs.append(game.get_state())
-            probs.append(aprob)
-            # sample decision
-            action = np.random.choice(num_output, 1, p=aprob)[0]
-            y = np.zeros((num_output,))
-            y[action] = 1
-            # update game and get feedback
-            game.update_state_from_action(action)
-            # if the game finished then train the model
-            dlogps.append(np.array(y).astype("float32")-aprob)
-            reward, state = game.get_state_reward()
-            reward_sum += reward
-            drs.append(reward)
-            if state in [1, -1]:
-                episode_number += 1
-                exp = np.vstack(xs)
-                epdlogp = np.vstack(dlogps)
-                epr = np.vstack(drs)
-                discounted_epr = discount_rewards(epr)
-                discounted_epr -= np.mean(discounted_epr)
-                discounted_epr /= np.std(discounted_epr)
-                epdlogp *= discounted_epr
-                # prepare training batch
-                train_X.append(xs)
-                train_Y.append(epdlogp)
-                xs, dlogps, drs = [], [], []
+while True:
+    for game_idx in xrange(num_test):
+        for start_pos in start_tot[game_idx]*training_repeat:
+            game = grid.Grid(data[game_idx], value[game_idx], imsize,
+                             start_pos)
+            # until the game is failed
+            while True:
+                # compute probability
+                aprob = model.predict(game.get_state()).flatten()
+                # sample feature
+                xs.append(game.get_state())
+                probs.append(aprob)
+                # sample decision
+                action = np.random.choice(num_output, 1, p=aprob)[0]
+                y = np.zeros((num_output,))
+                y[action] = 1
+                # update game and get feedback
+                game.update_state_from_action(action)
+                # if the game finished then train the model
+                dlogps.append(np.array(y).astype("float32")-aprob)
+                reward, state = game.get_state_reward()
+                reward_sum += reward
+                drs.append(reward)
+                if state in [1, -1]:
+                    episode_number += 1
+                    exp = np.vstack(xs)
+                    epdlogp = np.vstack(dlogps)
+                    epr = np.vstack(drs)
+                    discounted_epr = discount_rewards(epr)
+                    discounted_epr -= np.mean(discounted_epr)
+                    discounted_epr /= np.std(discounted_epr)
+                    epdlogp *= discounted_epr
+                    # prepare training batch
+                    train_X.append(xs)
+                    train_Y.append(epdlogp)
+                    xs, dlogps, drs = [], [], []
 
-                if episode_number % update_freq == 0:
-                    y_train = probs + learning_rate*np.squeeze(
-                        np.vstack(train_Y))
-                    train_X = np.squeeze(np.vstack(train_X))
-                    if train_X.ndim < 4:
-                        train_X = np.expand_dims(train_X, axis=0)
-                    model.train_on_batch(train_X,
-                                         y_train)
-                    train_X, train_Y, probs = [], [], []
-                    os.remove(model_path) \
-                        if os.path.exists(model_path) else None
-                    model.save_weights(model_path)
-                running_reward = reward_sum if running_reward is None \
-                    else running_reward*0.99+reward_sum*0.01
-                print ("Environment reset imminent. Total Episode "
-                       "Reward: %f. Running Mean: %f"
-                       % (reward_sum, running_reward))
-                reward_sum = 0
-                print ("Episode %d Result: " % (episode_number) +
-                       ("Defeat!" if state == -1 else "Victory!"))
-                # to next game
-                break
+                    if episode_number % update_freq == 0:
+                        y_train = probs + learning_rate*np.squeeze(
+                            np.vstack(train_Y))
+                        train_X = np.squeeze(np.vstack(train_X))
+                        if train_X.ndim < 4:
+                            train_X = np.expand_dims(train_X, axis=0)
+                        model.train_on_batch(train_X,
+                                             y_train)
+                        train_X, train_Y, probs = [], [], []
+                        os.remove(model_path) \
+                            if os.path.exists(model_path) else None
+                        model.save_weights(model_path)
+                    running_reward = reward_sum if running_reward is None \
+                        else running_reward*0.99+reward_sum*0.01
+                    print ("Environment reset imminent. Total Episode "
+                           "Reward: %f. Running Mean: %f"
+                           % (reward_sum, running_reward))
+                    reward_sum = 0
+                    print ("Episode %d Result: " % (episode_number) +
+                           ("Defeat!" if state == -1 else "Victory!"))
+                    # to next game
+                    break
