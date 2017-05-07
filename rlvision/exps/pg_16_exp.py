@@ -97,6 +97,7 @@ for game_idx in xrange(num_test):
             xs.append(game.get_state())
             probs.append(aprob)
             # sample decision
+            aprob = aprob/np.sum(aprob)
             action_sampler = aprob.copy()
             while True:
                 action = np.random.choice(num_output, 1, p=action_sampler)[0]
