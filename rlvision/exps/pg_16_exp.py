@@ -8,7 +8,7 @@ Email : duguyue100@gmail.com
 from __future__ import print_function
 import os
 import numpy as np
-#  import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 from keras.models import Sequential
 from keras.layers import Dense, Flatten
@@ -87,20 +87,20 @@ xs, dlogps, drs, probs = [], [], [], []
 train_X, train_Y = [], []
 # go through entire game space
 while True:
-    for game_idx in xrange(num_test):
+    for game_idx in xrange(num_train):
         for start_pos in [start_tot[game_idx][0]]:
             game = grid.Grid(data[game_idx], value[game_idx], imsize,
                              start_pos, is_po=False)
             # until the game is failed
             while True:
-                #  game_state = game.get_state()
-                #  plt.subplot(1, 3, 1)
-                #  plt.imshow(game_state[0, 0], cmap="gray")
-                #  plt.subplot(1, 3, 2)
-                #  plt.imshow(game_state[0, 1], cmap="gray")
+                game_state = game.get_state()
+                plt.subplot(1, 3, 1)
+                plt.imshow(game_state[0, 0], cmap="gray")
+                plt.subplot(1, 3, 2)
+                plt.imshow(game_state[0, 1], cmap="gray")
                 #  plt.subplot(1, 3, 3)
                 #  plt.imshow(game_state[0, 2], cmap="gray")
-                #  plt.show()
+                plt.show()
                 #  print (game_state[0, 0])
                 # compute probability
                 aprob = model.predict(game.get_state()).flatten()
