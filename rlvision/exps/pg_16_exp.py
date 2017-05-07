@@ -19,17 +19,6 @@ import rlvision
 from rlvision import grid
 
 
-def discount_rewards(r):
-    """Calculate discount rewards."""
-    discounted_r = np.zeros_like(r)
-    running_add = 0
-    for t in reversed(xrange(0, r.size)):
-        if r[t] != 0:
-            running_add = 0
-        running_add = running_add * gamma + r[t]
-        discounted_r[t] = running_add
-    return discounted_r
-
 # load data
 data, value, start_tot, traj_tot, goal_tot, imsize = grid.load_train_grid16()
 data = np.asarray(data, dtype="float32")
@@ -51,6 +40,18 @@ data_format = "channels_first"
 num_output = 8
 model_file = "pg16_model.h5"
 model_path = os.path.join(rlvision.RLVISION_MODEL, model_file)
+
+
+def discount_rewards(r):
+    """Calculate discount rewards."""
+    discounted_r = np.zeros_like(r)
+    running_add = 0
+    for t in reversed(xrange(0, r.size)):
+        if r[t] != 0:
+            running_add = 0
+        running_add = running_add * gamma + r[t]
+        discounted_r[t] = running_add
+    return discounted_r
 
 # define model
 model = Sequential()
