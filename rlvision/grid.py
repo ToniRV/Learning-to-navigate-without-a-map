@@ -324,7 +324,7 @@ class Grid(object):
             print ("[MESSAGE] Original pos: ", self.curr_pos)
             print ("[MESSAGE] Updated pos : ", pos_update)
 
-        self.update_state(tuple(pos_update))
+        self.update_state(pos_update)
 
     def get_time(self):
         """Get the number of states."""

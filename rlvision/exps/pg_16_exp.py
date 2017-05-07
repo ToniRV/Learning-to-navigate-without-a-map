@@ -97,11 +97,15 @@ for game_idx in xrange(num_test):
             xs.append(game.get_state())
             probs.append(aprob)
             # sample decision
+            action_sampler = aprob.copy()
             while True:
-                action = np.random.choice(num_output, 1, p=aprob)[0]
+                action = np.random.choice(num_output, 1, p=action_sampler)[0]
                 # check if the action is valid
                 if game.is_pos_valid(game.action2pos(action)) is True:
                     break
+                else:
+                    # make sure the same action won't be sampled again
+                    action_sampler[action] = 0.
             y = np.zeros((num_output,))
             y[action] = 1
             # update game and get feedback
