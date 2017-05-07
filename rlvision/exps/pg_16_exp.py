@@ -131,8 +131,12 @@ for game_idx in xrange(num_test):
                 xs, dlogps, drs = [], [], []
 
                 if episode_number % update_freq == 0:
-                    y_train = probs + learning_rate*np.asarray(train_Y)
-                    model.train_on_batch(np.asarray(train_X),
+                    y_train = probs + learning_rate*np.squeeze(
+                        np.vstack(train_Y))
+                    train_X = np.squeeze(np.vstack(train_X))
+                    if train_X.ndim < 4:
+                        train_X = np.expand_dims(train_X, axis=0)
+                    model.train_on_batch(train_X,
                                          y_train)
                     train_X, train_Y, probs = [], [], []
                     os.remove(model_path) \
