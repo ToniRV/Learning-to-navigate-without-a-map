@@ -112,8 +112,7 @@ while True:
                 action = np.random.choice(num_output, 1, p=aprob)[0]
                 y = np.zeros((num_output,))
                 action_flag = game.is_pos_valid(game.action2pos(action))
-                if action_flag is True:
-                    y[action] = 1
+                y[action] = 1
                 # update game and get feedback
                 game.update_state_from_action(action)
                 # if the game finished then train the model
