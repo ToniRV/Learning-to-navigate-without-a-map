@@ -36,7 +36,7 @@ value = np.asarray(value, dtype="float32")
 print ("[MESSAGE] Data Loaded.")
 
 # training 4000 samples, testing 1000 samples
-num_train = 4000
+num_train = 10
 num_test = 1000
 
 # script parameters
