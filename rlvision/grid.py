@@ -111,6 +111,8 @@ class Grid(object):
             raise ValueError("The class doesn't support more than 2 dims!")
 
         # set status of the grid
+        self.state_map = np.zeros((1, 3, self.im_size[0], self.im_size[1]))
+        self.state_map[0, 2] = self.value_map
 
         # set start position
         if not self.is_pos_valid(start_pos):
@@ -120,6 +122,10 @@ class Grid(object):
 
         # set goal position, based on value map
         self.set_goal_pos()
+
+    def get_state(self):
+        """Get the state of the game."""
+        return self.state_map
 
     def is_pos_valid(self, pos):
         """Check if the position is valid.
@@ -164,13 +170,15 @@ class Grid(object):
         """
         if self.is_pos_valid(start_pos):
             self.start_pos = start_pos
-            # clear all the history caches TODO
             self.set_curr_pos(start_pos)
             self.curr_map = self.get_curr_visible_map(self.start_pos)
             if self.dstar:
                 self.dstar_curr_map = self.get_curr_dstar_visible_map(
                     self.start_pos)
             self.pos_history = [start_pos]
+            # update state map
+            self.state_map[0, 0] = self.curr_map
+            self.state_map[0, 1] = self.curr_map
         else:
             print ("[MESSAGE] WARNING: The position is not valid, nothing"
                    " changes. (by set_start_pos)")
@@ -268,11 +276,33 @@ class Grid(object):
             # update the current position
             self.set_curr_pos(pos_update)
             # update current map
-            self.update_curr_map(self.get_curr_visible_map(pos_update),
-                                 self.get_curr_dstar_visible_map(pos_update))
+            vis_map = self.get_curr_visible_map(pos_update)
+            if self.dstar:
+                dstar_map = self.get_curr_dstar_visible_map(pos_update)
+            else:
+                dstar_map = None
+            self.update_curr_map(vis_map, dstar_map)
+            # update state map
+            self.state_map[0, 0] = vis_map
+            self.state_map[0, 1] = self.curr_map
         else:
             print ("[MESSAGE] WARNING: The position is not valid, nothing"
                    " is updated (by update_state)")
+
+    def action2pos(self, action):
+        """Translate action to position."""
+        pos_update = list(self.curr_pos)
+        if action in [5, 0, 4]:
+            pos_update[0] -= 1
+        elif action in [7, 1, 6]:
+            pos_update[0] += 1
+
+        if action in [5, 3, 7]:
+            pos_update[1] -= 1
+        elif action in [4, 2, 6]:
+            pos_update[1] += 1
+
+        return tuple(pos_update)
 
     def update_state_from_action(self, action, verbose=0):
         """Update state from action space.
@@ -288,16 +318,7 @@ class Grid(object):
         action : int
             sample from 0 - 7
         """
-        pos_update = list(self.curr_pos)
-        if action in [0, 1, 2]:
-            pos_update[0] -= 1
-        elif action in [5, 6, 7]:
-            pos_update[0] += 1
-
-        if action in [0, 3, 5]:
-            pos_update[1] -= 1
-        elif action in [2, 4, 7]:
-            pos_update[1] += 1
+        pos_update = self.action2pos(action)
 
         if verbose == 1:
             print ("[MESSAGE] Original pos: ", self.curr_pos)
