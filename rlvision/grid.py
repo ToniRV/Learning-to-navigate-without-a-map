@@ -294,8 +294,8 @@ class Grid(object):
                 dstar_map = None
             self.state_map[0, 0] = vis_map
             self.state_map[0, 1] = self.curr_map
-            print ("[MESSAGE] WARNING: The position is not valid, nothing"
-                   " is updated (by update_state)")
+            #  print ("[MESSAGE] WARNING: The position is not valid, nothing"
+            #         " is updated (by update_state)")
 
     def action2pos(self, action):
         """Translate action to position."""
