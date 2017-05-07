@@ -84,11 +84,10 @@ running_reward = None
 episode_number = 0
 xs, dlogps, drs, probs = [], [], [], []
 train_X, train_Y = [], []
-training_repeat = 10
 # go through entire game space
 while True:
     for game_idx in xrange(num_test):
-        for start_pos in start_tot[game_idx]*training_repeat:
+        for start_pos in start_tot[game_idx]:
             game = grid.Grid(data[game_idx], value[game_idx], imsize,
                              start_pos)
             # until the game is failed
