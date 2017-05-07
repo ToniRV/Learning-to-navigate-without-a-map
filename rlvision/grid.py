@@ -362,10 +362,10 @@ class Grid(object):
         if recent_pos == self.goal_pos and \
            self.get_time() <= num_steps+1:
             # success
-            return -1., -1
+            return 1., 1
         elif self.get_time() > num_steps+1:
             # failed
-            return 1., 1
+            return -1., -1
         else:
             return 0., 0
 

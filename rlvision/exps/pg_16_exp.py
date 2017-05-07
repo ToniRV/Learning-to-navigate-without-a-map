@@ -121,8 +121,8 @@ while True:
                     reward, state = game.get_state_reward()
                 # halt game if the action is hit the obstacle
                 elif action_flag is False:
-                    reward = 1.
-                    state = 1
+                    reward = -1.
+                    state = -1
                 dlogps.append(np.array(y).astype("float32")-aprob)
                 reward_sum += reward
                 drs.append(reward)
