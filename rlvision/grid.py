@@ -299,18 +299,22 @@ class Grid(object):
 
     def action2pos(self, action):
         """Translate action to position."""
-        pos_update = list(self.curr_pos)
+        new_pos = [0, 0]
         if action in [5, 0, 4]:
-            pos_update[0] -= 1
+            new_pos[0] = self.curr_pos[0]-1
         elif action in [7, 1, 6]:
-            pos_update[0] += 1
+            new_pos[0] = self.curr_pos[0]+1
+        else:
+            new_pos[0] = self.curr_pos[0]
 
         if action in [5, 3, 7]:
-            pos_update[1] -= 1
+            new_pos[1] = self.curr_pos[1]-1
         elif action in [4, 2, 6]:
-            pos_update[1] += 1
+            new_pos[1] = self.curr_pos[1]+1
+        else:
+            new_pos[1] = self.curr_pos[1]
 
-        return tuple(pos_update)
+        return tuple(new_pos)
 
     def update_state_from_action(self, action, verbose=0):
         """Update state from action space.
