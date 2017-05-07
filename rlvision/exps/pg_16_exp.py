@@ -8,6 +8,7 @@ Email : duguyue100@gmail.com
 from __future__ import print_function
 import os
 import numpy as np
+#  import matplotlib.pyplot as plt
 
 from keras.models import Sequential
 from keras.layers import Dense, Flatten
@@ -55,7 +56,7 @@ model_path = os.path.join(rlvision.RLVISION_MODEL, model_file)
 model = Sequential()
 if network_type == "conv":
     model.add(Conv2D(32, (3, 3), padding="same",
-                     input_shape=(3, imsize[0], imsize[1]),
+                     input_shape=(2, imsize[0], imsize[1]),
                      data_format=data_format))
     model.add(Activation("relu"))
     model.add(Conv2D(32, (3, 3), padding="same",
@@ -92,6 +93,15 @@ while True:
                              start_pos)
             # until the game is failed
             while True:
+                #  game_state = game.get_state()
+                #  plt.subplot(1, 3, 1)
+                #  plt.imshow(game_state[0, 0], cmap="gray")
+                #  plt.subplot(1, 3, 2)
+                #  plt.imshow(game_state[0, 1], cmap="gray")
+                #  plt.subplot(1, 3, 3)
+                #  plt.imshow(game_state[0, 2], cmap="gray")
+                #  plt.show()
+                #  print (game_state[0, 0])
                 # compute probability
                 aprob = model.predict(game.get_state()).flatten()
                 # sample feature

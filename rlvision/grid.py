@@ -111,8 +111,8 @@ class Grid(object):
             raise ValueError("The class doesn't support more than 2 dims!")
 
         # set status of the grid
-        self.state_map = np.zeros((1, 3, self.im_size[0], self.im_size[1]))
-        self.state_map[0, 2] = self.value_map
+        self.state_map = np.zeros((1, 2, self.im_size[0], self.im_size[1]))
+        self.state_map[0, 1] = self.value_map
 
         # set start position
         if not self.is_pos_valid(start_pos):
@@ -178,7 +178,7 @@ class Grid(object):
             self.pos_history = [start_pos]
             # update state map
             self.state_map[0, 0] = self.curr_map
-            self.state_map[0, 1] = self.curr_map
+            #  self.state_map[0, 1] = self.curr_map
         else:
             print ("[MESSAGE] WARNING: The position is not valid, nothing"
                    " changes. (by set_start_pos)")
@@ -283,8 +283,8 @@ class Grid(object):
                 dstar_map = None
             self.update_curr_map(vis_map, dstar_map)
             # update state map
-            self.state_map[0, 0] = vis_map
-            self.state_map[0, 1] = self.curr_map
+            #  self.state_map[0, 0] = vis_map
+            self.state_map[0, 0] = self.curr_map
         else:
             self.pos_history.append(pos_update)
             vis_map = self.get_curr_visible_map(pos_update)
@@ -292,8 +292,8 @@ class Grid(object):
                 dstar_map = self.get_curr_dstar_visible_map(pos_update)
             else:
                 dstar_map = None
-            self.state_map[0, 0] = vis_map
-            self.state_map[0, 1] = self.curr_map
+            #  self.state_map[0, 0] = vis_map
+            self.state_map[0, 0] = self.curr_map
             #  print ("[MESSAGE] WARNING: The position is not valid, nothing"
             #         " is updated (by update_state)")
 
