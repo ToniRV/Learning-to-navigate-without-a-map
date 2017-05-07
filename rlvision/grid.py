@@ -358,12 +358,12 @@ class Grid(object):
         if recent_pos == self.goal_pos and \
            self.get_time() <= num_steps+1:
             # success
-            return self.value_map[recent_pos[0], recent_pos[1]], 1
+            return 1., 1
         elif self.get_time() > num_steps+1:
             # failed
-            return -self.value_map[self.goal_pos[0], self.goal_pos[1]], -1
+            return -1., -1
         else:
-            return self.value_map[recent_pos[0], recent_pos[1]], 0
+            return 0., 0
 
 
 class GridDataSampler(object):

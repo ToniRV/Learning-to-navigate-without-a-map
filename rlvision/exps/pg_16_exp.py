@@ -8,7 +8,7 @@ Email : duguyue100@gmail.com
 from __future__ import print_function
 import os
 import numpy as np
-#  import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 from keras.models import Sequential
 from keras.layers import Dense, Flatten
@@ -93,14 +93,14 @@ while True:
                              start_pos, is_po=False)
             # until the game is failed
             while True:
-                #  game_state = game.get_state()
-                #  plt.subplot(1, 3, 1)
-                #  plt.imshow(game_state[0, 0], cmap="gray")
-                #  plt.subplot(1, 3, 2)
-                #  plt.imshow(game_state[0, 1], cmap="gray")
+                game_state = game.get_state()
+                plt.subplot(1, 3, 1)
+                plt.imshow(game_state[0, 0], cmap="gray")
+                plt.subplot(1, 3, 2)
+                plt.imshow(game_state[0, 1], cmap="gray")
                 #  plt.subplot(1, 3, 3)
                 #  plt.imshow(game_state[0, 2], cmap="gray")
-                #  plt.show()
+                plt.show()
                 #  print (game_state[0, 0])
                 # compute probability
                 aprob = model.predict(game.get_state()).flatten()
@@ -117,11 +117,11 @@ while True:
                 # if the game finished then train the model
                 dlogps.append(np.array(y).astype("float32")-aprob)
                 reward, state = game.get_state_reward()
-                if state not in [-1, 1]:
-                    if action_flag is False:
-                        reward = -0.02
-                    else:
-                        reward = 0.02
+                #  if state not in [-1, 1]:
+                #      if action_flag is False:
+                #          reward = -0.02
+                #      else:
+                #          reward = 0.02
                 reward_sum += reward
                 drs.append(reward)
                 if state in [1, -1]:
