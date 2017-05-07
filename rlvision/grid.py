@@ -286,6 +286,14 @@ class Grid(object):
             self.state_map[0, 0] = vis_map
             self.state_map[0, 1] = self.curr_map
         else:
+            self.pos_history.append(pos_update)
+            vis_map = self.get_curr_visible_map(pos_update)
+            if self.dstar:
+                dstar_map = self.get_curr_dstar_visible_map(pos_update)
+            else:
+                dstar_map = None
+            self.state_map[0, 0] = vis_map
+            self.state_map[0, 1] = self.curr_map
             print ("[MESSAGE] WARNING: The position is not valid, nothing"
                    " is updated (by update_state)")
 
