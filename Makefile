@@ -56,4 +56,7 @@ dstar-28-exp:
 dstar-40-exp:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_40_exp.py
 
+pg-16-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/pg_16_exp.py
+
 cleanall:
