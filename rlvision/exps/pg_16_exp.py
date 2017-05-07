@@ -74,7 +74,7 @@ if network_type == "conv":
 # print model
 model.summary()
 
-model.compile(loss="categorical_crossentropy", optimizer="rmsprop")
+model.compile(loss="categorical_crossentropy", optimizer="adam")
 if resume is True:
     model.load_weights(model_path)
 print ("[MESSAGE] Model built.")
