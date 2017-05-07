@@ -101,11 +101,16 @@ while True:
                 action = np.random.choice(num_output, 1, p=aprob)[0]
                 y = np.zeros((num_output,))
                 y[action] = 1
+                action_flag = game.is_pos_valid(game.action2pos(action))
                 # update game and get feedback
                 game.update_state_from_action(action)
                 # if the game finished then train the model
                 dlogps.append(np.array(y).astype("float32")-aprob)
                 reward, state = game.get_state_reward()
+                if action_flag is False:
+                    reward = -1
+                else:
+                    reward = 1
                 reward_sum += reward
                 drs.append(reward)
                 if state in [1, -1]:
