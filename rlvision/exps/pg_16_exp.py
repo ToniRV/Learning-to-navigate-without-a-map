@@ -107,10 +107,11 @@ while True:
                 # if the game finished then train the model
                 dlogps.append(np.array(y).astype("float32")-aprob)
                 reward, state = game.get_state_reward()
-                if action_flag is False:
-                    reward = -0.02
-                else:
-                    reward = 0.02
+                if state not in [-1, 1]:
+                    if action_flag is False:
+                        reward = -0.02
+                    else:
+                        reward = 0.02
                 reward_sum += reward
                 drs.append(reward)
                 if state in [1, -1]:
