@@ -108,9 +108,9 @@ while True:
                 dlogps.append(np.array(y).astype("float32")-aprob)
                 reward, state = game.get_state_reward()
                 if action_flag is False:
-                    reward = -1.
+                    reward = -0.02
                 else:
-                    reward = 1.
+                    reward = 0.02
                 reward_sum += reward
                 drs.append(reward)
                 if state in [1, -1]:
