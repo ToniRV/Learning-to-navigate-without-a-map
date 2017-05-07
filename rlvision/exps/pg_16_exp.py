@@ -59,16 +59,14 @@ if network_type == "conv":
     model.add(Conv2D(16, (3, 3), padding="same",
                      input_shape=(2, imsize[0], imsize[1]),
                      data_format=data_format))
-    model.add(Activation("tanh"))
+    model.add(Activation("relu"))
     model.add(Conv2D(16, (3, 3), padding="same",
-                     input_shape=(3, imsize[0], imsize[1]),
                      data_format=data_format))
-    model.add(Activation("tanh"))
+    model.add(Activation("relu"))
     model.add(AveragePooling2D(2, 2))
     model.add(Conv2D(16, (3, 3), padding="same",
-                     input_shape=(3, imsize[0], imsize[1]),
                      data_format=data_format))
-    model.add(Activation("tanh"))
+    model.add(Activation("relu"))
     model.add(Flatten())
     model.add(Dense(num_output, activation="softmax"))
 
