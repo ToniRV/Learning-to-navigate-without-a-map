@@ -106,12 +106,14 @@ while True:
                 aprob = model.predict(game.get_state()).flatten()
                 # sample feature
                 xs.append(game.get_state())
-                probs.append(aprob)
+                probs.append(model.predict(game.get_state()).flatten())
                 # sample decision
+                aprob = aprob/np.sum(aprob)
                 action = np.random.choice(num_output, 1, p=aprob)[0]
                 y = np.zeros((num_output,))
-                y[action] = 1
                 action_flag = game.is_pos_valid(game.action2pos(action))
+                if action_flag is True:
+                    y[action] = 1
                 # update game and get feedback
                 game.update_state_from_action(action)
                 # if the game finished then train the model
