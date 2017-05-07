@@ -110,16 +110,17 @@ while True:
                 # sample decision
                 aprob = aprob/np.sum(aprob)
                 action = np.random.choice(num_output, 1, p=aprob)[0]
-                y = np.zeros((num_output,))
                 action_flag = game.is_pos_valid(game.action2pos(action))
-                y[action] = 1
-                # update game and get feedback
-                game.update_state_from_action(action)
-                # if the game finished then train the model
-                dlogps.append(np.array(y).astype("float32")-aprob)
-                reward, state = game.get_state_reward()
+                if action_flag is True:
+                    y = np.zeros((num_output,))
+                    y[action] = 1
+                    # update game and get feedback
+                    game.update_state_from_action(action)
+                    # if the game finished then train the model
+                    dlogps.append(np.array(y).astype("float32")-aprob)
+                    reward, state = game.get_state_reward()
                 # halt game if the action is hit the obstacle
-                if action_flag is False:
+                elif action_flag is False:
                     reward = -1.
                     state = -1
                 reward_sum += reward
