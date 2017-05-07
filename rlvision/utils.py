@@ -13,6 +13,7 @@ from skimage import draw
 import matplotlib.pyplot as plt
 
 import rlvision
+#  from rlvision.grid import GridDataSampler
 
 # for the dataset labels
 data_dict = ['batch_im_data', 'value_data', 'state_onehot_data',

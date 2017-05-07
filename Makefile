@@ -38,6 +38,12 @@ grid-class-test:
 restructure-data-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/restructure_dataset.py
 
+sample-train-ds:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/sample_train_ds.py
+
+load-train-ds:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/load_train_ds.py
+
 dstar-8-exp:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_8_exp.py
 
