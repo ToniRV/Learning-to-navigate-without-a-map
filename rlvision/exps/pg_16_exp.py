@@ -88,7 +88,7 @@ train_X, train_Y = [], []
 # go through entire game space
 while True:
     for game_idx in xrange(num_test):
-        for start_pos in start_tot[game_idx]:
+        for start_pos in [start_tot[game_idx][0]]:
             game = grid.Grid(data[game_idx], value[game_idx], imsize,
                              start_pos, is_po=False)
             # until the game is failed
