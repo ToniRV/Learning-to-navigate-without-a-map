@@ -100,3 +100,6 @@ bin/*
 # ignore development files
 development.ipynb
 drl_model_checkpoint.h5
+expriment-log.txt
+nohup.out
+nohup2.out
