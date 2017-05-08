@@ -12,13 +12,22 @@ from keras.layers import Dense, Reshape
 from keras.optimizers import Adam, RMSprop
 from keras.layers.core import Flatten
 from keras.layers.convolutional import Convolution2D
+import time
+import datetime
 
 import rlvision
 from rlvision import utils
 from rlvision.grid import GridDataSampler, Grid
 
+start_time = time.time()
+log_file = open("expriment-log.txt", "a")
+log_file.write("experiment at " +
+               datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + "\n")
+log_file.close()
+
+
 # general parameters
-n_samples = 100  # use limited data
+n_samples = 1000  # use limited data
 n_steps = 32  # twice much as the step
 save_model = True  # if true, all data will be saved for future use
 enable_vis = True  # if true, real time visualization will be enable
@@ -47,9 +56,9 @@ print ("[MESSAGE] Data sampler ready.")
 
 # Script Parameters
 input_dim = im_size[0] * im_size[1]
-gamma = 0.99
+gamma = 0.8
 update_frequency = 1
-learning_rate = 0.001
+learning_rate = 0.0005
 resume = False
 render = False
 
@@ -66,20 +75,20 @@ def discount_rewards(r):
 
 # Define the main model (WIP)
 number_of_inputs = 8;
-def learning_model(input_dim = im_size[0] * im_size[1], model_type=1):
+def learning_model(input_dim = [3, im_size[0], im_size[1]], model_type=1):
     model = Sequential()
     if model_type == 0:
-        model.add(Reshape((1, im_size[0], im_size[0]), input_shape=(input_dim,)))
+        model.add(Reshape((3, im_size[0], im_size[1]), input_shape=(input_dim,)))
         model.add(Flatten())
         model.add(Dense(200, activation='relu'))
         model.add(Dense(number_of_inputs, activation='softmax'))
         opt = RMSprop(lr=learning_rate)
     else:
-        model.add(Reshape((1, im_size[0], im_size[0]), input_shape=(input_dim,)))
-        model.add(Convolution2D(32, 9, 9, subsample=(4, 4),
-                  border_mode='same', activation='relu', init='he_uniform'))
+        model.add(Convolution2D(64, 9, 9, subsample=(1, 1),
+                  border_mode='same', activation='relu', init='he_uniform', input_shape = input_dim))
         model.add(Flatten())
-        model.add(Dense(16, activation='relu', init='he_uniform'))
+        model.add(Dense(256, activation='relu', init='he_uniform'))
+        model.add(Dense(256, activation='relu', init='he_uniform'))
         model.add(Dense(number_of_inputs, activation='softmax'))
         opt = Adam(lr=learning_rate)
     model.compile(loss='categorical_crossentropy', optimizer=opt)
@@ -95,11 +104,17 @@ episode_number = 0
 train_X = []
 train_y = []
 
+win = 0
+win_after_30k = 0
+
 model = learning_model()
 
 # Begin training
 grid_id = 1
 while grid_id <= n_samples and grid_sampler.grid_available:
+
+    # if episode_number > 10000:
+    #     break
 
     # sample grid
     print ("[MESSAGE] SAMPLING NEW GRID, Grid ID:", grid_id)
@@ -119,40 +134,26 @@ while grid_id <= n_samples and grid_sampler.grid_available:
         while True:
             #####################
             # Get the current observable map
-            x = game.curr_map
+            x = [[game.curr_map, game.explored_area, value.reshape(game.explored_area.shape)]]
+            x = np.array(x)
+#             x.reshape(1, 3, x.shape[1], x.shape[2])
             # Predict probabilities(regressed value) from the Keras model
-            aprob = ((model.predict(x.reshape([1, x.shape[0] * x.shape[1]]),
-                            batch_size=1).flatten()))
+#             aprob = model.predict(x.reshape([3, x.shape[1] * x.shape[2]]),
+#                             batch_size=1).flatten()
+            aprob = model.predict(x, batch_size=1).flatten()
 
             # aprob = aprob/np.sum(aprob)
             # Sample action
             # action = np.random.choice(number_of_inputs, 1, p=aprob)
             # Append features and labels for the episode-batch
 #             xs.append(x)
-            xs.append(x.reshape(1, x.shape[0] * x.shape[1]))
-            probs.append((model.predict(x.reshape([1, x.shape[0] * x.shape[1]]),
-                  batch_size=1).flatten()))
+            xs.append(x)
+            probs.append(aprob)
             aprob = aprob/np.sum(aprob)
 
             action = np.random.choice(number_of_inputs, 1, p=aprob)[0]
 
-            #get action from aprob
-            if action < 0.125:
-                next_move = 0
-            elif action < 0.25:
-                next_move = 1
-            elif action < 0.375:
-                next_move = 2
-            elif action < 0.5:
-                next_move = 3
-            elif action < 0.625:
-                next_move = 4
-            elif action < 0.75:
-                next_move = 5
-            elif action < 0.875:
-                next_move = 6
-            else:
-                next_move = 7
+            next_move = action
 
             #Get update parameter
             y = np.zeros([number_of_inputs])
@@ -164,6 +165,9 @@ while grid_id <= n_samples and grid_sampler.grid_available:
             reward, game_status = game.get_state_reward()
             if game_status == 1:
                 # success
+                win += 1
+                if episode_number > 30000:
+                    win_after_30k += 1
                 print ("[MESSAGE] The game is completed")
                 print ("[MESSAGE] The path:", game.pos_history)
             elif game_status == -1:
@@ -172,9 +176,9 @@ while grid_id <= n_samples and grid_sampler.grid_available:
 
             done = True if game_status != 0 else False
 
-            game.update_state_from_action(action)
+            if not done:
+                game.update_state_from_action(action)
 
-            print (game.get_time())
             if done :
                 break
             else:
@@ -223,3 +227,16 @@ while grid_id <= n_samples and grid_sampler.grid_available:
             reward_sum = 0
         if reward != 0:
             print ('Episode %d Result: ' % episode_number, 'Defeat!' if game_status == -1 else 'VICTORY!')
+
+total_time = time.time() - start_time
+m, s = divmod(total_time, 60)
+h, m = divmod(m, 60)
+
+log_file = open("expriment-log.txt", "a")
+log_file.write("Total wins: %d (success rate: %0.4f);  Total wins after 30k games: %d (success rate: %0.4f) \n" \
+               % (win, float(win)/episode_number, win_after_30k, \
+                  float(win_after_30k)/(episode_number - 30000)))
+log_file.write("Total number of episodes is %d \n" % episode_number)
+log_file.write("Parameters: gamma = %0.4f; learning_rate = %0.4f; update_frequency = %0.4f \n" % (gamma, learning_rate, update_frequency))
+log_file.write("%d:%02d:%02d \n\n" % (h, m, s))
+log_file.close()

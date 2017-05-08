@@ -164,6 +164,7 @@ class Grid(object):
             # clear all the history caches TODO
             self.set_curr_pos(start_pos)
             self.curr_map = self.get_curr_visible_map(self.start_pos)
+            self.explored_area = self.get_curr_explored_area(self.start_pos)
             if self.dstar:
                 self.dstar_curr_map = self.get_curr_dstar_visible_map(
                     self.start_pos)
@@ -185,6 +186,22 @@ class Grid(object):
             print ("[MESSAGE] WARNING: The position is not a vaild point"
                    " (by set_curr_pos)")
 
+    def update_exploration(self, exploration_update):
+        """
+        Parameters
+        ----------
+        exploration_update : numpy.ndarray
+            the update to the current explored area
+
+        Updated values
+        ----------
+        self.explored_area : map of explored area
+        """
+
+        self.explored_area = utils.accumulate_map(self.explored_area,
+                                                  exploration_update,
+                                             one_is_free = self.one_is_free)
+
     def update_curr_map(self, map_update, dstar_map_update=None):
         """Update current map.
 
@@ -195,6 +212,7 @@ class Grid(object):
         """
         self.curr_map = utils.accumulate_map(self.curr_map, map_update,
                                              one_is_free=self.one_is_free)
+
         if self.dstar:
             self.dstar_curr_map = utils.accumulate_map(
                 self.dstar_curr_map, dstar_map_update,
@@ -246,7 +264,32 @@ class Grid(object):
             else:
                 return self.grid_map
 
-    def update_state(self, pos_before, pos_update):
+    def get_curr_explored_area(self, pos):
+        """Get current explored area by given a valid position.
+        i.e.: indicate which part of the map is already explored(has nothing to do with obstacles)
+        Parameters
+        ----------
+        pos :  tuple
+            a valid position (x, y)
+
+        one_is_free = True: one is explored
+        one_is_free = False: zero is explored
+
+        Returns
+        -------
+        curr_explored_area : numpy.ndarray
+            return a exploration map by given position.
+        """
+        if self.one_is_free:
+            tmp_grid = np.ones_like(self.grid_map)
+        else:
+            tmp_grid = np.zeros_like(self.grid_map)
+
+        if self.is_pos_valid(pos):
+            return utils.mask_grid(pos, tmp_grid, self.mask_radius,
+                                   one_is_free=self.one_is_free)
+
+    def update_state(self, pos_update):
         """Update state by given position.
 
         This describe the transition between states.
@@ -262,19 +305,20 @@ class Grid(object):
         if self.is_pos_valid(pos_update):
             # append to the history
             self.pos_history.append(pos_update)
-            print (self.pos_history)
-            print ('append new position to history, len of new history is', len(self.pos_history))
+            # print (self.pos_history)
+            # print ('append new position to history, len of new history is', len(self.pos_history))
             # update the current position
             self.set_curr_pos(pos_update)
             # update current map
             self.update_curr_map(self.get_curr_visible_map(pos_update),
                                  self.get_curr_dstar_visible_map(pos_update))
+            self.update_exploration(self.get_curr_explored_area(pos_update))
+
         else:
             # append the previous position to the history
-            self.pos_history.append(pos_before)
-            print (self.pos_history)
-            print ('append unchanged position to history, len of new history is', len(self.pos_history))
-            print (pos_before)
+            self.pos_history.append(self.pos_history[-1])
+            # print (self.pos_history)
+            # print ('append unchanged position to history, len of new history is', len(self.pos_history))
             print ("[MESSAGE] WARNING: The position is not valid, nothing"
                    " is updated (by update_state)")
 
@@ -307,9 +351,9 @@ class Grid(object):
             print ("[MESSAGE] Original pos : ", self.curr_pos)
             print ("[MESSAGE] Updated pos : ", pos_update)
 
-        self.update_state(self.curr_pos, tuple(pos_update))
-        print (self.curr_pos)
-        print (tuple(pos_update))
+        self.update_state(tuple(pos_update))
+        # print (self.curr_pos)
+        # print (tuple(pos_update))
 
     def get_time(self):
         """Get the number of states."""
@@ -333,10 +377,10 @@ class Grid(object):
             num_steps = self.im_size[0]+self.im_size[1]
         recent_pos = self.pos_history[-1]
         if recent_pos == self.goal_pos and \
-           self.get_time() <= num_steps+1:
+           self.get_time() <= num_steps:
             # success
             return self.value_map[recent_pos[0], recent_pos[1]], 1
-        elif self.get_time() > num_steps+1:
+        elif self.get_time() > num_steps:
             # failed
             return -self.value_map[self.goal_pos[0], self.goal_pos[1]], -1
         else:
