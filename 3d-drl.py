@@ -1,4 +1,4 @@
-"""A deep reinforcement learning experiment with 16x16 grid.
+"""A deep reinforcement learning experiment with 12x16 grid.
 Author: Shu Liu
 Email : liush@student.ethz.ch
 """
