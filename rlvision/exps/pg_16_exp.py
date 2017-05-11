@@ -8,12 +8,13 @@ Email : duguyue100@gmail.com
 from __future__ import print_function
 import os
 import numpy as np
-#  import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 from keras.models import Sequential
-from keras.layers import Dense, Flatten
+from keras.layers import Dense, Flatten, InputLayer
 from keras.layers import Conv2D, AveragePooling2D
 from keras.layers import Activation
+from keras.regularizers import l2
 
 import rlvision
 from rlvision import grid
@@ -58,16 +59,29 @@ model = Sequential()
 if network_type == "conv":
     model.add(Conv2D(32, (7, 7), padding="same",
                      input_shape=(2, imsize[0], imsize[1]),
+                     kernel_regularizer=l2(0.0001),
                      data_format=data_format))
     model.add(Activation("relu"))
     model.add(Conv2D(32, (5, 5), padding="same",
+                     kernel_regularizer=l2(0.0001),
                      data_format=data_format))
     model.add(Activation("relu"))
     model.add(AveragePooling2D(2, 2))
     model.add(Conv2D(32, (3, 3), padding="same",
+                     kernel_regularizer=l2(0.0001),
                      data_format=data_format))
     model.add(Activation("relu"))
     model.add(Flatten())
+    model.add(Dense(num_output, activation="softmax"))
+else:
+    model.add(InputLayer(input_shape=(2, imsize[0], imsize[1])))
+    model.add(Flatten())
+    model.add(Dense(500))
+    model.add(Activation("relu"))
+    model.add(Dense(300))
+    model.add(Activation("relu"))
+    model.add(Dense(300))
+    model.add(Activation("relu"))
     model.add(Dense(num_output, activation="softmax"))
 
 # print model
@@ -84,6 +98,7 @@ running_reward = None
 episode_number = 0
 xs, dlogps, drs, probs = [], [], [], []
 train_X, train_Y = [], []
+num_victory = 0
 # go through entire game space
 while True:
     for game_idx in xrange(num_train):
@@ -156,7 +171,10 @@ while True:
                            "Reward: %f. Running Mean: %f"
                            % (reward_sum, running_reward))
                     reward_sum = 0
+                    num_victory = num_victory+1 if state == 1 else num_victory
                     print ("Episode %d Result: " % (episode_number) +
                            ("Defeat!" if state == -1 else "Victory!"))
+                    print ("Successful rate: %d" %
+                           (num_victory))
                     # to next game
                     break

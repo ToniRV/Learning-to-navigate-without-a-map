@@ -114,14 +114,14 @@ class Grid(object):
         self.state_map = np.zeros((1, 2, self.im_size[0], self.im_size[1]))
         self.state_map[0, 1] = self.value_map
 
+        # set goal position, based on value map
+        self.set_goal_pos()
+
         # set start position
         if not self.is_pos_valid(start_pos):
             self.rand_start_pos()
         else:
             self.set_start_pos(start_pos)
-
-        # set goal position, based on value map
-        self.set_goal_pos()
 
     def get_state(self):
         """Get the state of the game."""
@@ -145,7 +145,7 @@ class Grid(object):
             pos = (0, 0)
         assert isinstance(pos, tuple)
 
-        if self.grid_map[pos[0], pos[1]] == self.empty_value:
+        if self.grid_map[pos[0], pos[1]] in [self.empty_value, 0.7]:
             return True
         else:
             return False
@@ -177,7 +177,7 @@ class Grid(object):
                     self.start_pos)
             self.pos_history = [start_pos]
             # update state map
-            self.state_map[0, 0] = self.curr_map
+            self.state_map[0, 0] = self.get_state_map()
             #  self.state_map[0, 1] = self.curr_map
         else:
             print ("[MESSAGE] WARNING: The position is not valid, nothing"
@@ -257,6 +257,16 @@ class Grid(object):
             else:
                 return self.grid_map
 
+    def get_state_map(self):
+        """get state map with position annotation."""
+        if self.is_po:
+            state_map = self.curr_map.copy()
+        else:
+            state_map = self.grid_map.copy()
+        state_map[self.curr_pos] = 0.5
+        state_map[self.goal_pos] = 0.7
+        return state_map
+
     def update_state(self, pos_update):
         """Update state by given position.
 
@@ -284,7 +294,7 @@ class Grid(object):
             self.update_curr_map(vis_map, dstar_map)
             # update state map
             #  self.state_map[0, 0] = vis_map
-            self.state_map[0, 0] = self.curr_map
+            self.state_map[0, 0] = self.get_state_map()
         else:
             self.pos_history.append(pos_update)
             vis_map = self.get_curr_visible_map(pos_update)
@@ -293,7 +303,7 @@ class Grid(object):
             else:
                 dstar_map = None
             #  self.state_map[0, 0] = vis_map
-            self.state_map[0, 0] = self.curr_map
+            self.state_map[0, 0] = self.get_state_map()
             #  print ("[MESSAGE] WARNING: The position is not valid, nothing"
             #         " is updated (by update_state)")
 
@@ -362,12 +372,12 @@ class Grid(object):
         if recent_pos == self.goal_pos and \
            self.get_time() <= num_steps+1:
             # success
-            return 1., 1
+            return 10., 1
         elif self.get_time() > num_steps+1:
             # failed
             return -1., -1
         else:
-            return 0.001, 0
+            return 0., 0
 
 
 class GridDataSampler(object):
