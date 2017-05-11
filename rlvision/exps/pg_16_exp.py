@@ -102,7 +102,7 @@ num_victory = 0
 # go through entire game space
 while True:
     for game_idx in xrange(num_train):
-        for start_pos in [start_tot[game_idx][0]]:
+        for start_pos in start_tot[game_idx]:
             game = grid.Grid(data[game_idx], value[game_idx], imsize,
                              start_pos, is_po=False)
             # until the game is failed
@@ -131,7 +131,8 @@ while True:
                     # update game and get feedback
                     game.update_state_from_action(action)
                     # if the game finished then train the model
-                    reward, state = game.get_state_reward()
+                    reward, state = game.get_state_reward(
+                        max_num_steps=imsize[0])
                 # halt game if the action is hit the obstacle
                 elif action_flag is False:
                     reward = -1.
