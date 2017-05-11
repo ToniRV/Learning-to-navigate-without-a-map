@@ -66,6 +66,14 @@ if network_type == "conv":
                      kernel_regularizer=l2(0.0001),
                      data_format=data_format))
     model.add(Activation("relu"))
+    model.add(Conv2D(32, (5, 5), padding="same",
+                     kernel_regularizer=l2(0.0001),
+                     data_format=data_format))
+    model.add(Activation("relu"))
+    model.add(Conv2D(32, (5, 5), padding="same",
+                     kernel_regularizer=l2(0.0001),
+                     data_format=data_format))
+    model.add(Activation("relu"))
     model.add(AveragePooling2D(2, 2))
     model.add(Conv2D(32, (3, 3), padding="same",
                      kernel_regularizer=l2(0.0001),
