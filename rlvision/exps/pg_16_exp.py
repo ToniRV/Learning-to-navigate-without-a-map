@@ -131,8 +131,7 @@ while True:
                     # update game and get feedback
                     game.update_state_from_action(action)
                     # if the game finished then train the model
-                    reward, state = game.get_state_reward(
-                        max_num_steps=imsize[0])
+                    reward, state = game.get_state_reward()
                 # halt game if the action is hit the obstacle
                 elif action_flag is False:
                     reward = -1.
