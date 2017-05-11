@@ -70,8 +70,8 @@ input_dim = imsize[0] * imsize[1]
 gamma = 0.99
 update_frequency = 1
 learning_rate = 0.001
-collision_reward = -10000
-dropout_rate = 0.5
+collision_reward = -10
+dropout_rate = 0
 resume = False
 render = False
 # network_type = "conv"
@@ -167,14 +167,14 @@ for game_idx in xrange(num_train):
         while True:
             # Get the current observable map
 
-            x = [[game.curr_map, game.explored_area, value[game_idx].reshape(game.explored_area.shape), game.curr_pos_map]]
+            x = [[game.curr_map, game.explored_area, value[game_idx].reshape(game.explored_area.shape), 10*game.curr_pos_map]]
 #             x = [[game.curr_map, game.curr_pos_map]]
             x = np.array(x)
             # print (x.shape)
             aprob = model.predict(x, batch_size=1).flatten()
             xs.append(x)
-            probs.append(aprob)
             aprob = aprob/np.sum(aprob)
+            probs.append(aprob)
             print(aprob)
             # print ("bug2")
 #             print (aprob)
@@ -226,8 +226,8 @@ for game_idx in xrange(num_train):
                 epdlogp = np.vstack(dlogps)
                 epr = np.vstack(drs)
                 discounted_epr = discount_rewards(epr)
-#                 discounted_epr -= np.mean(discounted_epr)
-#                 discounted_epr /= np.std(discounted_epr)
+                discounted_epr -= np.mean(discounted_epr)
+                discounted_epr /= np.std(discounted_epr)
                 epdlogp *= discounted_epr
                 # print ("bug6")
                 # Slowly prepare the training batch

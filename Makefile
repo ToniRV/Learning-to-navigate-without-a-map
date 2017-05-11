@@ -38,7 +38,25 @@ grid-class-test:
 restructure-data-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/restructure_dataset.py
 
+sample-train-ds:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/sample_train_ds.py
+
+load-train-ds:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/load_train_ds.py
+
+dstar-8-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_8_exp.py
+
 dstar-16-exp:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_16_exp.py
+
+dstar-28-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_28_exp.py
+
+dstar-40-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_40_exp.py
+
+pg-16-exp:
+	THEANO_FLAGS=device=cpu PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/pg_16_exp.py
 
 cleanall:

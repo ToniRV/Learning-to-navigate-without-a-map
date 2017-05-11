@@ -4,6 +4,9 @@ Author: Yuhuang Hu
 Email : duguyue100@gmail.com
 """
 from __future__ import print_function
+import os
+import h5py
+import cPickle as pickle
 
 import numpy as np
 
@@ -108,6 +111,8 @@ class Grid(object):
             raise ValueError("The class doesn't support more than 2 dims!")
 
         # set status of the grid
+        self.state_map = np.zeros((1, 2, self.im_size[0], self.im_size[1]))
+        self.state_map[0, 1] = self.value_map
 
         # set start position
         if not self.is_pos_valid(start_pos):
@@ -117,6 +122,10 @@ class Grid(object):
 
         # set goal position, based on value map
         self.set_goal_pos()
+
+    def get_state(self):
+        """Get the state of the game."""
+        return self.state_map
 
     def is_pos_valid(self, pos):
         """Check if the position is valid.
@@ -161,7 +170,6 @@ class Grid(object):
         """
         if self.is_pos_valid(start_pos):
             self.start_pos = start_pos
-            # clear all the history caches TODO
             self.set_curr_pos(start_pos)
             self.curr_map = self.get_curr_visible_map(self.start_pos)
             self.explored_area = self.get_curr_explored_area(self.start_pos)
@@ -169,6 +177,9 @@ class Grid(object):
                 self.dstar_curr_map = self.get_curr_dstar_visible_map(
                     self.start_pos)
             self.pos_history = [start_pos]
+            # update state map
+            self.state_map[0, 0] = self.curr_map
+            #  self.state_map[0, 1] = self.curr_map
         else:
             print ("[MESSAGE] WARNING: The position is not valid, nothing"
                    " changes. (by set_start_pos)")
@@ -180,8 +191,11 @@ class Grid(object):
         self.goal_pos = (goal_list[0][0], goal_list[1][0])
 
     def set_curr_pos(self, curr_pos):
+        tmp = np.zeros_like(self.grid_map)
         if self.is_pos_valid(curr_pos):
+            tmp[curr_pos] = 1
             self.curr_pos = curr_pos
+            self.curr_pos_map = tmp
         else:
             print ("[MESSAGE] WARNING: The position is not a vaild point"
                    " (by set_curr_pos)")
@@ -310,17 +324,59 @@ class Grid(object):
             # update the current position
             self.set_curr_pos(pos_update)
             # update current map
+# <<<<<<< HEAD
             self.update_curr_map(self.get_curr_visible_map(pos_update),
                                  self.get_curr_dstar_visible_map(pos_update))
             self.update_exploration(self.get_curr_explored_area(pos_update))
-
+#
+#         else:
+#             # append the previous position to the history
+#             self.pos_history.append(self.pos_history[-1])
+#             # print (self.pos_history)
+#             # print ('append unchanged position to history, len of new history is', len(self.pos_history))
+#             print ("[MESSAGE] WARNING: The position is not valid, nothing"
+#                    " is updated (by update_state)")
+# =======
+            vis_map = self.get_curr_visible_map(pos_update)
+            if self.dstar:
+                dstar_map = self.get_curr_dstar_visible_map(pos_update)
+            else:
+                dstar_map = None
+            self.update_curr_map(vis_map, dstar_map)
+            # update state map
+            #  self.state_map[0, 0] = vis_map
+            self.state_map[0, 0] = self.curr_map
         else:
-            # append the previous position to the history
             self.pos_history.append(self.pos_history[-1])
-            # print (self.pos_history)
-            # print ('append unchanged position to history, len of new history is', len(self.pos_history))
-            print ("[MESSAGE] WARNING: The position is not valid, nothing"
-                   " is updated (by update_state)")
+            # vis_map = self.get_curr_visible_map(self.pos_history[-1])
+            # if self.dstar:
+            #     dstar_map = self.get_curr_dstar_visible_map(self.pos_history[-1])
+            # else:
+            #     dstar_map = None
+            #  self.state_map[0, 0] = vis_map
+            self.state_map[0, 0] = self.curr_map
+            #  print ("[MESSAGE] WARNING: The position is not valid, nothing"
+            #         " is updated (by update_state)")
+
+    def action2pos(self, action):
+        """Translate action to position."""
+        new_pos = [0, 0]
+        if action in [5, 0, 4]:
+            new_pos[0] = self.curr_pos[0]-1
+        elif action in [7, 1, 6]:
+            new_pos[0] = self.curr_pos[0]+1
+        else:
+            new_pos[0] = self.curr_pos[0]
+
+        if action in [5, 3, 7]:
+            new_pos[1] = self.curr_pos[1]-1
+        elif action in [4, 2, 6]:
+            new_pos[1] = self.curr_pos[1]+1
+        else:
+            new_pos[1] = self.curr_pos[1]
+
+        return tuple(new_pos)
+# >>>>>>> unify-map-rep
 
     def update_state_from_action(self, action, verbose=0):
         """Update state from action space.
@@ -336,24 +392,19 @@ class Grid(object):
         action : int
             sample from 0 - 7
         """
-        pos_update = list(self.curr_pos)
-        if action in [0, 1, 2]:
-            pos_update[0] -= 1
-        elif action in [5, 6, 7]:
-            pos_update[0] += 1
-
-        if action in [0, 3, 5]:
-            pos_update[1] -= 1
-        elif action in [2, 4, 7]:
-            pos_update[1] += 1
+        pos_update = self.action2pos(action)
 
         if verbose == 1:
             print ("[MESSAGE] Original pos : ", self.curr_pos)
             print ("[MESSAGE] Updated pos : ", pos_update)
 
-        self.update_state(tuple(pos_update))
+#<<<<<<< HEAD
+#        self.update_state(tuple(pos_update))
         # print (self.curr_pos)
         # print (tuple(pos_update))
+#=======
+        self.update_state(pos_update)
+#>>>>>>> unify-map-rep
 
     def get_time(self):
         """Get the number of states."""
@@ -379,12 +430,17 @@ class Grid(object):
         if recent_pos == self.goal_pos and \
            self.get_time() <= num_steps:
             # success
-            return self.value_map[recent_pos[0], recent_pos[1]], 1
-        elif self.get_time() > num_steps:
+# <<<<<<< HEAD
+#             return self.value_map[recent_pos[0], recent_pos[1]], 1
+#         elif self.get_time() > num_steps:
+# =======
+            return 10., 1
+        elif self.get_time() > num_steps+1:
+# >>>>>>> unify-map-rep
             # failed
-            return -self.value_map[self.goal_pos[0], self.goal_pos[1]], -1
+            return -1., -1
         else:
-            return self.value_map[recent_pos[0], recent_pos[1]], 0
+            return 0.5, 0
 
 
 class GridDataSampler(object):
@@ -495,3 +551,559 @@ class GridDataSampler(object):
             return grid, value, start_pos_list, pos_traj, goal_pos
         else:
             print ("[MESSAGE] No grid available""")
+
+
+def sample_data(db, imsize, num_samples=0):
+    """Sample data from a database.
+
+    Parameters
+    ----------
+    db : h5py.File
+        a HDF 5 file object
+    num_samples : int
+        the number of samples
+
+    Returns
+    -------
+    grid_data : numpy.ndarray
+        the grid data
+    value_data : numpy.ndarray
+        the value data
+    start_pos_list : list
+        the list of start position
+    pos_traj : list
+        the list of position trajectory
+    goal_pos : list
+        the goal of position
+    """
+    # load data
+    im_data = db['im_data']
+    value_data = db['value_data']
+    states = db['state_xy_data']
+    label_data = db['label_data']
+
+    # created a sampler
+    grid_sampler = GridDataSampler(im_data, value_data, imsize,
+                                   states, label_data)
+    print ("[MESSAGE] Create a sampler")
+
+    data_collector = []
+    value_collector = []
+    start_pos_collector = []
+    pos_traj_collector = []
+    goal_pos_collector = []
+
+    idx = 0
+    while grid_sampler.grid_available and idx < num_samples:
+        grid, value, start_pos_list, pos_traj, goal_pos = grid_sampler.next()
+        if len(start_pos_list) < 8:
+            print ("[MESSAGE] THE %i-TH GRID SAMPLED. %i PATH FOUND." %
+                   (idx, len(start_pos_list)))
+            data_collector.append(grid)
+            value_collector.append(value)
+            start_pos_collector.append(start_pos_list)
+            pos_traj_collector.append(pos_traj)
+            goal_pos_collector.append(goal_pos)
+            idx += 1
+
+    data_collector = np.asarray(data_collector, dtype=np.uint8)
+    value_collector = np.asarray(value_collector, dtype=np.uint8)
+
+    if idx < num_samples:
+        print ("[MESSAGE] %i samples collected." % (idx+1))
+    return (data_collector, value_collector, start_pos_collector,
+            pos_traj_collector, goal_pos_collector)
+
+
+def sample_data_grid8(num_samples=0):
+    """Sample data from 8x8 grid.
+
+    Parameters
+    ----------
+    num_samples : int
+        number of samples
+
+    Return
+    ------
+    grid_data : numpy.ndarray
+        the grid data
+    value_data : numpy.ndarray
+        the value data
+    start_pos_list : list
+        the list of start position
+    pos_traj : list
+        the list of position trajectory
+    goal_pos : list
+        the goal of position
+    """
+    db, imsize = utils.load_grid8()
+
+    return sample_data(db, imsize, num_samples)
+
+
+def sample_data_grid16(split=None, num_samples=0):
+    """Sample data from 16x16 grid.
+
+    Parameters
+    ----------
+    num_samples : int
+        number of samples
+
+    Return
+    ------
+    grid_data : numpy.ndarray
+        the grid data
+    value_data : numpy.ndarray
+        the value data
+    start_pos_list : list
+        the list of start position
+    pos_traj : list
+        the list of position trajectory
+    goal_pos : list
+        the goal of position
+    """
+    db, imsize = utils.load_grid16(split)
+
+    return sample_data(db, imsize, num_samples)
+
+
+def sample_data_grid28(split=None, num_samples=0):
+    """Sample data from 28x28 grid.
+
+    Parameters
+    ----------
+    num_samples : int
+        number of samples
+
+    Return
+    ------
+    grid_data : numpy.ndarray
+        the grid data
+    value_data : numpy.ndarray
+        the value data
+    start_pos_list : list
+        the list of start position
+    pos_traj : list
+        the list of position trajectory
+    goal_pos : list
+        the goal of position
+    """
+    db, imsize = utils.load_grid28(split)
+
+    return sample_data(db, imsize, num_samples)
+
+
+def sample_data_grid40(split=None, num_samples=0):
+    """Sample data from 40x40 grid.
+
+    Parameters
+    ----------
+    num_samples : int
+        number of samples
+
+    Return
+    ------
+    grid_data : numpy.ndarray
+        the grid data
+    value_data : numpy.ndarray
+        the value data
+    start_pos_list : list
+        the list of start position
+    pos_traj : list
+        the list of position trajectory
+    goal_pos : list
+        the goal of position
+    """
+    db, imsize = utils.load_grid40(split)
+
+    return sample_data(db, imsize, num_samples)
+
+
+def create_train_grid8(db_name, save_dir, num_samples=0):
+    """Create training dataset for 8x8 grid.
+
+    Parameters
+    ----------
+    db_name : str
+        the name of dataset
+    save_dir : str
+        the directory of the output path (must exist)
+    """
+    db = utils.init_h5_db(db_name+".h5", save_dir)
+
+    # collect data
+    (data_collector, value_collector, start_pos_collector,
+     pos_traj_collector, goal_pos_collector) = sample_data_grid8(num_samples)
+
+    # save data
+    utils.add_h5_ds(data_collector, "data", db)
+    utils.add_h5_ds(value_collector, "value", db)
+    db.flush()
+    db.close()
+
+    with open(os.path.join(save_dir, db_name+"_start.pkl"), "w") as f:
+        pickle.dump(start_pos_collector, f,
+                    protocol=pickle.HIGHEST_PROTOCOL)
+        f.close()
+
+    with open(os.path.join(save_dir, db_name+"_traj.pkl"), "w") as f:
+        pickle.dump(pos_traj_collector, f,
+                    protocol=pickle.HIGHEST_PROTOCOL)
+        f.close()
+
+    with open(os.path.join(save_dir, db_name+"_goal.pkl"), "w") as f:
+        pickle.dump(goal_pos_collector, f,
+                    protocol=pickle.HIGHEST_PROTOCOL)
+        f.close()
+    print ("[MESSAGE] Save dataset at %s" % (save_dir))
+
+
+def create_train_grid16(db_name, save_dir, num_samples=0):
+    """Create training dataset for 16x16 grid.
+
+    Parameters
+    ----------
+    db_name : str
+        the name of dataset
+    save_dir : str
+        the directory of the output path (must exist)
+    """
+    db = utils.init_h5_db(db_name+".h5", save_dir)
+
+    # collect data
+    for split in xrange(1, 6):
+        (data_collector, value_collector, start_pos_collector,
+         pos_traj_collector, goal_pos_collector) = sample_data_grid16(
+            split, num_samples)
+        group_name = "grid_data_split_"+str(split)
+        utils.add_h5_group(group_name, db)
+        utils.add_h5_ds(data_collector, "data", db, group_name)
+        utils.add_h5_ds(value_collector, "value", db, group_name)
+        with open(os.path.join(save_dir, db_name+"_start_%i.pkl" % (split)),
+                  "w") as f:
+            pickle.dump(start_pos_collector, f,
+                        protocol=pickle.HIGHEST_PROTOCOL)
+            f.close()
+
+        with open(os.path.join(save_dir, db_name+"_traj_%i.pkl" % (split)),
+                  "w") as f:
+            pickle.dump(pos_traj_collector, f,
+                        protocol=pickle.HIGHEST_PROTOCOL)
+            f.close()
+
+        with open(os.path.join(save_dir, db_name+"_goal_%i.pkl" % (split)),
+                  "w") as f:
+            pickle.dump(goal_pos_collector, f,
+                        protocol=pickle.HIGHEST_PROTOCOL)
+            f.close()
+        print ("[MESSAGE] Save dataset %i at %s" % (split, save_dir))
+
+    db.flush()
+    db.close()
+    print ("[MESSAGE] Save dataset at %s" % (save_dir))
+
+
+def create_train_grid28(db_name, save_dir, num_samples=0):
+    """Create training dataset for 28x28 grid.
+
+    Parameters
+    ----------
+    db_name : str
+        the name of dataset
+    save_dir : str
+        the directory of the output path (must exist)
+    """
+    db = utils.init_h5_db(db_name+".h5", save_dir)
+
+    # collect data
+    for split in xrange(5):
+        dc_tot = None
+        vc_tot = None
+        spc_tot = []
+        ptc_tot = []
+        gpc_tot = []
+        for idx in xrange(split*4+1, split*4+5):
+            (data_collector, value_collector, start_pos_collector,
+             pos_traj_collector, goal_pos_collector) = sample_data_grid28(
+                idx, num_samples)
+            if dc_tot is None:
+                dc_tot = data_collector
+            else:
+                dc_tot = np.vstack((dc_tot, data_collector))
+            if vc_tot is None:
+                vc_tot = value_collector
+            else:
+                vc_tot = np.vstack((vc_tot, value_collector))
+            spc_tot += start_pos_collector
+            ptc_tot += pos_traj_collector
+            gpc_tot += goal_pos_collector
+        group_name = "grid_data_split_"+str(split+1)
+        utils.add_h5_group(group_name, db)
+        utils.add_h5_ds(dc_tot, "data", db, group_name)
+        utils.add_h5_ds(vc_tot, "value", db, group_name)
+        with open(os.path.join(save_dir, db_name+"_start_%i.pkl" % (split+1)),
+                  "w") as f:
+            pickle.dump(spc_tot, f,
+                        protocol=pickle.HIGHEST_PROTOCOL)
+            f.close()
+
+        with open(os.path.join(save_dir, db_name+"_traj_%i.pkl" % (split+1)),
+                  "w") as f:
+            pickle.dump(ptc_tot, f,
+                        protocol=pickle.HIGHEST_PROTOCOL)
+            f.close()
+
+        with open(os.path.join(save_dir, db_name+"_goal_%i.pkl" % (split+1)),
+                  "w") as f:
+            pickle.dump(gpc_tot, f,
+                        protocol=pickle.HIGHEST_PROTOCOL)
+            f.close()
+        print ("[MESSAGE] Save dataset %i at %s" % (split+1, save_dir))
+
+    db.flush()
+    db.close()
+    print ("[MESSAGE] Save dataset at %s" % (save_dir))
+
+
+def create_train_grid40(db_name, save_dir, num_samples=0):
+    """Create training dataset for 40x40 grid.
+
+    Parameters
+    ----------
+    db_name : str
+        the name of dataset
+    save_dir : str
+        the directory of the output path (must exist)
+    """
+    db = utils.init_h5_db(db_name+".h5", save_dir)
+
+    # collect data
+    for split in xrange(5):
+        dc_tot = None
+        vc_tot = None
+        spc_tot = []
+        ptc_tot = []
+        gpc_tot = []
+        for idx in xrange(split*20+1, split*20+21):
+            (data_collector, value_collector, start_pos_collector,
+             pos_traj_collector, goal_pos_collector) = sample_data_grid40(
+                idx, num_samples)
+            if dc_tot is None:
+                dc_tot = data_collector
+            else:
+                dc_tot = np.vstack((dc_tot, data_collector))
+            if vc_tot is None:
+                vc_tot = value_collector
+            else:
+                vc_tot = np.vstack((vc_tot, value_collector))
+            spc_tot += start_pos_collector
+            ptc_tot += pos_traj_collector
+            gpc_tot += goal_pos_collector
+        group_name = "grid_data_split_"+str(split+1)
+        utils.add_h5_group(group_name, db)
+        utils.add_h5_ds(dc_tot, "data", db, group_name)
+        utils.add_h5_ds(vc_tot, "value", db, group_name)
+        with open(os.path.join(save_dir, db_name+"_start_%i.pkl" % (split+1)),
+                  "w") as f:
+            pickle.dump(spc_tot, f,
+                        protocol=pickle.HIGHEST_PROTOCOL)
+            f.close()
+
+        with open(os.path.join(save_dir, db_name+"_traj_%i.pkl" % (split+1)),
+                  "w") as f:
+            pickle.dump(ptc_tot, f,
+                        protocol=pickle.HIGHEST_PROTOCOL)
+            f.close()
+
+        with open(os.path.join(save_dir, db_name+"_goal_%i.pkl" % (split+1)),
+                  "w") as f:
+            pickle.dump(gpc_tot, f,
+                        protocol=pickle.HIGHEST_PROTOCOL)
+            f.close()
+        print ("[MESSAGE] Save dataset %i at %s" % (split+1, save_dir))
+
+    db.flush()
+    db.close()
+    print ("[MESSAGE] Save dataset at %s" % (save_dir))
+
+
+def load_train_grid8(return_imsize=True):
+    """Load train 8x8 grid."""
+    file_base_path = os.path.join(rlvision.RLVISION_DATA,
+                                  "train", "gridworld_8", "gridworld_8")
+
+    # load dataset
+    if not os.path.isfile(file_base_path+".h5"):
+        raise ValueError("The dataset %s is not existed!" %
+                         (file_base_path+".h5"))
+
+    db = h5py.File(file_base_path+".h5", mode="r")
+
+    with open(file_base_path+"_start.pkl", "r") as f:
+        start_pos_list = pickle.load(f)
+        f.close()
+
+    with open(file_base_path+"_traj.pkl", "r") as f:
+        traj_list = pickle.load(f)
+        f.close()
+
+    with open(file_base_path+"_goal.pkl", "r") as f:
+        goal_list = pickle.load(f)
+        f.close()
+
+    if return_imsize is True:
+        return (db['data'], db['value'], start_pos_list, traj_list,
+                goal_list, (8, 8))
+    else:
+        return (db['data'], db['value'], start_pos_list, traj_list,
+                goal_list)
+
+
+def load_train_grid16(return_imsize=True):
+    """Load train 16x16 grid."""
+    file_base_path = os.path.join(rlvision.RLVISION_DATA,
+                                  "train", "gridworld_16", "gridworld_16")
+
+    if not os.path.isfile(file_base_path+".h5"):
+        raise ValueError("The dataset %s is not existed!" %
+                         (file_base_path+".h5"))
+
+    db = h5py.File(file_base_path+".h5", mode="r")
+
+    # load dataset
+    data = None
+    value = None
+    start_tot = []
+    traj_tot = []
+    goal_tot = []
+    for split in xrange(1, 6):
+        if data is None:
+            data = db["grid_data_split_"+str(split)]['data']
+        else:
+            data = np.vstack((data,
+                              db["grid_data_split_"+str(split)]['data']))
+        if value is None:
+            value = db["grid_data_split_"+str(split)]['value']
+        else:
+            value = np.vstack((value,
+                               db["grid_data_split_"+str(split)]['value']))
+
+        with open(file_base_path+"_start_%i.pkl" % (split), "r") as f:
+            start_pos_list = pickle.load(f)
+            f.close()
+        start_tot += start_pos_list
+
+        with open(file_base_path+"_traj_%i.pkl" % (split), "r") as f:
+            traj_list = pickle.load(f)
+            f.close()
+        traj_tot += traj_list
+
+        with open(file_base_path+"_goal_%i.pkl" % (split), "r") as f:
+            goal_list = pickle.load(f)
+            f.close()
+        goal_tot += goal_list
+
+    if return_imsize:
+        return data, value, start_tot, traj_tot, goal_tot, (16, 16)
+    else:
+        return data, value, start_tot, traj_tot, goal_tot
+
+
+def load_train_grid28(return_imsize=True):
+    """Load train 28x28 grid."""
+    file_base_path = os.path.join(rlvision.RLVISION_DATA,
+                                  "train", "gridworld_28", "gridworld_28")
+
+    if not os.path.isfile(file_base_path+".h5"):
+        raise ValueError("The dataset %s is not existed!" %
+                         (file_base_path+".h5"))
+
+    db = h5py.File(file_base_path+".h5", mode="r")
+
+    # load dataset
+    data = None
+    value = None
+    start_tot = []
+    traj_tot = []
+    goal_tot = []
+    for split in xrange(1, 6):
+        if data is None:
+            data = db["grid_data_split_"+str(split)]['data']
+        else:
+            data = np.vstack((data,
+                              db["grid_data_split_"+str(split)]['data']))
+        if value is None:
+            value = db["grid_data_split_"+str(split)]['value']
+        else:
+            value = np.vstack((value,
+                               db["grid_data_split_"+str(split)]['value']))
+
+        with open(file_base_path+"_start_%i.pkl" % (split), "r") as f:
+            start_pos_list = pickle.load(f)
+            f.close()
+        start_tot += start_pos_list
+
+        with open(file_base_path+"_traj_%i.pkl" % (split), "r") as f:
+            traj_list = pickle.load(f)
+            f.close()
+        traj_tot += traj_list
+
+        with open(file_base_path+"_goal_%i.pkl" % (split), "r") as f:
+            goal_list = pickle.load(f)
+            f.close()
+        goal_tot += goal_list
+
+    if return_imsize:
+        return data, value, start_tot, traj_tot, goal_tot, (28, 28)
+    else:
+        return data, value, start_tot, traj_tot, goal_tot
+
+
+def load_train_grid40(return_imsize=True):
+    """Load train 40x40 grid."""
+    file_base_path = os.path.join(rlvision.RLVISION_DATA,
+                                  "train", "gridworld_40", "gridworld_40")
+
+    if not os.path.isfile(file_base_path+".h5"):
+        raise ValueError("The dataset %s is not existed!" %
+                         (file_base_path+".h5"))
+
+    db = h5py.File(file_base_path+".h5", mode="r")
+
+    # load dataset
+    data = None
+    value = None
+    start_tot = []
+    traj_tot = []
+    goal_tot = []
+    for split in xrange(1, 6):
+        if data is None:
+            data = db["grid_data_split_"+str(split)]['data']
+        else:
+            data = np.vstack((data,
+                              db["grid_data_split_"+str(split)]['data']))
+        if value is None:
+            value = db["grid_data_split_"+str(split)]['value']
+        else:
+            value = np.vstack((value,
+                               db["grid_data_split_"+str(split)]['value']))
+
+        with open(file_base_path+"_start_%i.pkl" % (split), "r") as f:
+            start_pos_list = pickle.load(f)
+            f.close()
+        start_tot += start_pos_list
+
+        with open(file_base_path+"_traj_%i.pkl" % (split), "r") as f:
+            traj_list = pickle.load(f)
+            f.close()
+        traj_tot += traj_list
+
+        with open(file_base_path+"_goal_%i.pkl" % (split), "r") as f:
+            goal_list = pickle.load(f)
+            f.close()
+        goal_tot += goal_list
+
+    if return_imsize:
+        return data, value, start_tot, traj_tot, goal_tot, (40, 40)
+    else:
+        return data, value, start_tot, traj_tot, goal_tot
