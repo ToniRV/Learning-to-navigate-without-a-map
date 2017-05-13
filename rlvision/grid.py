@@ -377,7 +377,7 @@ class Grid(object):
             # failed
             return -1., -1
         else:
-            return 0., 0
+            return 0, 0
 
 
 class GridDataSampler(object):
