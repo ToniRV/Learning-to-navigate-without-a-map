@@ -26,8 +26,11 @@ class world_model:
             self.models_tree = ElementTree.parse(f)
 
         self.default_box_node = 0
+        self.default_box_target_red = 0
+        self.default_box_target_green = 0
         self.default_cone     = 0
         self.default_tarmac   = 0
+        self.default_wall     = 0
         # Set world node to point to the empty world tree
         self.world_node = self.world_tree.find("world")
 
@@ -35,6 +38,10 @@ class world_model:
         for model in self.models_tree.find("world").findall("model"):
             if model.attrib["name"] == "unit_box":
                 self.default_box_node = copy.deepcopy(model)
+            if model.attrib["name"] == "box_target_red":
+                self.default_box_target_red = copy.deepcopy(model)
+            if model.attrib["name"] == "box_target_green":
+                self.default_box_target_green = copy.deepcopy(model)
             if model.attrib["name"] == "Construction Barrel":
                 self.default_cone = copy.deepcopy(model)
             if model.attrib["name"] == "asphalt_plane":
@@ -44,6 +51,20 @@ class world_model:
 
     def add_point(self, x, y):
         model = copy.deepcopy(self.default_box_node)
+        link_node     = model.find("link")
+        pose_node     = link_node.find("pose")
+        pose_node.text= str(x) + " " + str(y) + " 0 0 0 0"
+        self.world_node.append(model)
+
+    def add_target_box_red(self, x, y):
+        model = copy.deepcopy(self.default_box_target_red)
+        link_node     = model.find("link")
+        pose_node     = link_node.find("pose")
+        pose_node.text= str(x) + " " + str(y) + " 0 0 0 0"
+        self.world_node.append(model)
+
+    def add_target_box_green(self, x, y):
+        model = copy.deepcopy(self.default_box_target_green)
         link_node     = model.find("link")
         pose_node     = link_node.find("pose")
         pose_node.text= str(x) + " " + str(y) + " 0 0 0 0"
@@ -76,9 +97,15 @@ class world_model:
         children = ElementTree.fromstring(string.data)
         self.world_node.append(children)
 
-    def create_world_from_grid(self, grid, im_size):
+    def create_world_from_grid(self, grid, im_size, start, goal):
         # Create gazebo world out of the grid
         scale = 0.75
+
+        # Add start box
+        self.add_target_box_green(start[0], start[1])
+
+        # Add goal box
+        self.add_target_box_red(goal[0], goal[1])
 
         # Build walls around the field
         wall_width = 0.5
@@ -139,9 +166,12 @@ def main(args):
 
     utils.plot_grid(grid, im_size)
 
+    # Pick random start
+    start_pos = start_pos_list[0]
+
     # Create gazebo world from grid
     wm = world_model()
-    wm.create_world_from_grid(grid, im_size)
+    wm.create_world_from_grid(grid, im_size, start_pos, goal_pos)
 
 if __name__ == '__main__':
     main(sys.argv)

@@ -61,6 +61,78 @@
       <real_time_update_rate>100</real_time_update_rate>
       <gravity>0 0 -9.8</gravity>
     </physics>
+  <model name="box_target_green">
+      <static>1</static>
+      <link name="link">
+        <pose frame="">7 5 0 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>6 6 2</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://box_target_green/meshes/mesh.dae</uri>
+              <scale>0.1 0.1 0.1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <model name="box_target_red">
+      <static>1</static>
+      <link name="link">
+        <pose frame="">8 9 0 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>6 6 2</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://box_target_red/meshes/mesh.dae</uri>
+              <scale>0.1 0.1 0.1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
   <model name="grey_wall">
       <static>1</static>
       <link name="link">
@@ -82,7 +154,7 @@
       </link>
       <pose frame="">5.625 0 0 0 0 0</pose>
     </model>
-  <model name="grey_wall">
+    <model name="grey_wall">
       <static>1</static>
       <link name="link">
         <visual name="visual">
@@ -103,7 +175,7 @@
       </link>
       <pose frame="">0 5.625 0 0 0 1.57079632679</pose>
     </model>
-  <model name="grey_wall">
+    <model name="grey_wall">
       <static>1</static>
       <link name="link">
         <visual name="visual">
@@ -124,7 +196,7 @@
       </link>
       <pose frame="">11.25 5.625 0 0 0 -1.57079632679</pose>
     </model>
-  <model name="grey_wall">
+    <model name="grey_wall">
       <static>1</static>
       <link name="link">
         <visual name="visual">
@@ -145,7 +217,7 @@
       </link>
       <pose frame="">5.625 11.25 0 0 0 3.14159265359</pose>
     </model>
-  <model name="asphalt_plane">
+    <model name="asphalt_plane">
       <static>1</static>
       <link name="link">
         <visual name="visual">
