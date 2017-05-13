@@ -160,7 +160,7 @@ int main(int argc, char **argv) {
 
   // Reshape input to a grid with x, y coordinates
   bool first = true;
-  for (uint i, j, k = 0; k < value.size(); k++) {
+  for (uint i = 0, j = 0 , k = 0; k < value.size(); k++) {
     j = k % ((uint)std::sqrt(value.size()));
 
     // Check that we are not out of bounds.

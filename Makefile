@@ -15,7 +15,7 @@ clean:
 run:
 
 test:
-	PYTHONPATH=$(PYTHONPATH) python 
+	PYTHONPATH=$(PYTHONPATH) python
 
 data-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/data_test.py
@@ -58,5 +58,8 @@ dstar-40-exp:
 
 pg-16-exp:
 	THEANO_FLAGS=device=cpu PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/pg_16_exp.py
+
+world-generator:
+	PYTHONPATH=$(PYTHONPATH) python ./world_generator/scripts/world_generator.py
 
 cleanall:
