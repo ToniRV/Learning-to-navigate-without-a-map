@@ -76,18 +76,47 @@ class world_model:
         children = ElementTree.fromstring(string.data)
         self.world_node.append(children)
 
+    def create_world_from_grid(self, grid, im_size):
+        # Create gazebo world out of the grid
+        scale = 0.75
+
+        # Build walls around the field
+        wall_width = 0.5
+        self.add_wall(scale*(im_size[0]-1)/2.0, 0, 0, scale*(im_size[0]-1), wall_width)
+        self.add_wall(0, scale*(im_size[1]-1)/2.0, pi / 2.0, scale*(im_size[0]-1), wall_width)
+        self.add_wall(scale*(im_size[0]-1), scale*(im_size[1]-1)/2.0, - pi / 2.0, scale*(im_size[0]-1), wall_width)
+        self.add_wall(scale*(im_size[0]-1)/2.0, scale*(im_size[1]-1), pi, scale*(im_size[0]-1), wall_width)
+
+        # Add asphalt
+        self.add_tarmac(scale*(im_size[0]-1)/2.0, scale*(im_size[1]-1)/2.0, 0, scale*(im_size[0]-1), scale*(im_size[1]-1))
+
+        # Add cones wherever there should be obstacles
+        i = 1
+        j = 1
+        obstacle_indices = np.where(grid != 1)
+        unraveled_indices = np.unravel_index(obstacle_indices, im_size, order='C')
+        for x in grid:
+            if (grid[j+i*im_size[0]] != 1):
+                self.add_cone(scale*j, scale*i)
+                self.write()
+            j += 1
+            if (j % (im_size[1]-1)) == 0:
+                j = 1
+                i +=1
+                if (i == im_size[0]-1):
+                    break
+
     def write(self):
 	    self.world_tree.write(self.dir_path + "/../world_models/python_generated.world", encoding='utf-8')
 
 def main(args):
-    wm = world_model()
-
     # setup result folder
     model_name = "dstar-16"
     model_path = os.path.join(rlvision.RLVISION_MODEL, model_name)
     if not os.path.isdir(model_path):
         os.makedirs(model_path)
     print ("[MESSAGE] The model path is created at %s" % (model_path))
+
     # load data
     db, im_size = utils.load_grid16(split=1)
 
@@ -109,34 +138,10 @@ def main(args):
     print ("[MESSAGE] Number of trajectories:", len(start_pos_list))
 
     utils.plot_grid(grid, im_size)
-    # Create gazebo world out of the grid
-    scale = 0.75
 
-    # Build walls around the field
-    wall_width = 0.5
-    wm.add_wall(scale*(im_size[0]-1)/2.0, 0, 0, scale*(im_size[0]-1), wall_width)
-    wm.add_wall(0, scale*(im_size[1]-1)/2.0, pi / 2.0, scale*(im_size[0]-1), wall_width)
-    wm.add_wall(scale*(im_size[0]-1), scale*(im_size[1]-1)/2.0, - pi / 2.0, scale*(im_size[0]-1), wall_width)
-    wm.add_wall(scale*(im_size[0]-1)/2.0, scale*(im_size[1]-1), pi, scale*(im_size[0]-1), wall_width)
-
-    # Add asphalt
-    wm.add_tarmac(scale*(im_size[0]-1)/2.0, scale*(im_size[1]-1)/2.0, 0, scale*(im_size[0]-1), scale*(im_size[1]-1))
-
-
-    i = 1
-    j = 1
-    obstacle_indices = np.where(grid != 1)
-    unraveled_indices = np.unravel_index(obstacle_indices, im_size, order='C')
-    for x in grid:
-        if (grid[j+i*im_size[0]] != 1):
-            wm.add_cone(scale*j, scale*i)
-            wm.write()
-        j += 1
-        if (j % (im_size[1]-1)) == 0:
-            j = 1
-            i +=1
-            if (i == im_size[0]-1):
-                break
+    # Create gazebo world from grid
+    wm = world_model()
+    wm.create_world_from_grid(grid, im_size)
 
 if __name__ == '__main__':
     main(sys.argv)
