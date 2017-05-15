@@ -77,13 +77,15 @@ for game_idx in xrange(episode_count):
             aprob = a_t[0]/np.sum(a_t)
             action = np.random.choice(action_dim, 1, p=aprob)[0]
             action_flag = game.is_pos_valid(game.action2pos(action))
+            act_vec = np.zeros((action_dim))
 
             if action_flag is True:
+                act_vec[action] = 1.
                 game.update_state_from_action(action)
                 r_t, game_state = game.get_state_reward()
                 s_t1 = game.get_state().reshape((1,)+state_dim)
                 done = False
-                buff.add(s_t[0], a_t[0], r_t, s_t1[0], done)
+                buff.add(s_t[0], act_vec, r_t, s_t1[0], done)
             else:
                 r_t = -1.
                 s_t1 = game.get_state().flatten()
