@@ -13,7 +13,7 @@ import rlvision
 from rlvision import grid
 from rlvision.ddpg import ActorNet, CriticNet, ReplayBuffer
 
-#  import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 
 # load data
@@ -30,7 +30,7 @@ tau = 0.001
 lra = 0.0001  # learning rate to actor
 lrc = 0.001  # learning rate to critic
 
-action_dim = 8
+action_dim = 4
 state_dim = (imsize[0], imsize[1], 2)
 
 vision = False
@@ -72,21 +72,17 @@ for game_idx in xrange(episode_count):
 
         total_reward = 0.
         while True:
-            #  plt.subplot(1, 3, 1)
-            #  plt.imshow(s_t[0, :, :, 0], cmap="gray")
-            #  plt.subplot(1, 3, 2)
-            #  plt.imshow(s_t[0, :, :, 1], cmap="gray")
-            #  plt.show()
+            plt.subplot(1, 3, 1)
+            plt.imshow(s_t[0, :, :, 0], cmap="gray")
+            plt.subplot(1, 3, 2)
+            plt.imshow(s_t[0, :, :, 1], cmap="gray")
+            plt.show()
             loss = 0
             epsilon -= 1.0/explore
 
             # predict action
             a_t = actor.model.predict(s_t)
-            aprob = a_t[0]/np.sum(a_t)
-            action = np.argmax(a_t[0])
-            #  print (action)
-            #  action = np.random.choice(action_dim, 1, p=aprob)[0]
-            #  print (action)
+            action = np.random.choice(action_dim, 1, p=a_t[0])[0]
             action_flag = game.is_pos_valid(game.action2pos(action))
             act_vec = np.zeros((action_dim))
 

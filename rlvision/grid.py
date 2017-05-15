@@ -310,19 +310,35 @@ class Grid(object):
     def action2pos(self, action):
         """Translate action to position."""
         new_pos = [0, 0]
-        if action in [5, 0, 4]:
-            new_pos[0] = self.curr_pos[0]-1
-        elif action in [7, 1, 6]:
-            new_pos[0] = self.curr_pos[0]+1
-        else:
-            new_pos[0] = self.curr_pos[0]
 
-        if action in [5, 3, 7]:
+        # 4 actions
+        if action == 1:
+            new_pos[0] = self.curr_pos[0]
             new_pos[1] = self.curr_pos[1]-1
-        elif action in [4, 2, 6]:
-            new_pos[1] = self.curr_pos[1]+1
-        else:
+        elif action == 2:
+            new_pos[0] = self.curr_pos[0]+1
             new_pos[1] = self.curr_pos[1]
+        elif action == 3:
+            new_pos[0] = self.curr_pos[0]-1
+            new_pos[1] = self.curr_pos[1]
+        elif action == 4:
+            new_pos[0] = self.curr_pos[0]
+            new_pos[1] = self.curr_map[1]+1
+
+        # 8 action
+        #  if action in [5, 0, 4]:
+        #      new_pos[0] = self.curr_pos[0]-1
+        #  elif action in [7, 1, 6]:
+        #      new_pos[0] = self.curr_pos[0]+1
+        #  else:
+        #      new_pos[0] = self.curr_pos[0]
+        #
+        #  if action in [5, 3, 7]:
+        #      new_pos[1] = self.curr_pos[1]-1
+        #  elif action in [4, 2, 6]:
+        #      new_pos[1] = self.curr_pos[1]+1
+        #  else:
+        #      new_pos[1] = self.curr_pos[1]
 
         return tuple(new_pos)
 
