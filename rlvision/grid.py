@@ -372,12 +372,12 @@ class Grid(object):
         if recent_pos == self.goal_pos and \
            self.get_time() <= num_steps+1:
             # success
-            return 10., 1
+            return 100., 1
         elif self.get_time() > num_steps+1:
             # failed
-            return -1., -1
+            return -10., -1
         else:
-            return 0, 0
+            return -0.1, 0
 
 
 class GridDataSampler(object):
