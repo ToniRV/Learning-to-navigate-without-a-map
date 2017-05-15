@@ -375,7 +375,7 @@ class Grid(object):
             return 10., 1
         elif self.get_time() > num_steps+1:
             # failed
-            return -1., -1
+            return -10., -1
         else:
             return 0, 0
 

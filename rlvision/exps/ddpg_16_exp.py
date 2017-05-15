@@ -29,7 +29,7 @@ lra = 0.0001  # learning rate to actor
 lrc = 0.001  # learning rate to critic
 
 action_dim = 8
-state_dim = imsize[0]*imsize[1]
+state_dim = (imsize[0]*imsize[1]*2,)
 
 vision = False
 
@@ -43,16 +43,19 @@ epsilon = 1
 indicator = 0
 train_indictor = 1  # if 1 then train, 0 then test
 
-config = tf.ConvifProto()
+config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 sess = tf.Session(config=config)
-K.set_sessions(sess)
+K.set_session(sess)
 
 actor = ActorNet(sess, state_dim, action_dim, batch_size, tau, lra)
 critic = CriticNet(sess, state_dim, action_dim, batch_size, tau, lrc)
 buff = ReplayBuffer(buffer_size)
 
+# TODO: load weights
 
+
+# the game loop
 for game_idx in xrange(episode_count):
     print("Episode : " + str(game_idx) +
           " Replay Buffer " + str(buff.count()))
@@ -60,19 +63,35 @@ for game_idx in xrange(episode_count):
         # start game
         game = grid.Grid(data[game_idx], value[game_idx], imsize,
                          start_pos, is_po=False)
+        done = False
 
-        s_t = game.get_state()
+        s_t = game.get_state().reshape((1,)+state_dim)
 
         total_reward = 0.
         while True:
             loss = 0
             epsilon -= 1.0/explore
-            # TODO
-            a_t = actor.model.predict(s_t.reshape(1, s_t.shape[0]))
 
-            # TODO
-            game.update_state_from_action(a_t)
-            r_t, s_t1 = game.get_state_reward()
+            # predict action
+            a_t = actor.model.predict(s_t)
+            aprob = a_t[0]/np.sum(a_t)
+            action = np.random.choice(action_dim, 1, p=aprob)[0]
+            action_flag = game.is_pos_valid(game.action2pos(action))
+
+            if action_flag is True:
+                game.update_state_from_action(action)
+                r_t, game_state = game.get_state_reward()
+                s_t1 = game.get_state().reshape((1,)+state_dim)
+                done = False
+                buff.add(s_t[0], a_t[0], r_t, s_t1[0], done)
+            else:
+                r_t = -10.
+                s_t1 = game.get_state().flatten()
+                done = True
+
+            # make sure the game is terminated properly
+            if game_state in [-1, 1]:
+                done = True
 
             # do batch update
             batch = buff.get_batch(batch_size)
@@ -103,8 +122,8 @@ for game_idx in xrange(episode_count):
             total_reward += r_t
             s_t = s_t1
 
-            print("Episode", game_idx, "Step", step, "Action",
-                  a_t, "Reward", r_t, "Loss", loss)
+            print("Episode", game_idx, "Step", step,
+                  "Reward", r_t, "Loss", loss)
 
             step += 1
             if done:

@@ -59,6 +59,9 @@ dstar-40-exp:
 pg-16-exp:
 	THEANO_FLAGS=device=cpu PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/pg_16_exp.py
 
+ddpg-16-exp:
+	KERAS_BACKEND=tensorflow PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/ddpg_16_exp.py
+
 world-generator:
 	PYTHONPATH=$(PYTHONPATH) python ./world_generator/scripts/world_generator.py
 

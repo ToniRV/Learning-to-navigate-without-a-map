@@ -9,7 +9,7 @@ import random
 import numpy as np
 
 from keras.models import Model
-from keras.layers import InputLayer
+from keras.layers import InputLayer, Input
 from keras.layers import Dense
 from keras.layers import add
 
@@ -69,7 +69,7 @@ class ActorNet(object):
     def create_actor_network(self, state_size, action_dim):
         """Create actor network."""
         print ("[MESSAGE] Build actor network.""")
-        S = InputLayer(input_shape=[state_size])
+        S = Input(shape=state_size)
         h_0 = Dense(300, activation="relu")(S)
         h_1 = Dense(600, activation="relu")(h_0)
         A = Dense(action_dim, activation="softmax")(h_1)
@@ -119,8 +119,8 @@ class CriticNet(object):
     def create_critic_network(self, state_size, action_dim):
         """create critic network."""
         print ("[MESSAGE] Build critic network.""")
-        S = InputLayer(input_shape=(state_size))
-        A = InputLayer(input_shape=(action_dim))
+        S = Input(shape=state_size)
+        A = Input(shape=(action_dim,))
         w_1 = Dense(300, activation="relu")(S)
         a_1 = Dense(600, activation="linear")(A)
         h_1 = Dense(600, activation="linear")(w_1)
