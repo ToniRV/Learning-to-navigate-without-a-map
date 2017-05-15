@@ -312,16 +312,16 @@ class Grid(object):
         new_pos = [0, 0]
 
         # 4 actions
-        if action == 1:
+        if action == 0:
             new_pos[0] = self.curr_pos[0]
             new_pos[1] = self.curr_pos[1]-1
-        elif action == 2:
+        elif action == 1:
             new_pos[0] = self.curr_pos[0]+1
             new_pos[1] = self.curr_pos[1]
-        elif action == 3:
+        elif action == 2:
             new_pos[0] = self.curr_pos[0]-1
             new_pos[1] = self.curr_pos[1]
-        elif action == 4:
+        elif action == 3:
             new_pos[0] = self.curr_pos[0]
             new_pos[1] = self.curr_map[1]+1
 
