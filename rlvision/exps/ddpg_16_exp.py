@@ -29,7 +29,7 @@ lra = 0.0001  # learning rate to actor
 lrc = 0.001  # learning rate to critic
 
 action_dim = 8
-state_dim = (imsize[0]*imsize[1]*2,)
+state_dim = (imsize[0], imsize[1], 2)
 
 vision = False
 
@@ -65,7 +65,8 @@ for game_idx in xrange(episode_count):
                          start_pos, is_po=False)
         done = False
 
-        s_t = game.get_state().reshape((1,)+state_dim)
+        s_t = game.get_state()
+        s_t = s_t.transpose((0, 2, 3, 1))
 
         total_reward = 0.
         while True:
@@ -83,7 +84,8 @@ for game_idx in xrange(episode_count):
                 act_vec[action] = 1.
                 game.update_state_from_action(action)
                 r_t, game_state = game.get_state_reward()
-                s_t1 = game.get_state().reshape((1,)+state_dim)
+                s_t1 = game.get_state()
+                s_t1 = s_t1.transpose((0, 2, 3, 1))
                 done = False
                 buff.add(s_t[0], act_vec, r_t, s_t1[0], done)
             else:

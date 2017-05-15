@@ -9,9 +9,11 @@ import random
 import numpy as np
 
 from keras.models import Model
-from keras.layers import InputLayer, Input
-from keras.layers import Dense
+from keras.layers import Input
+from keras.layers import Dense, Conv2D, Flatten
 from keras.layers import add
+from keras.layers import AveragePooling2D
+from keras.regularizers import l2
 
 import tensorflow as tf
 import keras.backend as K
@@ -70,8 +72,15 @@ class ActorNet(object):
         """Create actor network."""
         print ("[MESSAGE] Build actor network.""")
         S = Input(shape=state_size)
-        h_0 = Dense(300, activation="relu")(S)
-        h_1 = Dense(600, activation="relu")(h_0)
+        h_0 = Conv2D(32, (3, 3), padding="same",
+                     kernel_regularizer=l2(0.0001),
+                     activation="relu")(S)
+        h_1 = Conv2D(32, (3, 3), padding="same",
+                     kernel_regularizer=l2(0.0001),
+                     activation="relu")(h_0)
+        h_1 = AveragePooling2D(2, 2)(h_1)
+        h_1 = Flatten()(h_1)
+        h_1 = Dense(600, activation="relu")(h_1)
         A = Dense(action_dim, activation="softmax")(h_1)
 
         model = Model(inputs=S, outputs=A)
@@ -121,9 +130,20 @@ class CriticNet(object):
         print ("[MESSAGE] Build critic network.""")
         S = Input(shape=state_size)
         A = Input(shape=(action_dim,))
-        w_1 = Dense(300, activation="relu")(S)
+
+        # input
+        h_0 = Conv2D(32, (3, 3), padding="same",
+                     kernel_regularizer=l2(0.0001),
+                     activation="relu")(S)
+        h_1 = Conv2D(32, (3, 3), padding="same",
+                     kernel_regularizer=l2(0.0001),
+                     activation="relu")(h_0)
+        h_1 = AveragePooling2D(2, 2)(h_1)
+        h_1 = Flatten()(h_1)
+        h_1 = Dense(600, activation="relu")(h_1)
+
+        # action
         a_1 = Dense(600, activation="linear")(A)
-        h_1 = Dense(600, activation="linear")(w_1)
         h_2 = add([h_1, a_1])
         h_3 = Dense(600, activation="relu")(h_2)
         V = Dense(action_dim, activation="softmax")(h_3)
