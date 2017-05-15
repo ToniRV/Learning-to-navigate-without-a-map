@@ -13,6 +13,8 @@ import rlvision
 from rlvision import grid
 from rlvision.ddpg import ActorNet, CriticNet, ReplayBuffer
 
+import matplotlib.pyplot as plt
+
 
 # load data
 data, value, start_tot, traj_tot, goal_tot, imsize = grid.load_train_grid16()
@@ -70,6 +72,14 @@ for game_idx in xrange(episode_count):
 
         total_reward = 0.
         while True:
+            plt.subplot(1, 3, 1)
+            plt.imshow(s_t[0, 0], cmap="gray")
+            plt.subplot(1, 3, 2)
+            plt.imshow(s_t[0, 1], cmap="gray")
+            #  plt.subplot(1, 3, 3)
+            #  plt.imshow(game_state[0, 2], cmap="gray")
+            plt.show()
+            #  print (game_state[0, 0])
             loss = 0
             epsilon -= 1.0/explore
 
