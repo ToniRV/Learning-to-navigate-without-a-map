@@ -323,7 +323,7 @@ class Grid(object):
             new_pos[1] = self.curr_pos[1]
         elif action == 3:
             new_pos[0] = self.curr_pos[0]
-            new_pos[1] = self.curr_map[1]+1
+            new_pos[1] = self.curr_pos[1]+1
 
         # 8 action
         #  if action in [5, 0, 4]:
