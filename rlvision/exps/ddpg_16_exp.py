@@ -122,14 +122,14 @@ for game_idx in xrange(episode_count):
             total_reward += r_t
             s_t = s_t1
 
-            print("Episode", game_idx, "Step", step,
-                  "Reward", r_t, "Loss", loss)
+            #  print("Episode", game_idx, "Step", step,
+            #        "Reward", r_t, "Loss", loss)
 
             step += 1
             if done:
                 break
-        if (train_indictor):
-            print ("Save model")
+        #  if (train_indictor):
+        #      print ("Save model")
 
         print("TOTAL REWARD @ " + str(game_idx) + "-th Episode  : Reward " +
               str(total_reward))
