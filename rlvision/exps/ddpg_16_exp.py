@@ -96,7 +96,7 @@ for game_idx in xrange(episode_count):
                 done = False
                 buff.add(s_t[0], act_vec, r_t, s_t1[0], done)
             else:
-                r_t = -1.
+                r_t = -10.
                 s_t1 = game.get_state().flatten()
                 done = True
 
