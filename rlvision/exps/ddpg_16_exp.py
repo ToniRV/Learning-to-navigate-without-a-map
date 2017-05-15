@@ -83,7 +83,10 @@ for game_idx in xrange(episode_count):
             # predict action
             a_t = actor.model.predict(s_t)
             aprob = a_t[0]/np.sum(a_t)
-            action = np.random.choice(action_dim, 1, p=aprob)[0]
+            action = np.argmax(a_t[0])
+            #  print (action)
+            #  action = np.random.choice(action_dim, 1, p=aprob)[0]
+            #  print (action)
             action_flag = game.is_pos_valid(game.action2pos(action))
             act_vec = np.zeros((action_dim))
 
