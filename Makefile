@@ -65,8 +65,15 @@ ddpg-16-exp:
 world-generator:
 	PYTHONPATH=$(PYTHONPATH) python ./world_generator/scripts/world_generator.py
 
+# for 16x16
 vin-exp:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp.py
+
+vin-exp-28:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_28.py
+
+vin-exp-8:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_8.py
 
 new-data-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/new_data_test.py

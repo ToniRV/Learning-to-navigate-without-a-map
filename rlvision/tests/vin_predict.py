@@ -51,11 +51,12 @@ def predict(im, pos, model, k):
 
 
 # load data
-db, im_size = utils.load_grid16(split=1)
+file_name = os.path.join(rlvision.RLVISION_DATA,
+                         "chain_data", "grid16.pkl")
 model_file = os.path.join(rlvision.RLVISION_MODEL, "vin_model.h5")
 
 k = 20
-train, test = process_map_data(db, im_size)
+_, test = process_map_data(file_name)
 model = vin_model(l_s=test[0].shape[2], k=k)
 model.load_weights(model_file)
 
