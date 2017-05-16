@@ -46,7 +46,7 @@ def process_map_data(path):
     label_test = label_data[num_train:]
 
     return (im_train, state_train, label_train), \
-           (im_test, state_test, label_test)
+           (im_test, state_test, label_test), data['sample_idx']
 
 
 def mask_grid(pos, grid, radius, one_is_free=True):
@@ -74,14 +74,15 @@ def mask_grid(pos, grid, radius, one_is_free=True):
         the masked grid
     """
     mask = np.zeros_like(grid)
+    new_grid = grid.copy()
     rr, cc = draw.circle(pos[0], pos[1], radius=radius,
                          shape=mask.shape)
     mask[rr, cc] = 1
     if one_is_free:
-        return grid*mask
+        return new_grid*mask
     else:
-        masked_img = np.ones_like(grid)
-        masked_img[rr, cc] = grid[rr, cc]
+        masked_img = np.ones_like(new_grid)
+        masked_img[rr, cc] = new_grid[rr, cc]
         return masked_img
 
 
@@ -102,12 +103,13 @@ def accumulate_map(source_grid, new_grid, one_is_free=True):
     acc_grid : numpy.ndarray
         the accumulated map
     """
+    out_grid = source_grid.copy()
     if one_is_free:
-        acc_grid = source_grid+new_grid
+        acc_grid = out_grid+new_grid
         acc_grid[acc_grid > 0] = 1
         return acc_grid
     else:
-        return source_grid*new_grid
+        return out_grid*new_grid
 
 
 def plot_grid(data, imsize, start=None, pos=None, goal=None, title=None):

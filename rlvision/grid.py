@@ -396,6 +396,44 @@ class Grid(object):
             return -0.01, 0
 
 
+class GridSampler(object):
+    """Sample grid from data."""
+    def __init__(self, im_data, state_data, label_data, sample_idx, im_size):
+        """Init data sampler."""
+        self.im_data = im_data
+        self.state_data = state_data
+        self.label_data = label_data
+        self.sample_idx = sample_idx
+        self.im_size = im_size
+        self.grid_idx = 0
+
+    def find_goal(self, value_grid):
+        """find goal position."""
+        goal = np.argwhere(value_grid.max() == value_grid)[0][::-1]
+        return (goal[0], goal[1])
+
+    def get_grid(self, grid_idx):
+        """get a grid according to grid idx."""
+        end_idx = self.sample_idx[grid_idx]
+        start_idx = self.sample_idx[grid_idx-1] if grid_idx != 0 else 0
+        grid = self.im_data[start_idx]
+        label = self.label_data[start_idx:end_idx]
+        state = self.state_data[start_idx:end_idx]
+        return grid, state, label
+
+    def compare_grid(self, grid_1, grid_2):
+        """compare grid."""
+        return np.array_equal(grid_1[0], grid_2[0])
+
+    def next(self):
+        """Find next grid."""
+        if self.grid_idx < len(self.sample_idx):
+            grid_data = self.get_grid(self.grid_idx)
+            self.grid_idx += 1
+
+        return grid_data
+
+
 class GridDataSampler(object):
     """A grid data sampler from the raw data."""
 

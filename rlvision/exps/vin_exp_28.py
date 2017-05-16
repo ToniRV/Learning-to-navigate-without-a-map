@@ -15,7 +15,7 @@ from rlvision.vin import vin_model
 
 # load data
 file_name = os.path.join(rlvision.RLVISION_DATA,
-                         "chain_data", "grid28.pkl")
+                         "chain_data", "grid28_with_idx.pkl")
 
 # parameters
 batch_size = 256

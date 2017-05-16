@@ -66,8 +66,8 @@ world-generator:
 	PYTHONPATH=$(PYTHONPATH) python ./world_generator/scripts/world_generator.py
 
 # for 16x16
-vin-exp:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp.py
+vin-exp-16:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_16.py
 
 vin-exp-28:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_28.py

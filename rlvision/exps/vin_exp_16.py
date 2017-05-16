@@ -13,7 +13,7 @@ from rlvision.vin import vin_model
 
 # load data
 file_name = os.path.join(rlvision.RLVISION_DATA,
-                         "chain_data", "grid16.pkl")
+                         "chain_data", "grid16_with_idx.pkl")
 
 # parameters
 batch_size = 256
@@ -36,8 +36,8 @@ model.fit([train[0].transpose((0, 2, 3, 1))
           batch_size=batch_size,
           epochs=nb_epochs)
 
-model_json = os.path.join(rlvision.RLVISION_MODEL, "vin_model.json")
-model_h5 = os.path.join(rlvision.RLVISION_MODEL, "vin_model.h5")
+model_json = os.path.join(rlvision.RLVISION_MODEL, "vin_model_16.json")
+model_h5 = os.path.join(rlvision.RLVISION_MODEL, "vin_model_16.h5")
 with open(model_json, 'w') as f:
     f.write(model.to_json())
 model.save_weights(model_h5, overwrite=True)

@@ -5,29 +5,36 @@ Email : duguyue100@gmail.com
 """
 import os
 
+import numpy as np
+
 import rlvision
 from rlvision import utils
 from rlvision.utils import process_map_data
-
-import matplotlib.pyplot as plt
+from rlvision.grid import GridSampler
 
 file_name = os.path.join(rlvision.RLVISION_DATA,
-                         "chain_data", "grid16.pkl")
+                         "chain_data", "grid28_with_idx.pkl")
 
-train, test = process_map_data(file_name)
+train, test, sample_idx = process_map_data(file_name)
+sampler = GridSampler(train[0], train[1], train[2], sample_idx, (16, 16))
 
-grid = 1-train[0][0, 0]
-
-masked_grid = utils.mask_grid((0, 0), grid, 6, one_is_free=True)
-
-plt.figure()
-plt.imshow(masked_grid, cmap="gray")
-
-plt.show()
-
-#  for idx in xrange(100):
+#  grid, state, label = sampler.get_grid(7)
+#  print (state.shape)
+#
+#  prev_grid = 1-grid[0]
+#  source_grid = np.zeros_like(prev_grid)
+#  for idx in xrange(state.shape[0]):
 #      #  pos = [train[1][idx]]
-#      pos = [(train[1][idx][1], train[1][idx][0])]
-#      grid = 1-train[0][idx, 0]
-#      utils.plot_grid(grid, (16, 16),
+#      pos = [(state[idx][1], state[idx][0])]
+#      new_grid = 1-grid[0]
+#
+#      if np.array_equal(prev_grid, new_grid):
+#          masked_grid = utils.mask_grid(pos[0], new_grid, 3)
+#          source_grid = utils.accumulate_map(source_grid, masked_grid)
+#      else:
+#          prev_grid = grid
+#          source_grid = np.zeros_like(grid)
+#      utils.plot_grid(source_grid, (16, 16),
 #                      start=None, pos=pos, goal=None, title=None)
+
+print (len(sample_idx))
