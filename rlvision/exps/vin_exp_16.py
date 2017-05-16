@@ -23,7 +23,7 @@ print('# Minibatch-size: {}'.format(batch_size))
 print('# epoch: {}'.format(nb_epochs))
 print('')
 
-train, test = utils.process_map_data(file_name)
+train, test, _ = utils.process_map_data(file_name)
 model = vin_model(l_s=train[0].shape[2], k=20)
 model.compile(optimizer="adam",
               loss='categorical_crossentropy',
