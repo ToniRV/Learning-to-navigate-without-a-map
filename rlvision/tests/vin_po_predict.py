@@ -9,6 +9,7 @@ import rlvision
 from rlvision import utils
 from rlvision.vin import vin_model, get_layer_output
 from rlvision.utils import process_map_data
+from rlvision.grid import GridSampler
 
 
 def get_action(a):
@@ -37,7 +38,7 @@ def find_goal(m):
 
 def predict(im, pos, model, k):
     im_ary = np.array([im]).transpose((0, 2, 3, 1)) \
-        if K.image_dim_ordering() == 'tf' else np.array([im])
+        if K.image_data_format() == 'channels_last' else np.array([im])
     res = model.predict([im_ary,
                          np.array([pos])])
 
@@ -56,40 +57,36 @@ file_name = os.path.join(rlvision.RLVISION_DATA,
 model_file = os.path.join(rlvision.RLVISION_MODEL, "vin_model_po_16.h5")
 
 k = 20
-_, test, _ = process_map_data(file_name)
-model = vin_model(l_s=test[0].shape[2], k=k)
+
+im_data, state_data, label_data, sample_idx = process_map_data(
+    file_name, return_full=True)
+model = vin_model(l_s=im_data.shape[2], k=k)
 model.load_weights(model_file)
 
-for d in zip(*test):
-    im = d[0]
-    print im.shape
-    pos = d[1]
-    print pos
-    action, reward, value = predict(im, pos, model, k)
+sampler = GridSampler(im_data, state_data, label_data, sample_idx, (16, 16))
 
-    path = [tuple(pos)]
-    for _ in range(30):
-        if im[1][pos[1], pos[0]] == 1:
-            break
-        action, _, _ = predict(im, pos, model, k)
+for grid_idx in xrange(3500, 4500):
+    grid, state, label, goal = sampler.get_grid(grid_idx)
+
+    step_map = np.zeros((2, 16, 16))
+    step_map[0] = np.ones((16, 16))
+    step_map[1] = grid[1]
+    pos = [state[0, 0], state[0, 1]]
+    path = [(pos[1], pos[0])]
+    for step in xrange(30):
+        masked_img = utils.mask_grid((pos[1], pos[0]),
+                                     grid[0], 3, one_is_free=False)
+        step_map[0] = utils.accumulate_map(step_map[0], masked_img,
+                                           one_is_free=False)
+
+        action, _, _ = predict(step_map, pos, model, k)
         dx, dy = get_action(action)
         pos[0] = pos[0] + dx
         pos[1] = pos[1] + dy
-        path.append(tuple(pos))
+        path.append((pos[1], pos[0]))
 
-    test_img = cv2.cvtColor(im[0], cv2.COLOR_GRAY2BGR)
-    goal = find_goal(im[1])
-
-    for s in path:
-        cv2.rectangle(test_img, (s[0], s[1]), (s[0], s[1]), (1, 0, 0), -1)
-    cv2.rectangle(test_img, (path[0][0], path[0][1]),
-                  (path[0][0], path[0][1]), (0, 1, 1), -1)
-    cv2.rectangle(test_img, (goal[0], goal[1]),
-                  (goal[0], goal[1]), (0, 0, 1), -1)
-    cv2.imshow("image", cv2.resize(255 - test_img * 255,
-               (300, 300), interpolation=cv2.INTER_NEAREST))
-    cv2.imshow("reward", cv2.resize(reward, (300, 300),
-                                    interpolation=cv2.INTER_NEAREST))
-    cv2.imshow("value", cv2.resize(value / 80, (300, 300),
-               interpolation=cv2.INTER_NEAREST))
-    cv2.waitKey(0)
+        utils.plot_grid(1-step_map[0], (16, 16), start=path[0],
+                        pos=path, goal=(goal[1], goal[0]), title=str(step+1))
+        if pos[0] == goal[0] and pos[1] == goal[1]:
+            print ("[MESSAGE] FOUND THE PATH")
+            break

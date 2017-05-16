@@ -90,5 +90,10 @@ new-data-test:
 vis-vin-data:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vis_vin_data.py
 
+vin-po-predict:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_predict.py
+
+vin-predict:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_predict.py
 
 cleanall:

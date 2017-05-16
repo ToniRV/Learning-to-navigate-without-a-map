@@ -419,7 +419,8 @@ class GridSampler(object):
         grid = self.im_data[start_idx]
         label = self.label_data[start_idx:end_idx]
         state = self.state_data[start_idx:end_idx]
-        return grid, state, label
+        goal = self.find_goal(grid[1])
+        return grid, state, label, goal
 
     def compare_grid(self, grid_1, grid_2):
         """compare grid."""
