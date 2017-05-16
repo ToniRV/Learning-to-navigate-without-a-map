@@ -3,12 +3,12 @@
 Author: Yuhuang Hu
 Email : duguyue100@gmail.com
 """
+import os
 import numpy as np
 
 import keras.backend as K
-#  from rlvion.vin import vin_model
-#  from utils import process_map_data
 
+import rlvision
 from rlvision import utils
 from rlvision.vin import vin_model
 
@@ -63,6 +63,8 @@ model.fit([im_train.transpose((0, 2, 3, 1))
           batch_size=batch_size,
           epochs=nb_epochs)
 
-with open('vin_model_structure.json', 'w') as f:
+model_json = os.path.join(rlvision.RLVISION_MODEL, "vin_model.json")
+model_h5 = os.path.join(rlvision.RLVISION_MODEL, "vin_model.h5")
+with open(model_json, 'w') as f:
     f.write(model.to_json())
-model.save_weights('vin_model_weights.h5', overwrite=True)
+model.save_weights(model_h5, overwrite=True)
