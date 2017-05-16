@@ -13,7 +13,7 @@ from rlvision.utils import process_map_data
 from rlvision.grid import GridSampler
 
 file_name = os.path.join(rlvision.RLVISION_DATA,
-                         "chain_data", "grid28_with_idx.pkl")
+                         "chain_data", "grid16_with_idx.pkl")
 
 train, test, sample_idx = process_map_data(file_name)
 sampler = GridSampler(train[0], train[1], train[2], sample_idx, (16, 16))
@@ -37,4 +37,18 @@ sampler = GridSampler(train[0], train[1], train[2], sample_idx, (16, 16))
 #      utils.plot_grid(source_grid, (16, 16),
 #                      start=None, pos=pos, goal=None, title=None)
 
-print (len(sample_idx))
+for grid_id in xrange(len(sample_idx)):
+    # sample grid
+    grid, state, label = sampler.get_grid(grid_id)
+
+    grid_map = grid[0]
+    value_map = grid[1]
+    acc_map = np.ones_like(grid_map)
+
+    for move_id in xrange(state.shape[0]):
+        masked_img = utils.mask_grid((state[move_id, 1], state[move_id, 0]),
+                                     grid_map, 3, one_is_free=False)
+        acc_map = utils.accumulate_map(acc_map, masked_img,
+                                       one_is_free=False)
+        utils.plot_grid(1-acc_map, (16, 16),
+                        start=None, pos=None, goal=None, title=None)
