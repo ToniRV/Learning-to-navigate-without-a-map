@@ -78,6 +78,8 @@ vin-exp-8:
 new-data-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/new_data_test.py
 
+vis-vin-data:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vis_vin_data.py
 
 
 cleanall:
