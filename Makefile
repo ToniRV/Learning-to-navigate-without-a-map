@@ -75,6 +75,15 @@ vin-exp-28:
 vin-exp-8:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_8.py
 
+vin-exp-po-16:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_po_16.py
+
+vin-exp-po-28:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_po_28.py
+
+vin-exp-po-8:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_po_8.py
+
 new-data-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/new_data_test.py
 
