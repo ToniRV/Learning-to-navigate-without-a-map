@@ -22,14 +22,20 @@ data_dict = ['batch_im_data', 'value_data', 'state_onehot_data',
              'label_data', 'state_y_data', 'im_data', 'state_x_data']
 
 
-def process_map_data(path):
+def process_map_data(path, return_full=False):
     data = joblib.load(path)
 
     im_data = data['im']
     value_data = data['value']
     state_data = data['state']
-    label_data = np.array([np.eye(1, 8, l)[0] for l in data['label']])
 
+    if return_full:
+        im_full = np.concatenate((np.expand_dims(im_data, 1),
+                                  np.expand_dims(value_data, 1)),
+                                 axis=1).astype(dtype=np.uint8)
+        return im_full, state_data, data['label'], data['sample_idx']
+
+    label_data = np.array([np.eye(1, 8, l)[0] for l in data['label']])
     num = im_data.shape[0]
     num_train = num - num / 5
 
