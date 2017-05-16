@@ -7,6 +7,7 @@
 from __future__ import print_function
 import os
 import h5py
+import joblib
 import numpy as np
 import scipy.io as sio
 from skimage import draw
@@ -21,47 +22,17 @@ data_dict = ['batch_im_data', 'value_data', 'state_onehot_data',
              'label_data', 'state_y_data', 'im_data', 'state_x_data']
 
 
-def read_mat_data(filename, imsize):
-    """Read a mat file."""
-    im_size = [imsize, imsize]
-    matlab_data = sio.loadmat(filename)
+def process_map_data(path):
+    data = joblib.load(path)
 
-    return matlab_data, im_size
-
-
-def process_map_train_data(db, im_size):
-    """Process training data."""
-    im_data = db['im_data']
-    value_data = db['value_data']
-    state_train = db['state_xy_data']
-    label_data = db['label_data']
-
-    im_data = np.reshape(im_data, (im_data.shape[0], im_size[0], im_size[1]))
-    value_data = np.reshape(value_data,
-                            (value_data.shape[0], im_size[0], im_size[1]))
-    label_train = np.array([np.eye(1, 8, l)[0] for l in label_data[:, 0]])
-    im_train = np.concatenate((np.expand_dims(im_data, 1),
-                               np.expand_dims(value_data, 1)),
-                              axis=1).astype(dtype=np.float32)
-
-    return im_train, state_train, label_train
-
-
-def process_map_data(db, im_size):
-    """Pass a db and return train and test for vin."""
-    # split data
-    im_data = db['im_data']
-    value_data = db['value_data']
-    state_data = db['state_xy_data']
-    label_data = db['label_data']
-
-    im_data = np.reshape(im_data, (im_data.shape[0], im_size[0], im_size[1]))
-    value_data = np.reshape(value_data,
-                            (value_data.shape[0], im_size[0], im_size[1]))
-    label_data = np.array([np.eye(1, 8, l)[0] for l in label_data[:, 0]])
+    im_data = data['im']
+    value_data = data['value']
+    state_data = data['state']
+    label_data = np.array([np.eye(1, 8, l)[0] for l in data['label']])
 
     num = im_data.shape[0]
     num_train = num - num / 5
+
     im_train = np.concatenate((np.expand_dims(im_data[:num_train], 1),
                                np.expand_dims(value_data[:num_train], 1)),
                               axis=1).astype(dtype=np.float32)
@@ -73,6 +44,7 @@ def process_map_data(db, im_size):
                              axis=1).astype(dtype=np.float32)
     state_test = state_data[num_train:]
     label_test = label_data[num_train:]
+
     return (im_train, state_train, label_train), \
            (im_test, state_test, label_test)
 
