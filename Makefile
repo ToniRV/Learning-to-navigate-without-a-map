@@ -65,4 +65,8 @@ ddpg-16-exp:
 world-generator:
 	PYTHONPATH=$(PYTHONPATH) python ./world_generator/scripts/world_generator.py
 
+vin-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp.py
+
+
 cleanall:
