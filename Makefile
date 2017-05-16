@@ -68,5 +68,9 @@ world-generator:
 vin-exp:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp.py
 
+new-data-test:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/new_data_test.py
+
+
 
 cleanall:

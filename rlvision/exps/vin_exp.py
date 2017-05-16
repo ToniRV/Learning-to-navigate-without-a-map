@@ -13,33 +13,12 @@ from rlvision import utils
 from rlvision.vin import vin_model
 
 # load data
-db, im_size = utils.load_grid16(split=1)
+file_name = os.path.join(rlvision.RLVISION_DATA,
+                         "new_data", "gridworld_16.mat")
 
-# split data
-im_data = db['im_data']
-value_data = db['value_data']
-state_data = db['state_xy_data']
-label_data = db['label_data']
+db, im_size = utils.read_mat_data(file_name, 16)
 
-im_data = np.reshape(im_data, (im_data.shape[0], im_size[0], im_size[1]))
-value_data = np.reshape(value_data,
-                        (value_data.shape[0], im_size[0], im_size[1]))
-label_data = np.array([np.eye(1, 8, l)[0] for l in label_data[:, 0]])
-
-
-num = im_data.shape[0]
-num_train = num - num / 5
-im_train = np.concatenate((np.expand_dims(im_data[:num_train], 1),
-                           np.expand_dims(value_data[:num_train], 1)),
-                          axis=1).astype(dtype=np.float32)
-state_train = state_data[:num_train]
-label_train = label_data[:num_train]
-
-im_test = np.concatenate((np.expand_dims(im_data[num_train:], 1),
-                          np.expand_dims(value_data[num_train:], 1)),
-                         axis=1).astype(dtype=np.float32)
-state_test = state_data[num_train:]
-label_test = label_data[num_train:]
+im_train, state_train, label_train = utils.process_map_train_data(db, im_size)
 
 # parameters
 batch_size = 256
