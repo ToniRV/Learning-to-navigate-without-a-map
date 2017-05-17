@@ -35,7 +35,8 @@ model.compile(optimizer="adam",
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
-model_file = model_path+"vin-model-po-16-{epoch:02d}-{acc:.2f}.h5"
+model_file = os.path.join(
+    model_path, "vin-model-po-16-{epoch:02d}-{acc:.2f}.h5")
 checkpoint = ModelCheckpoint(model_file,
                              monitor='acc',
                              verbose=1,
