@@ -34,16 +34,23 @@ grid_sampler = GridDataSampler(im_data, value_data, imsize, states,
                                label_data)
 
 print ("[MESSAGE] SAMPLER READY")
+grid, value, start_pos_list, pos_traj, goal_pos = grid_sampler.next()
 
-i = 0
-while grid_sampler.grid_available:
-    print ("[MESSAGE] SAMPLING NEW GRID..")
-    grid, value, start_pos_list, pos_traj, goal_pos = grid_sampler.next()
-    i += 1
-    print ("[MESSAGE] THE %i-TH GRID SAMPLED. %i PATH FOUND." %
-           (i, len(start_pos_list)))
+print (grid)
+print (value)
+print (start_pos_list)
+print (pos_traj)
+print (goal_pos)
 
-print (i)
+#  i = 0
+#  while grid_sampler.grid_available:
+#      print ("[MESSAGE] SAMPLING NEW GRID..")
+#      grid, value, start_pos_list, pos_traj, goal_pos = grid_sampler.next()
+#      i += 1
+#      print ("[MESSAGE] THE %i-TH GRID SAMPLED. %i PATH FOUND." %
+#             (i, len(start_pos_list)))
+
+#  print (i)
 
 #  states_xy = []
 #  for i in xrange(100):

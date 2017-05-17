@@ -38,10 +38,62 @@ grid-class-test:
 restructure-data-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/restructure_dataset.py
 
+sample-train-ds:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/sample_train_ds.py
+
+load-train-ds:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/load_train_ds.py
+
+dstar-8-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_8_exp.py
+
 dstar-16-exp:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_16_exp.py
 
+dstar-28-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_28_exp.py
+
+dstar-40-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_40_exp.py
+
+pg-16-exp:
+	THEANO_FLAGS=device=cpu PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/pg_16_exp.py
+
+ddpg-16-exp:
+	KERAS_BACKEND=tensorflow PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/ddpg_16_exp.py
+
 world-generator:
 	PYTHONPATH=$(PYTHONPATH) python ./world_generator/scripts/world_generator.py
+
+# for 16x16
+vin-exp-16:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_16.py
+
+vin-exp-28:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_28.py
+
+vin-exp-8:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_8.py
+
+vin-exp-po-16:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_po_16.py
+
+vin-exp-po-28:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_po_28.py
+
+vin-exp-po-8:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_po_8.py
+
+new-data-test:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/new_data_test.py
+
+vis-vin-data:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vis_vin_data.py
+
+vin-po-predict:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_predict.py
+
+vin-predict:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_predict.py
 
 cleanall:
