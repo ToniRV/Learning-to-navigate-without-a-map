@@ -96,4 +96,13 @@ vin-po-predict:
 vin-predict:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_predict.py
 
+vin-po-benchmark-export-16:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_benchmark_export_16.py
+
+vin-po-benchmark-export-28:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_benchmark_export_28.py
+
+vin-po-benchmark-export-8:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_benchmark_export_8.py
+
 cleanall:
