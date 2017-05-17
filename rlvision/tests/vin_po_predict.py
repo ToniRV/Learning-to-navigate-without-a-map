@@ -53,7 +53,7 @@ def predict(im, pos, model, k):
 # load data
 file_name = os.path.join(rlvision.RLVISION_DATA,
                          "chain_data", "grid16_with_idx.pkl")
-model_file = os.path.join(rlvision.RLVISION_MODEL, "vin_model_po_16.h5")
+model_file = os.path.join(rlvision.RLVISION_MODEL, "pg16_vin_model.h5")
 
 k = 20
 

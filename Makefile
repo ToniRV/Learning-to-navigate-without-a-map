@@ -105,4 +105,7 @@ vin-po-benchmark-export-28:
 vin-po-benchmark-export-8:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_benchmark_export_8.py
 
+vin-pg-16-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_pg_16_exp.py
+
 cleanall:

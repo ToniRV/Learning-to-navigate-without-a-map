@@ -61,7 +61,8 @@ def predict(im, pos, model, k):
 file_name = os.path.join(rlvision.RLVISION_DATA,
                          "chain_data", "grid16_with_idx.pkl")
 model_file = os.path.join(
-    rlvision.RLVISION_MODEL, "vin_model_po_16.h5")
+    rlvision.RLVISION_MODEL,
+    "grid16-po", "vin-model-po-16-79-0.88.h5")
 
 im_data, state_data, label_data, sample_idx = process_map_data(
     file_name, return_full=True)
