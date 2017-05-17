@@ -428,19 +428,19 @@ class Grid(object):
             num_steps = self.im_size[0]+self.im_size[1]
         recent_pos = self.pos_history[-1]
         if recent_pos == self.goal_pos and \
-           self.get_time() <= num_steps:
+           self.get_time() < num_steps:
             # success
 # <<<<<<< HEAD
 #             return self.value_map[recent_pos[0], recent_pos[1]], 1
 #         elif self.get_time() > num_steps:
 # =======
             return 10., 1
-        elif self.get_time() > num_steps+1:
+        elif self.get_time() >= num_steps:
 # >>>>>>> unify-map-rep
             # failed
-            return -1., -1
+            return -10., -1
         else:
-            return 0.5, 0
+            return -0.1, 0
 
 
 class GridDataSampler(object):

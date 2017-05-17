@@ -71,7 +71,7 @@ gamma = 0.99
 update_frequency = 1
 learning_rate = 0.001
 collision_reward = -10
-dropout_rate = 0
+dropout_rate = 0.5
 resume = False
 render = False
 # network_type = "conv"
@@ -119,16 +119,16 @@ def learning_model(input_dim = [4, imsize[0], imsize[1]], model_type=1):
     else:
         # model.add(Convolution2D(64, 9, 9, subsample=(1, 1),
         #           border_mode='same', activation='relu', init='he_uniform', input_shape = input_dim))
-        model.add(Conv2D(32, (4, 4), kernel_initializer="he_uniform",
-                         activation="relu", input_shape = (1, imsize[0], imsize[1]),
+        model.add(Conv2D(64, (4, 4), kernel_initializer="he_uniform",
+                         activation="relu", input_shape = (4, imsize[0], imsize[1]),
                          padding="same", data_format = data_format, strides=(1, 1)))
 
         model.add(Flatten())
         # model.add(Dense(256, activation='relu', init='he_uniform'))
-        model.add(Dense(128, kernel_initializer="he_uniform", activation="sigmoid"))
+        model.add(Dense(512, kernel_initializer="he_uniform", activation="sigmoid"))
         # model.add(Dense(256, activation='relu', init='he_uniform'))
         model.add(Dropout(dropout_rate))
-        model.add(Dense(128, kernel_initializer="he_uniform", activation="sigmoid"))
+        model.add(Dense(512, kernel_initializer="he_uniform", activation="sigmoid"))
         model.add(Dropout(dropout_rate))
         model.add(Dense(number_of_inputs, activation="sigmoid"))
         opt = Adam(lr=learning_rate)
@@ -151,30 +151,26 @@ win_after_10k = 0
 model = learning_model(model_type = 1)
 model.summary()
 
-# play only one game
-game_idx = 3
-while True:
 # go through entire game space
-# for game_idx in xrange(num_train):
-    # for start_pos in start_tot[game_idx]:
-    for start_pos in [start_tot[game_idx][3]]:
+for game_idx in xrange(num_train):
+    for start_pos in start_tot[game_idx]:
         print ("\nThis is game %d, start position %s" % (game_idx, map(str,start_pos)))
         game = grid.Grid(data[game_idx], value[game_idx], imsize,
                          start_pos, is_po=False)
 
         #### avoid specail cases(straight line) that lead to overfitting
-        # if game.goal_pos[1] == start_pos[1]:
-        #     print (game.goal_pos)
-        #     print (start_pos)
-        #     continue
+        if game.goal_pos[1] == start_pos[1]:
+            print (game.goal_pos)
+            print (start_pos)
+            continue
 
         while True:
             # Get the current observable map
 
-#             x = [[game.curr_map, value[game_idx].reshape(game.explored_area.shape), game.curr_pos_map]]
-            x = [[game.curr_map + 10 * value[game_idx].reshape(game.curr_map.shape) + 10 * game.curr_pos_map]]
+            x = [[game.curr_map, game.explored_area, value[game_idx].reshape(game.explored_area.shape), game.curr_pos_map]]
+#             x = [[game.curr_map, game.curr_pos_map]]
             x = np.array(x)
-            print (x.astype(int))
+            # print (x.shape)
             aprob = model.predict(x, batch_size=1).flatten()
             xs.append(x)
             probs.append(aprob)
@@ -200,39 +196,31 @@ while True:
             # halt game if the action is hit the obstacle
             elif action_flag is False:
                 #keep going after hitting the wall
-                # y = np.ones_like(y)
-                # y[action] = 0
-                # game.update_state_from_action(action)
-                # reward = collision_reward
-                # _ , state = game.get_state_reward()
-
-                #terminate after hitting the wall
                 y = np.ones_like(y)
                 y[action] = 0
+                game.update_state_from_action(action)
                 reward = collision_reward
-                state = -1
+                _ , state = game.get_state_reward()
+
+                #terminate after hitting the wall
+                # reward = collision_reward
+                # state = -1
 
             # print ("bug3")
             dlogps.append(np.array(y).astype('float32') - aprob)
             reward = np.float64(reward)
             reward_sum += reward
             drs.append(reward)
+            # print ("bug4")
             # save game
             # result_pos_traj.append([game.pos_history, game_status])
 
             if state in [1, -1]:
-                ## print exploration map
-                map_explore = game.grid_map.astype(int)
-                for i in range(len(game.pos_history)):
-                    map_explore[game.pos_history[i]] = i + 1
-                map_explore[game.start_pos] = 33
-                map_explore[game.goal_pos] = 99
-                print(map_explore)
-
                 if state == 1:
                     win += 1
                     if episode_number > 10000:
                         win_after_10k += 1
+                # print ("bug5")
                 episode_number += 1
                 epx = np.vstack(xs)
                 epdlogp = np.vstack(dlogps)
@@ -241,6 +229,7 @@ while True:
 #                 discounted_epr -= np.mean(discounted_epr)
 #                 discounted_epr /= np.std(discounted_epr)
                 epdlogp *= discounted_epr
+                # print ("bug6")
                 # Slowly prepare the training batch
                 train_X.append(xs)
                 train_Y.append(epdlogp)
@@ -250,11 +239,12 @@ while True:
                     y_train = probs + learning_rate * np.squeeze(np.vstack(train_Y))
                     train_X = np.squeeze(np.vstack(train_X))
                     if train_X.ndim < 4:
-#                         train_X = np.expand_dims(train_X, axis=0)
-                        train_X = np.expand_dims(train_X, axis=1)
+                        train_X = np.expand_dims(train_X, axis=0)
+                    # print ("bug7")
                     model.train_on_batch(train_X, y_train)
                     # Clear the batch
                     train_X, train_Y, probs = [], [], []
+                    # print ("bug8")
                 # Reset the current environment nad print the current results
                 running_reward = reward_sum if running_reward is None \
                     else running_reward * 0.99 + reward_sum * 0.01

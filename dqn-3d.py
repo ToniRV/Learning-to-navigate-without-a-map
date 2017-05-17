@@ -15,6 +15,7 @@ import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense, Reshape, Activation
 from keras.optimizers import Adam, RMSprop
+from keras import optimizers
 from keras.layers.core import Flatten, Dropout
 # from keras.layers.convolutional import Convolution2D
 from keras.layers import Conv2D, AveragePooling2D
@@ -67,7 +68,7 @@ num_test = 1000 #not yet used
 
 # Script Parameters
 input_dim = imsize[0] * imsize[1]
-gamma = 0.99
+gamma = 0.9
 update_frequency = 1
 learning_rate = 0.001
 collision_reward = -10
@@ -131,8 +132,9 @@ def learning_model(input_dim = [4, imsize[0], imsize[1]], model_type=1):
         model.add(Dense(512, kernel_initializer="he_uniform", activation="sigmoid"))
         model.add(Dropout(dropout_rate))
         model.add(Dense(number_of_inputs, activation="sigmoid"))
-        opt = Adam(lr=learning_rate)
-        model.compile(loss='categorical_crossentropy', optimizer=opt)
+        # opt = Adam(lr=learning_rate)
+        sgd = optimizers.SGD(lr=learning_rate, decay=1e-6, momentum=0.9, nesterov=True)
+        model.compile(loss='categorical_crossentropy', optimizer=sgd)
     if resume is True:
         model.load_weights(model_path)
     return model
@@ -151,9 +153,12 @@ win_after_10k = 0
 model = learning_model(model_type = 1)
 model.summary()
 
+# play only one game
+# game_idx = 1
+# while True:
 # go through entire game space
 for game_idx in xrange(num_train):
-    for start_pos in start_tot[game_idx]:
+    for start_pos in [start_tot[game_idx][0]]:
         print ("\nThis is game %d, start position %s" % (game_idx, map(str,start_pos)))
         game = grid.Grid(data[game_idx], value[game_idx], imsize,
                          start_pos, is_po=False)
@@ -167,9 +172,11 @@ for game_idx in xrange(num_train):
         while True:
             # Get the current observable map
 
-            x = [[game.curr_map, game.explored_area, value[game_idx].reshape(game.explored_area.shape), 10*game.curr_pos_map]]
+            # x = [[game.curr_map + value[game_idx].reshape(game.explored_area.shape) + 2 * game.curr_pos_map]]
+            x = [[game.curr_map, game.explored_area, value[game_idx].reshape(game.explored_area.shape), game.curr_pos_map]]
 #             x = [[game.curr_map, game.curr_pos_map]]
             x = np.array(x)
+            # print (x)
             # print (x.shape)
             aprob = model.predict(x, batch_size=1).flatten()
             xs.append(x)
@@ -200,7 +207,7 @@ for game_idx in xrange(num_train):
                 y[action] = 0
                 game.update_state_from_action(action)
                 reward = collision_reward
-                _ , state = game.get_state_reward()
+                _, state = game.get_state_reward()
 
                 #terminate after hitting the wall
                 # reward = collision_reward
@@ -216,6 +223,14 @@ for game_idx in xrange(num_train):
             # result_pos_traj.append([game.pos_history, game_status])
 
             if state in [1, -1]:
+                ## print exploration map
+                map_explore = game.grid_map.astype(int)
+                for i in range(len(game.pos_history)):
+                    map_explore[game.pos_history[i]] = i + 1
+                map_explore[game.start_pos] = 33
+                map_explore[game.goal_pos] = 99
+                print(map_explore)
+
                 if state == 1:
                     win += 1
                     if episode_number > 10000:
