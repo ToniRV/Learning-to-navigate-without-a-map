@@ -79,9 +79,23 @@ class DQN():
         save_path = self.saver.save(self.session, ''.join(model_path + str(game_idx) + ".ckpt"))
         print("Model saved in file: %s" % save_path)
 
+    # Create some wrappers for simplicity
+    def conv2d(x, W, b, strides=1):
+        # Conv2D wrapper, with bias and relu activation
+        x = tf.nn.conv2d(x, W, strides=[1, strides, strides, 1], padding='SAME')
+        x = tf.nn.bias_add(x, b)
+        return tf.nn.relu(x)
 
+    def maxpool2d(x, k=2):
+        # MaxPool2D wrapper
+        return tf.nn.max_pool(x, ksize=[1, k, k, 1], strides=[1, k, k, 1],
+                              padding='SAME')
+
+        
     def create_Q_network(self):
-        # network weights
+            # network weights
+
+
         self.W1 = self.weight_variable([self.state_dim, 20], "W1")
         self.b1 = self.bias_variable([20], "b1")
         self.W2 = self.weight_variable([20,self.action_dim], "W2")
