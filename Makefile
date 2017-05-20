@@ -96,4 +96,19 @@ vin-po-predict:
 vin-predict:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_predict.py
 
+vin-po-benchmark-export-16:
+	THEANO_FLAGS=device=cpu PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_benchmark_export_16.py
+
+vin-po-benchmark-export-28:
+	THEANO_FLAGS=device=cpu PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_benchmark_export_28.py
+
+vin-po-benchmark-export-8:
+	THEANO_FLAGS=device=cpu PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_benchmark_export_8.py
+
+vin-pg-16-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_pg_16_exp.py
+
+vin-po-result:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_result.py
+
 cleanall:

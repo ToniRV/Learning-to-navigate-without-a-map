@@ -6,8 +6,10 @@ Author: Yuhuang Hu
 Email : duguyue100@gmail.com
 """
 import os
+import cPickle as pickle
 
 import keras.backend as K
+from keras.callbacks import ModelCheckpoint
 
 import rlvision
 from rlvision import utils
@@ -16,10 +18,14 @@ from rlvision.vin import vin_model
 # load data
 file_name = os.path.join(rlvision.RLVISION_DATA,
                          "chain_data", "grid8_po.pkl")
+model_path = os.path.join(rlvision.RLVISION_MODEL,
+                          "grid8-po")
+if not os.path.isdir(model_path):
+    os.makedirs(model_path)
 
 # parameters
 batch_size = 256
-nb_epochs = 50
+nb_epochs = 80
 
 print('# Minibatch-size: {}'.format(batch_size))
 print('# epoch: {}'.format(nb_epochs))
@@ -31,15 +37,30 @@ model.compile(optimizer="adam",
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
-model.fit([train[0].transpose((0, 2, 3, 1))
-           if K.image_dim_ordering() == 'tf' else train[0],
-           train[1]],
-          train[2],
-          batch_size=batch_size,
-          epochs=nb_epochs)
+model_file = os.path.join(
+    model_path, "vin-model-po-8-{epoch:02d}-{acc:.2f}.h5")
+checkpoint = ModelCheckpoint(model_file,
+                             monitor='acc',
+                             verbose=1,
+                             save_best_only=True,
+                             mode='max',
+                             save_weights_only=True)
 
-model_json = os.path.join(rlvision.RLVISION_MODEL, "vin_model_po_8.json")
-model_h5 = os.path.join(rlvision.RLVISION_MODEL, "vin_model_po_8.h5")
+history = model.fit([train[0].transpose((0, 2, 3, 1))
+                     if K.image_data_format() == 'channels_last'
+                     else train[0],
+                     train[1]],
+                    train[2],
+                    batch_size=batch_size,
+                    epochs=nb_epochs,
+                    callbacks=[checkpoint])
+
+model_json = os.path.join(model_path, "vin_model_po_8.json")
 with open(model_json, 'w') as f:
     f.write(model.to_json())
-model.save_weights(model_h5, overwrite=True)
+
+history_name = os.path.join(model_path, "history.pkl")
+with open(history_name, "wb") as f:
+    pickle.dump(history.history, f, protocol=pickle.HIGHEST_PROTOCOL)
+    f.close()
+print ("[MESSAGE] Save training history at %s" % (history_name))
