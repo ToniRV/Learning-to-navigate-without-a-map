@@ -111,4 +111,14 @@ vin-pg-16-exp:
 vin-po-result:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_result.py
 
+select-po-grid:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/select_po_grid.py
+
+select-po-grid-export:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/select_po_grid_export.py
+
+load-selected-grid:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/load_selected_grid.py
+
+
 cleanall:

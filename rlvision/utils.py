@@ -6,6 +6,7 @@
 """
 from __future__ import print_function
 import os
+import cPickle as pickle
 import h5py
 import joblib
 import numpy as np
@@ -20,6 +21,18 @@ import rlvision
 data_dict = ['batch_im_data', 'value_data', 'state_onehot_data',
              'state_xy_data', 'batch_value_data', 'batch_label_data',
              'label_data', 'state_y_data', 'im_data', 'state_x_data']
+
+
+def load_grid_selection(path):
+    """Load a selected grid from pickle."""
+    if not os.path.isfile(path):
+        raise ValueError("The file is not existed.""")
+
+    with open(path, "r") as f:
+        data = pickle.load(f)
+        f.close()
+
+    return data['environment'], data['gt'], data['po'], data['goal']
 
 
 def process_map_data(path, return_full=False):
@@ -137,17 +150,17 @@ def plot_grid(data, imsize, start=None, pos=None, goal=None, title=None):
 
     if start is not None:
         assert isinstance(start, tuple)
-        plt.scatter(x=[start[1]], y=[start[0]], marker="*", c="orange", s=50)
+        plt.scatter(x=[start[0]], y=[start[1]], marker="*", c="orange", s=50)
 
     if pos is not None:
         assert isinstance(pos, list)
         for pos_element in pos:
-            plt.scatter(x=[pos_element[1]], y=[pos_element[0]],
+            plt.scatter(x=[pos_element[0]], y=[pos_element[1]],
                         marker=".", c="blue", s=50)
 
     if goal is not None:
         assert isinstance(goal, tuple)
-        plt.scatter(x=[goal[1]], y=[goal[0]], marker="*", c="r", s=50)
+        plt.scatter(x=[goal[0]], y=[goal[1]], marker="*", c="r", s=50)
 
     plt.imshow(img, cmap="gray")
     if title is not None:
