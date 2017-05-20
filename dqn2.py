@@ -82,9 +82,11 @@ class DQN():
 
     def create_Q_network(self):
         # network weights
+        self.C1 = self.weight_variable([-1, 16, 16, 1], "C1")
+        self.C2 = self.weight_variable([self.], "C2")
         self.W1 = self.weight_variable([self.state_dim, 20], "W1")
         self.b1 = self.bias_variable([20], "b1")
-        self.W2 = self.weight_variable([20,self.action_dim], "W2")
+        self.W2 = self.weight_variable([20, self.action_dim], "W2")
         self.b2 = self.bias_variable([self.action_dim], "b2")
         # input layer
         self.state_input = tf.placeholder("float",[None,self.state_dim])
@@ -152,7 +154,7 @@ class DQN():
         initial = tf.truncated_normal(shape)
         return tf.Variable(initial, name = name)
 
-    def bias_variable(self,shape, name = None):
+    def bias_variable(self, shape, name = None):
         initial = tf.constant(0.01, shape = shape)
         return tf.Variable(initial, name = name)
 

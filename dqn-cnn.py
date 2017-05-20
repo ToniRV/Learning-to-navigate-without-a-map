@@ -30,7 +30,8 @@ num_train = 4000
 num_test = 1000 #not yet used
 
 # Script Parameters
-input_dim = imsize[0] * imsize[1]
+# input_dim = imsize[0] * imsize[1]
+input_dim = imsize
 update_frequency = 1
 learning_rate = 0.001
 collision_reward = -10
@@ -64,7 +65,33 @@ class DQN():
         # self.action_dim = env.action_space.n
         self.action_dim = num_output
 
-        self.create_Q_network()
+        #ConvNet Store layers weight & bias
+        self.weights = {
+            # 5x5 conv, 1 input, 32 outputs
+            # 'wc1': tf.Variable(tf.random_normal([256, 20])),
+            'wc1': tf.Variable(tf.random_normal([4, 4, 1, 8])),
+            # 5x5 conv, 32 inputs, 64 outputs
+            # 'wc2': tf.Variable(tf.random_normal([3, 3, 8, 8])),
+            # fully connected, 4*4*64 inputs, 1024 outputs
+            # 'wd1': tf.Variable(tf.random_normal([16*16*8, 32])),
+            # 1024 inputs, 10 outputs (class prediction)
+            'out': tf.Variable(tf.random_normal([128, num_output]))
+        }
+
+        self.biases = {
+            'bc1': tf.Variable(tf.random_normal([8])),
+            # 'bc2': tf.Variable(tf.random_normal([8])),
+            # 'bd1': tf.Variable(tf.random_normal([32])),
+            'out': tf.Variable(tf.random_normal([num_output]))
+        }
+        # self.state_input = tf.placeholder(tf.float32, [None, self.state_dim[0] * self.state_dim[1]])
+        self.state_input = tf.placeholder("float",[None, self.state_dim[0] * self.state_dim[1]])
+        y = tf.placeholder(tf.float32, [None, num_output])
+        keep_prob = tf.placeholder(tf.float32) #dropout (keep probability)
+        #end of ConvNet
+
+        # self.create_Q_network()
+        self.create_conv_network(self.state_input, self.weights, self.biases, keep_prob)
         self.create_training_method()
 
         # Init session
@@ -79,24 +106,66 @@ class DQN():
         save_path = self.saver.save(self.session, ''.join(model_path + str(game_idx) + ".ckpt"))
         print("Model saved in file: %s" % save_path)
 
+    # Create some wrappers for simplicity
+    def conv2d(self, x, W, b, strides = 1):
+        # Conv2D wrapper, with bias and relu activation
+        x = tf.nn.conv2d(x, W, strides = [1, strides, strides, 1], padding='SAME')
+        x = tf.nn.bias_add(x, b)
+        return tf.nn.relu(x)
 
-    def create_Q_network(self):
-        # network weights
-        self.W1 = self.weight_variable([self.state_dim, 20], "W1")
-        self.b1 = self.bias_variable([20], "b1")
-        self.W2 = self.weight_variable([20,self.action_dim], "W2")
-        self.b2 = self.bias_variable([self.action_dim], "b2")
-        # input layer
-        self.state_input = tf.placeholder("float",[None,self.state_dim])
-        # hidden layers
-        h_layer = tf.nn.relu(tf.matmul(self.state_input, self.W1) + self.b1)
-        # Q Value layer
-        self.Q_value = tf.matmul(h_layer, self.W2) + self.b2
+    def maxpool2d(self, x, k = 2):
+        # MaxPool2D wrapper
+        return tf.nn.max_pool(x, ksize=[1, k, k, 1], strides=[1, k, k, 1],
+                              padding='SAME')
+
+    def create_conv_network(self, x, weights, biases, dropout):
+        # Reshape input picture
+        # x = tf.reshape(x, shape = [1, self.state_dim[0] * self.state_dim[1]])
+
+        # Convolution Layer
+        x = tf.reshape(x, [-1, self.state_dim[0], self.state_dim[1], 1])
+        conv1 = self.conv2d(x, weights['wc1'], biases['bc1'], 4)
+        conv1 = tf.reshape(conv1, [-1, 128])
+
+        # conv1 = tf.nn.relu(tf.matmul(x, weights['wc1']) + biases['bc1'])
+        # Max Pooling (down-sampling)
+        # conv1 = self.maxpool2d(conv1, k=2)
+
+        # Convolution Layer
+        # conv2 = self.conv2d(conv1, weights['wc2'], biases['bc2'])
+        # Max Pooling (down-sampling)
+        # conv2 = self.maxpool2d(conv2, k=2)
+
+        # Fully connected layer
+        # Reshape conv2 output to fit fully connected layer input
+        # fc1 = tf.reshape(conv2, [-1, weights['wd1'].get_shape().as_list()[0]])
+        # fc1 = tf.add(tf.matmul(fc1, weights['wd1']), biases['bd1'])
+        # fc1 = tf.nn.relu(fc1)
+        # Apply Dropout
+        # fc1 = tf.nn.dropout(fc1, dropout)
+
+        # Output, class prediction
+        self.Q_value2 = tf.add(tf.matmul(conv1, weights['out']), biases['out'])
+
+
+    # def create_Q_network(self):
+    #     # network weights
+    #
+    #     self.W1 = self.weight_variable([self.state_dim, 20], "W1")
+    #     self.b1 = self.bias_variable([20], "b1")
+    #     self.W2 = self.weight_variable([20,self.action_dim], "W2")
+    #     self.b2 = self.bias_variable([self.action_dim], "b2")
+    #     # input layer
+    #     self.state_input = tf.placeholder("float",[None,self.state_dim])
+    #     # hidden layers
+    #     h_layer = tf.nn.relu(tf.matmul(self.state_input, self.W1) + self.b1)
+    #     # Q Value layer
+    #     self.Q_value = tf.matmul(h_layer, self.W2) + self.b2
 
     def create_training_method(self):
         self.action_input = tf.placeholder("float",[None,self.action_dim]) # one hot presentation
         self.y_input = tf.placeholder("float",[None])
-        Q_action = tf.reduce_sum(tf.multiply(self.Q_value,self.action_input),reduction_indices = 1)
+        Q_action = tf.reduce_sum(tf.multiply(self.Q_value2,self.action_input),reduction_indices = 1)
         self.cost = tf.reduce_mean(tf.square(self.y_input - Q_action))
         self.optimizer = tf.train.AdamOptimizer(0.0001).minimize(self.cost)
 
@@ -121,7 +190,7 @@ class DQN():
 
         # Step 2: calculate y
         y_batch = []
-        Q_value_batch = self.Q_value.eval(feed_dict={self.state_input:next_state_batch})
+        Q_value_batch = self.Q_value2.eval(feed_dict={self.state_input:next_state_batch})
 
         for i in range(0,BATCH_SIZE):
             done = minibatch[i][4]
@@ -137,7 +206,7 @@ class DQN():
           })
 
     def egreedy_action(self, state):
-        Q_value = self.Q_value.eval(feed_dict = {self.state_input:[state]})[0]
+        Q_value = self.Q_value2.eval(feed_dict = {self.state_input:[state]})[0]
         if random.random() <= self.epsilon:
             return random.randint(0,self.action_dim - 1)
         else:
@@ -146,9 +215,9 @@ class DQN():
         self.epsilon -= (INITIAL_EPSILON - FINAL_EPSILON)/10000
 
     def action(self, state):
-        return np.argmax(self.Q_value.eval(feed_dict = {self.state_input:[state]})[0])
+        return np.argmax(self.Q_value2.eval(feed_dict = {self.state_input:[state]})[0])
 
-    def weight_variable(self, shape, name = None):
+    def weight_variable(self,shape, name = None):
         initial = tf.truncated_normal(shape)
         return tf.Variable(initial, name = name)
 
