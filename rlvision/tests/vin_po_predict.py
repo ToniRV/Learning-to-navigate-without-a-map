@@ -52,8 +52,10 @@ def predict(im, pos, model, k):
 
 # load data
 file_name = os.path.join(rlvision.RLVISION_DATA,
-                         "chain_data", "grid16_with_idx.pkl")
-model_file = os.path.join(rlvision.RLVISION_MODEL, "pg16_vin_model.h5")
+                         "chain_data", "grid28_with_idx.pkl")
+model_file = os.path.join(
+        rlvision.RLVISION_MODEL, "grid28-po",
+        "vin-model-po-28-77-0.89.h5")
 
 k = 20
 
@@ -67,8 +69,8 @@ sampler = GridSampler(im_data, state_data, label_data, sample_idx, (16, 16))
 for grid_idx in xrange(3500, 4500):
     grid, state, label, goal = sampler.get_grid(grid_idx)
 
-    step_map = np.zeros((2, 16, 16))
-    step_map[0] = np.ones((16, 16))
+    step_map = np.zeros((2, 28, 28))
+    step_map[0] = np.ones((28, 28))
     step_map[1] = grid[1]
     pos = [state[0, 0], state[0, 1]]
     path = [(pos[1], pos[0])]
@@ -84,7 +86,7 @@ for grid_idx in xrange(3500, 4500):
         pos[1] = pos[1] + dy
         path.append((pos[1], pos[0]))
 
-        utils.plot_grid(1-step_map[0], (16, 16), start=path[0],
+        utils.plot_grid(1-step_map[0], (28, 28), start=path[0],
                         pos=path, goal=(goal[1], goal[0]), title=str(step+1))
         if pos[0] == goal[0] and pos[1] == goal[1]:
             print ("[MESSAGE] FOUND THE PATH")
