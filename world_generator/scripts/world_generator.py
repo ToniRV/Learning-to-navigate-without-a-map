@@ -120,58 +120,55 @@ class world_model:
         # Add cones wherever there should be obstacles
         i = 1
         j = 1
-        obstacle_indices = np.where(grid != 1)
-        unraveled_indices = np.unravel_index(obstacle_indices, im_size, order='C')
-        for x in grid:
-            if (grid[j+i*im_size[0]] != 1):
-                self.add_cone(scale*j, scale*i)
+
+        grid_no_bounds = grid[1:-1, 1:-1]
+        it = np.nditer(grid_no_bounds, flags=['multi_index'])
+        while not it.finished:
+            print ("%d <%s>" % (it[0], it.multi_index))
+            if  (it[0] == 1):
+                self.add_cone(scale*(it.multi_index[0]+1), scale*(it.multi_index[1]+1))
                 self.write()
-            j += 1
-            if (j % (im_size[1]-1)) == 0:
-                j = 1
-                i +=1
-                if (i == im_size[0]-1):
-                    break
+            it.iternext()
+
+#                for x in grid:
+#                    if (grid[j][i*im_size[0]] == 1):
+#                self.add_cone(scale*j, scale*i)
+#                self.write()
+#            j += 1
+#            if (j % (im_size[1]-1)) == 0:
+#                j = 1
+#                i +=1
+#                if (i == im_size[0]-1):
+#                    break
 
     def write(self):
 	    self.world_tree.write(self.dir_path + "/../world_models/python_generated.world", encoding='utf-8')
 
 def main(args):
     # setup result folder
-    model_name = "dstar-16"
+    model_name = "grid16_paths/grid_16_14_bad.pkl"
     model_path = os.path.join(rlvision.RLVISION_MODEL, model_name)
-    if not os.path.isdir(model_path):
-        os.makedirs(model_path)
-    print ("[MESSAGE] The model path is created at %s" % (model_path))
 
-    # load data
-    db, im_size = utils.load_grid16(split=1)
+    data = pickle.load(open(model_path, "rb"))
+    grid = data['environment']
+    path_gt = data['gt']
+    path = data['po']
+    goal = data['goal']
 
-    # prepare relevant data
-    im_data = db['im_data']
-    value_data = db['value_data']
-    states = db['state_xy_data']
-    label_data = db['label_data']
-    print ("[MESSAGE] The data is loaded.")
-    print ("[MESSAGE] Get data sampler...")
-    grid_sampler = GridDataSampler(im_data, value_data, im_size, states,
-                                   label_data)
-    print ("[MESSAGE] Data sampler ready.")
 
-    # sample grid
-    print ("[MESSAGE] SAMPLING NEW GRID")
-    grid, value, start_pos_list, pos_traj, goal_pos = grid_sampler.next()
-    print ("[MESSAGE] New Grid is sampled.")
-    print ("[MESSAGE] Number of trajectories:", len(start_pos_list))
+    #with open(os.path.join(save_path, "grid_8_%i_bad.pkl" % (grid_idx)),
+     #         "wb") as f:
+      #  pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
+       # f.close()
 
-    utils.plot_grid(grid, im_size)
+    utils.plot_grid(grid, grid.shape)
 
     # Pick random start
-    start_pos = start_pos_list[0]
+    start_pos = path_gt[0]
 
     # Create gazebo world from grid
     wm = world_model()
-    wm.create_world_from_grid(grid, im_size, start_pos, goal_pos)
+    wm.create_world_from_grid(grid, grid.shape, start_pos, goal)
 
 if __name__ == '__main__':
     main(sys.argv)
