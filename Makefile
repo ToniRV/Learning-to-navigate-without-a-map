@@ -47,6 +47,9 @@ load-train-ds:
 dstar-8-exp:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_8_exp.py
 
+dstar-8-new-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_8_new_exp.py
+
 dstar-16-exp:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_16_exp.py
 
@@ -119,6 +122,9 @@ select-po-grid-export:
 
 load-selected-grid:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/load_selected_grid.py
+
+plot-loss-fig:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/plot_loss_fig.py
 
 
 cleanall:
