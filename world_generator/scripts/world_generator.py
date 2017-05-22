@@ -99,7 +99,7 @@ class world_model:
 
     def create_world_from_grid(self, grid, im_size, start, goal):
         # Create gazebo world out of the grid
-        scale = 0.75
+        scale = 1
 
         # Add start box
         self.add_target_box_green(start[0], start[1])
@@ -108,7 +108,7 @@ class world_model:
         self.add_target_box_red(goal[0], goal[1])
 
         # Build walls around the field
-        wall_width = 0.5
+        wall_width = 0.2
         self.add_wall(scale*(im_size[0]-1)/2.0, 0, 0, scale*(im_size[0]-1), wall_width)
         self.add_wall(0, scale*(im_size[1]-1)/2.0, pi / 2.0, scale*(im_size[0]-1), wall_width)
         self.add_wall(scale*(im_size[0]-1), scale*(im_size[1]-1)/2.0, - pi / 2.0, scale*(im_size[0]-1), wall_width)
@@ -118,28 +118,13 @@ class world_model:
         self.add_tarmac(scale*(im_size[0]-1)/2.0, scale*(im_size[1]-1)/2.0, 0, scale*(im_size[0]-1), scale*(im_size[1]-1))
 
         # Add cones wherever there should be obstacles
-        i = 1
-        j = 1
-
         grid_no_bounds = grid[1:-1, 1:-1]
         it = np.nditer(grid_no_bounds, flags=['multi_index'])
         while not it.finished:
-            print ("%d <%s>" % (it[0], it.multi_index))
             if  (it[0] == 1):
                 self.add_cone(scale*(it.multi_index[0]+1), scale*(it.multi_index[1]+1))
                 self.write()
             it.iternext()
-
-#                for x in grid:
-#                    if (grid[j][i*im_size[0]] == 1):
-#                self.add_cone(scale*j, scale*i)
-#                self.write()
-#            j += 1
-#            if (j % (im_size[1]-1)) == 0:
-#                j = 1
-#                i +=1
-#                if (i == im_size[0]-1):
-#                    break
 
     def write(self):
 	    self.world_tree.write(self.dir_path + "/../world_models/python_generated.world", encoding='utf-8')
@@ -154,12 +139,6 @@ def main(args):
     path_gt = data['gt']
     path = data['po']
     goal = data['goal']
-
-
-    #with open(os.path.join(save_path, "grid_8_%i_bad.pkl" % (grid_idx)),
-     #         "wb") as f:
-      #  pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
-       # f.close()
 
     utils.plot_grid(grid, grid.shape)
 
