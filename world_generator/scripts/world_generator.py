@@ -2,10 +2,12 @@
 from __future__ import print_function
 
 import sys
+import string
 
 import os
 import cPickle as pickle
 import numpy as np
+import fnmatch
 
 from math import pi, atan, tan, cos, acos, sin, asin
 from xml.etree import ElementTree
@@ -17,9 +19,18 @@ from rlvision.grid import GridDataSampler, Grid
 from rlvision.dstar import Dstar
 
 class world_model:
-    def __init__ (self):
+    def __init__ (self, folder_name, file_name):
         # create separate trees for the empty world and for models resource
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
+
+        self.folder_name = folder_name
+        self.file_name = file_name
+        self.save_subfolder_path = self.dir_path + "/../world_models/"+self.folder_name+"/"
+        try:
+            os.makedirs(self.save_subfolder_path)
+        except OSError:
+            pass
+
         with open(self.dir_path + "/../world_models/default_world.world", 'rt') as f:
             self.world_tree = ElementTree.parse(f)
         with open(self.dir_path + "/../world_models/default_models.world", 'rt') as f:
@@ -127,27 +138,40 @@ class world_model:
             it.iternext()
 
     def write(self):
-	    self.world_tree.write(self.dir_path + "/../world_models/python_generated.world", encoding='utf-8')
+
+        save_path = self.save_subfolder_path+self.file_name+".world"
+        self.world_tree.write(save_path, encoding='utf-8')
+
+def find_files(directory, pattern):
+    for root, dirs, files in os.walk(directory):
+        for basename in files:
+            if fnmatch.fnmatch(basename, pattern):
+                filename = os.path.join(root, basename)
+                yield filename
 
 def main(args):
-    # setup result folder
-    model_name = "grid16_paths/grid_16_14_bad.pkl"
-    model_path = os.path.join(rlvision.RLVISION_MODEL, model_name)
+    grid_size_paths = "grid28_paths"
+    path_grid_size_paths = os.path.join(rlvision.RLVISION_MODEL,grid_size_paths)
+    for filename in find_files(path_grid_size_paths, '*.pkl'):
+        # setup result folder
+        data = pickle.load(open(filename, "rb"))
 
-    data = pickle.load(open(model_path, "rb"))
-    grid = data['environment']
-    path_gt = data['gt']
-    path = data['po']
-    goal = data['goal']
 
-    utils.plot_grid(grid, grid.shape)
+        grid = data['environment']
+        path_gt = data['gt']
+        path = data['po']
+        goal = data['goal']
 
-    # Pick random start
-    start_pos = path_gt[0]
+        utils.plot_grid(grid, grid.shape)
 
-    # Create gazebo world from grid
-    wm = world_model()
-    wm.create_world_from_grid(grid, grid.shape, start_pos, goal)
+        # Pick random start
+        start_pos = path_gt[0]
+
+        # Create gazebo world from grid
+        file_name = string.split(os.path.basename(filename), ".")
+        print(file_name)
+        wm = world_model(grid_size_paths, file_name[0])
+        wm.create_world_from_grid(grid, grid.shape, start_pos, goal)
 
 if __name__ == '__main__':
     main(sys.argv)
