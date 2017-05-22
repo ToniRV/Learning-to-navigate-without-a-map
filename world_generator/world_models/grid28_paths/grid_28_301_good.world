@@ -271,7 +271,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>1 17 0 0 0 0</pose>
+      <pose>17 1 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -305,7 +305,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>2 16 0 0 0 0</pose>
+      <pose>16 2 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -339,7 +339,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>2 17 0 0 0 0</pose>
+      <pose>17 2 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -373,7 +373,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>2 18 0 0 0 0</pose>
+      <pose>18 2 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -407,7 +407,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>2 19 0 0 0 0</pose>
+      <pose>19 2 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -441,7 +441,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>2 21 0 0 0 0</pose>
+      <pose>21 2 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -475,7 +475,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>2 22 0 0 0 0</pose>
+      <pose>22 2 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -509,7 +509,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>3 17 0 0 0 0</pose>
+      <pose>17 3 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -543,7 +543,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>3 18 0 0 0 0</pose>
+      <pose>18 3 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -577,7 +577,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>3 19 0 0 0 0</pose>
+      <pose>19 3 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -611,7 +611,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>3 20 0 0 0 0</pose>
+      <pose>20 3 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -645,7 +645,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>3 21 0 0 0 0</pose>
+      <pose>21 3 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -679,7 +679,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>3 22 0 0 0 0</pose>
+      <pose>22 3 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -713,7 +713,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>4 19 0 0 0 0</pose>
+      <pose>19 4 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -747,7 +747,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>5 25 0 0 0 0</pose>
+      <pose>25 5 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -781,7 +781,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>6 24 0 0 0 0</pose>
+      <pose>24 6 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -815,7 +815,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>6 25 0 0 0 0</pose>
+      <pose>25 6 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -849,7 +849,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>6 26 0 0 0 0</pose>
+      <pose>26 6 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -883,7 +883,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>7 25 0 0 0 0</pose>
+      <pose>25 7 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -917,7 +917,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>10 19 0 0 0 0</pose>
+      <pose>19 10 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -951,7 +951,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>11 18 0 0 0 0</pose>
+      <pose>18 11 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -985,7 +985,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>11 19 0 0 0 0</pose>
+      <pose>19 11 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -1019,7 +1019,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>11 20 0 0 0 0</pose>
+      <pose>20 11 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -1053,7 +1053,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>11 26 0 0 0 0</pose>
+      <pose>26 11 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -1087,7 +1087,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>12 19 0 0 0 0</pose>
+      <pose>19 12 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -1121,7 +1121,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>12 26 0 0 0 0</pose>
+      <pose>26 12 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -1155,7 +1155,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>13 25 0 0 0 0</pose>
+      <pose>25 13 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -1189,7 +1189,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>13 26 0 0 0 0</pose>
+      <pose>26 13 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -1223,7 +1223,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>14 26 0 0 0 0</pose>
+      <pose>26 14 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -1257,7 +1257,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>18 26 0 0 0 0</pose>
+      <pose>26 18 0 0 0 0</pose>
       <static>1</static>
     </model>
     </world>

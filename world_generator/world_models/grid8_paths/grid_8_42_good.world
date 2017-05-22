@@ -271,7 +271,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>3 6 0 0 0 0</pose>
+      <pose>6 3 0 0 0 0</pose>
       <static>1</static>
     </model>
     </world>

@@ -133,7 +133,7 @@ class world_model:
         it = np.nditer(grid_no_bounds, flags=['multi_index'])
         while not it.finished:
             if  (it[0] == 1):
-                self.add_cone(scale*(it.multi_index[0]+1), scale*(it.multi_index[1]+1))
+                self.add_cone(scale*(it.multi_index[1]+1), scale*(it.multi_index[0]+1))
                 self.write()
             it.iternext()
 
@@ -162,9 +162,6 @@ def main(args):
         path = data['po']
         goal = data['goal']
 
-        utils.plot_grid(grid, grid.shape)
-
-        # Pick random start
         start_pos = path_gt[0]
 
         # Create gazebo world from grid
@@ -172,6 +169,15 @@ def main(args):
         print(file_name)
         wm = world_model(grid_size_paths, file_name[0])
         wm.create_world_from_grid(grid, grid.shape, start_pos, goal)
+
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        save_subfolder_path = dir_path + "/../world_models/"+grid_size_paths+"/"+file_name[0]
+
+        # Create file with trajectory
+        f = open(save_subfolder_path+'_trajectory.txt', 'w+')
+
+        for pose in path:
+            f.write("1.0 {0} {1} 1.0 0.0\r\n".format(pose[0], pose[1]))
 
 if __name__ == '__main__':
     main(sys.argv)

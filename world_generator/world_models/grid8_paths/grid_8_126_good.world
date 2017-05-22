@@ -271,7 +271,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>4 5 0 0 0 0</pose>
+      <pose>5 4 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -305,7 +305,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>4 6 0 0 0 0</pose>
+      <pose>6 4 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -373,7 +373,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>5 6 0 0 0 0</pose>
+      <pose>6 5 0 0 0 0</pose>
       <static>1</static>
     </model>
     </world>

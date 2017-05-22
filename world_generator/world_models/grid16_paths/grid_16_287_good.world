@@ -271,7 +271,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>1 8 0 0 0 0</pose>
+      <pose>8 1 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -305,7 +305,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>1 10 0 0 0 0</pose>
+      <pose>10 1 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -339,7 +339,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>1 11 0 0 0 0</pose>
+      <pose>11 1 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -373,1673 +373,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>1 12 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>1 13 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>2 7 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>2 8 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>2 9 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>2 10 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>2 11 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>2 12 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>2 13 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>3 2 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>3 3 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>3 8 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>3 9 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>3 10 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>4 2 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>4 3 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>4 9 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>4 10 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>5 2 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>5 3 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>5 4 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>5 9 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>5 10 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>5 11 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>5 13 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>5 14 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>6 3 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>6 7 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>6 8 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>6 10 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>6 12 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>6 13 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>6 14 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>7 7 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>7 8 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>7 9 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>7 11 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>7 12 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>7 13 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>8 8 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>8 9 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>8 10 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>8 12 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>9 9 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>10 12 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>11 11 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>11 12 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>11 13 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>12 2 0 0 0 0</pose>
-      <static>1</static>
-    </model>
-    <model name="Construction Barrel">
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode />
-            </contact>
-            <bounce />
-            <friction>
-              <torsional>
-                <ode />
-              </torsional>
-              <ode />
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <mesh>
-              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-      <pose>12 12 0 0 0 0</pose>
+      <pose>12 1 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -2107,6 +441,210 @@
           </geometry>
         </visual>
       </link>
+      <pose>7 2 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>8 2 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>9 2 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>10 2 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>11 2 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>12 2 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
       <pose>13 2 0 0 0 0</pose>
       <static>1</static>
     </model>
@@ -2141,7 +679,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>13 3 0 0 0 0</pose>
+      <pose>2 3 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -2175,7 +713,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>14 2 0 0 0 0</pose>
+      <pose>3 3 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -2209,7 +747,7 @@
           </geometry>
         </visual>
       </link>
-      <pose>14 8 0 0 0 0</pose>
+      <pose>8 3 0 0 0 0</pose>
       <static>1</static>
     </model>
     <model name="Construction Barrel">
@@ -2243,7 +781,1469 @@
           </geometry>
         </visual>
       </link>
-      <pose>14 9 0 0 0 0</pose>
+      <pose>9 3 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>10 3 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>2 4 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>3 4 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>9 4 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>10 4 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>2 5 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>3 5 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>4 5 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>9 5 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>10 5 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>11 5 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>13 5 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>14 5 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>3 6 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>7 6 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>8 6 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>10 6 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>12 6 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>13 6 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>14 6 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>7 7 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>8 7 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>9 7 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>11 7 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>12 7 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>13 7 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>8 8 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>9 8 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>10 8 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>12 8 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>9 9 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>12 10 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>11 11 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>12 11 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>13 11 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>2 12 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>12 12 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>1 13 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>2 13 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>3 13 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>2 14 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>8 14 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+    <model name="Construction Barrel">
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode />
+            </contact>
+            <bounce />
+            <friction>
+              <torsional>
+                <ode />
+              </torsional>
+              <ode />
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://construction_barrel/meshes/construction_barrel.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+      <pose>9 14 0 0 0 0</pose>
       <static>1</static>
     </model>
     </world>
