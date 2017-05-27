@@ -61,9 +61,9 @@
       <real_time_update_rate>100</real_time_update_rate>
       <gravity>0 0 -9.8</gravity>
     </physics>
-		<gui fullscreen="0">
+    <gui fullscreen="0">
       <camera name="user_camera">
-        <pose frame="">36.1091 13.5772 28.3164 -0 0.951642 -3.13899</pose>
+        <pose frame="">9.43261 3.22882 8.20672 0 0.95564 -3.13899</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
