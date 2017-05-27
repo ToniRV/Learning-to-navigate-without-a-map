@@ -50,6 +50,12 @@ dstar-8-exp:
 dstar-8-new-exp:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_8_new_exp.py
 
+dstar-16-new-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_16_new_exp.py
+
+dstar-28-new-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_28_new_exp.py
+
 dstar-16-exp:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_16_exp.py
 
@@ -119,6 +125,9 @@ select-po-grid:
 
 select-po-grid-export:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/select_po_grid_export.py
+
+select-dstar-grid-export:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/select_dstar_grid_export.py
 
 load-selected-grid:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/load_selected_grid.py
