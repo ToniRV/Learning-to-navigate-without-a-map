@@ -151,7 +151,7 @@ def find_files(directory, pattern):
                 yield filename
 
 def main(args):
-    grid_size_paths = "grid28_paths"
+    grid_size_paths = "grid8_paths"
     path_grid_size_paths = os.path.join(rlvision.RLVISION_MODEL,grid_size_paths)
     for filename in find_files(path_grid_size_paths, '*.pkl'):
         # setup result folder
@@ -166,8 +166,6 @@ def main(args):
 
 
         start_pos = path_gt[0]
-
-        utils.plot_grid(grid, (28,28), start=(start_pos[0], start_pos[1]), goal=goal)
 
         # Create gazebo world from grid
         file_name = string.split(os.path.basename(filename), ".")
