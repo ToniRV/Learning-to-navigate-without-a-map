@@ -113,10 +113,10 @@ class world_model:
         scale = 1
 
         # Add start box
-        self.add_target_box_green(start[0], start[1])
+        self.add_target_box_green(start[1], start[0])
 
         # Add goal box
-        self.add_target_box_red(goal[0], goal[1])
+        self.add_target_box_red(goal[1], goal[0])
 
         # Build walls around the field
         wall_width = 0.2
@@ -133,7 +133,8 @@ class world_model:
         it = np.nditer(grid_no_bounds, flags=['multi_index'])
         while not it.finished:
             if  (it[0] == 1):
-                self.add_cone(scale*(it.multi_index[1]+1), scale*(it.multi_index[0]+1))
+                self.add_cone(scale*(it.multi_index[0]+1), scale*(it.multi_index[1]+1))
+                #print("x: "+it.multi_index[0]+" y: "+it.multi_index[1])
                 self.write()
             it.iternext()
 
@@ -161,8 +162,12 @@ def main(args):
         path_gt = data['gt']
         path = data['po']
         goal = data['goal']
+        goal_rectified = (goal[1], goal[0])
+
 
         start_pos = path_gt[0]
+
+        utils.plot_grid(grid, (28,28), start=(start_pos[0], start_pos[1]), goal=goal)
 
         # Create gazebo world from grid
         file_name = string.split(os.path.basename(filename), ".")
@@ -177,7 +182,7 @@ def main(args):
         f = open(save_subfolder_path+'_trajectory.txt', 'w+')
 
         for pose in path:
-            f.write("1.0 {0} {1} 1.0 0.0\r\n".format(pose[0], pose[1]))
+            f.write("1.0 {0} {1} 1.0 0.0\r\n".format(pose[1], pose[0]))
 
 if __name__ == '__main__':
     main(sys.argv)

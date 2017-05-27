@@ -61,6 +61,19 @@
       <real_time_update_rate>100</real_time_update_rate>
       <gravity>0 0 -9.8</gravity>
     </physics>
+    <gui>
+      <type>fltk</type>
+      <size>480 320</size>
+      <pos>0 0</pos>
+      <frames>
+        <row height="100%">
+          <camera width="100%">
+            <xyz>8 8 5</xyz>
+            <rpy>0 45 180</rpy>
+          </camera>
+        </row>
+      </frames>
+    </gui>
   <model name="box_target_green">
       <static>1</static>
       <link name="link">
