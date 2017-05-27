@@ -61,18 +61,12 @@
       <real_time_update_rate>100</real_time_update_rate>
       <gravity>0 0 -9.8</gravity>
     </physics>
-    <gui>
-      <type>fltk</type>
-      <size>480 320</size>
-      <pos>0 0</pos>
-      <frames>
-        <row height="100%">
-          <camera width="100%">
-            <xyz>8 8 5</xyz>
-            <rpy>0 45 180</rpy>
-          </camera>
-        </row>
-      </frames>
+		<gui fullscreen="0">
+      <camera name="user_camera">
+        <pose frame="">34.6424 12.4407 24.7609 0 0.931642 3.13619</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
     </gui>
   <model name="box_target_green">
       <static>1</static>

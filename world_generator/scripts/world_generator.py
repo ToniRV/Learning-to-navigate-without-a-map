@@ -151,36 +151,38 @@ def find_files(directory, pattern):
                 yield filename
 
 def main(args):
-    grid_size_paths = "grid8_paths"
-    path_grid_size_paths = os.path.join(rlvision.RLVISION_MODEL,grid_size_paths)
-    for filename in find_files(path_grid_size_paths, '*.pkl'):
-        # setup result folder
-        data = pickle.load(open(filename, "rb"))
+    words = ['grid8_paths', 'grid16_paths', 'grid28_paths']
+    for word in words:
+	grid_size_paths = word
+	path_grid_size_paths = os.path.join(rlvision.RLVISION_MODEL,grid_size_paths)
+	for filename in find_files(path_grid_size_paths, '*.pkl'):
+	    # setup result folder
+	    data = pickle.load(open(filename, "rb"))
 
 
-        grid = data['environment']
-        path_gt = data['gt']
-        path = data['po']
-        goal = data['goal']
-        goal_rectified = (goal[1], goal[0])
+	    grid = data['environment']
+	    path_gt = data['gt']
+	    path = data['po']
+	    goal = data['goal']
+	    goal_rectified = (goal[1], goal[0])
 
 
-        start_pos = path_gt[0]
+	    start_pos = path_gt[0]
 
-        # Create gazebo world from grid
-        file_name = string.split(os.path.basename(filename), ".")
-        print(file_name)
-        wm = world_model(grid_size_paths, file_name[0])
-        wm.create_world_from_grid(grid, grid.shape, start_pos, goal)
+	    # Create gazebo world from grid
+	    file_name = string.split(os.path.basename(filename), ".")
+	    print(file_name)
+	    wm = world_model(grid_size_paths, file_name[0])
+	    wm.create_world_from_grid(grid, grid.shape, start_pos, goal)
 
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        save_subfolder_path = dir_path + "/../world_models/"+grid_size_paths+"/"+file_name[0]
+	    dir_path = os.path.dirname(os.path.realpath(__file__))
+	    save_subfolder_path = dir_path + "/../world_models/"+grid_size_paths+"/"+file_name[0]
 
-        # Create file with trajectory
-        f = open(save_subfolder_path+'_trajectory.txt', 'w+')
+	    # Create file with trajectory
+	    f = open(save_subfolder_path+'_trajectory.txt', 'w+')
 
-        for pose in path:
-            f.write("1.0 {0} {1} 1.0 0.0\r\n".format(pose[1], pose[0]))
+	    for pose in path:
+		f.write("1.0 {0} {1} 1.0 0.0\r\n".format(pose[1], pose[0]))
 
 if __name__ == '__main__':
     main(sys.argv)
