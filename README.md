@@ -1,4 +1,4 @@
-# Learning-to-navigate-without-a-map
+# [Learning-to-navigate-without-a-map](http://dgyblog.com/projects-term/rlvision.html)
 The goal of the project is to determine how well deep learning is suited for planning under incomplete information.
 
 ## Resources for VIN
