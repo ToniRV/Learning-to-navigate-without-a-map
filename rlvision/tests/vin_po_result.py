@@ -13,8 +13,8 @@ import rlvision
 
 # input data
 file_path = os.path.join(
-    rlvision.RLVISION_MODEL, "grid8-po",
-    "grid_8_result.pkl")
+    rlvision.RLVISION_MODEL, "dstar-16",
+    "grid_16_dstar_result.pkl")
 
 with open(file_path, "r") as f:
     data = pickle.load(f)

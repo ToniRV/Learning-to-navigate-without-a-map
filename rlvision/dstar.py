@@ -115,6 +115,7 @@ class Dstar:
         """
         # Get start index
         start_index = np.ravel_multi_index(start, imsize, order='C')
+        print (start_index)
         if grid[start_index] == 0:
             print("[ERROR] start position falls over an obstacle")
         else:

@@ -27,7 +27,7 @@ masked_grid_2 = utils.mask_grid(mask_pos_2, grid, radius, one_is_free=False)
 acc_grid = utils.accumulate_map(masked_grid_1, masked_grid_2,
                                 one_is_free=False)
 
-plt.figure()
+plt.figure(figsize=(10, 10))
 plt.subplot(231)
 plt.imshow((1-grid)*255, cmap="gray")
 plt.axis("off")
