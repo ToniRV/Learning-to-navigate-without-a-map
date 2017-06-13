@@ -1,5 +1,4 @@
 """Grid class to have a uniform grid functions.
-
 Author: Yuhuang Hu
 Email : duguyue100@gmail.com
 """
@@ -21,7 +20,6 @@ class Grid(object):
                  start_pos=None, is_po=True, mask_radius=3,
                  grid_type="one-is-free", dstar=False):
         """Init function.
-
         Parameters
         ----------
         grid_map : numpy.ndarry
@@ -119,6 +117,7 @@ class Grid(object):
 
         # set start position
         if not self.is_pos_valid(start_pos):
+            print ('set random start position')
             self.rand_start_pos()
         else:
             self.set_start_pos(start_pos)
@@ -129,12 +128,10 @@ class Grid(object):
 
     def is_pos_valid(self, pos):
         """Check if the position is valid.
-
         Parameters
         ----------
         pos : tuple
             a tuple (x, y) that represent a number
-
         Returns
         -------
         flag : bool
@@ -158,12 +155,10 @@ class Grid(object):
 
     def set_start_pos(self, start_pos):
         """Set the start position.
-
         Parameters
         ----------
         start_pos : tuple
             potential start position (x, y)
-
         Returns
         -------
         The start position will be set if valid
@@ -198,7 +193,6 @@ class Grid(object):
 
     def update_curr_map(self, map_update, dstar_map_update=None):
         """Update current map.
-
         Parameters
         ----------
         map_update : numpy.ndarray
@@ -213,14 +207,11 @@ class Grid(object):
 
     def get_curr_dstar_visible_map(self, pos):
         """Get current visible field by given a valid position.
-
         For D* algorithm
-
         Parameters
         ----------
         pos : tuple
             a valid position (x, y)
-
         Returns
         -------
         curr_vis_map : numpy.ndarray
@@ -237,12 +228,10 @@ class Grid(object):
 
     def get_curr_visible_map(self, pos):
         """Get current visible field by given a valid position.
-
         Parameters
         ----------
         pos : tuple
             a valid position (x, y)
-
         Returns
         -------
         curr_vis_map : numpy.ndarray
@@ -260,21 +249,19 @@ class Grid(object):
     def get_state_map(self):
         """get state map with position annotation."""
         if self.is_po:
-            state_map = self.curr_map.copy()
+            state_map = self.curr_map
         else:
-            state_map = self.grid_map.copy()
+            state_map = self.grid_map
         state_map[self.curr_pos] = 0.5
         state_map[self.goal_pos] = 0.7
         return state_map
 
     def update_state(self, pos_update):
         """Update state by given position.
-
         This describe the transition between states.
         Assume we are at one state t, and by given a
         position, this function will update the
         state to t+1
-
         Parameters
         ----------
         pos_update : tuple
@@ -296,13 +283,17 @@ class Grid(object):
             #  self.state_map[0, 0] = vis_map
             self.state_map[0, 0] = self.get_state_map()
         else:
+            ###### Shu's modificaiton
+            pos_update = self.pos_history[-1]
             self.pos_history.append(pos_update)
+            # self.pos_history.append(pos_update)
             vis_map = self.get_curr_visible_map(pos_update)
             if self.dstar:
                 dstar_map = self.get_curr_dstar_visible_map(pos_update)
             else:
                 dstar_map = None
             #  self.state_map[0, 0] = vis_map
+            self.update_curr_map(vis_map, dstar_map)
             self.state_map[0, 0] = self.get_state_map()
             #  print ("[MESSAGE] WARNING: The position is not valid, nothing"
             #         " is updated (by update_state)")
@@ -310,32 +301,44 @@ class Grid(object):
     def action2pos(self, action):
         """Translate action to position."""
         new_pos = [0, 0]
-
+        ###### Shu's modificaiton
         # 4 actions
-        if action == 0:
-            new_pos[0] = self.curr_pos[0]
-            new_pos[1] = self.curr_pos[1]-1
-        elif action == 1:
-            new_pos[0] = self.curr_pos[0]+1
-            new_pos[1] = self.curr_pos[1]
-        elif action == 2:
+        # if action == 0:
+        #     new_pos[0] = self.curr_pos[0]
+        #     new_pos[1] = self.curr_pos[1]-1
+        # elif action == 1:
+        #     new_pos[0] = self.curr_pos[0]+1
+        #     new_pos[1] = self.curr_pos[1]
+        # elif action == 2:
+        #     new_pos[0] = self.curr_pos[0]-1
+        #     new_pos[1] = self.curr_pos[1]
+        # elif action == 3:
+        #     new_pos[0] = self.curr_pos[0]
+        #     new_pos[1] = self.curr_pos[1]+1
+
+        # 8 action
+        if action in [5, 0, 4]:
             new_pos[0] = self.curr_pos[0]-1
-            new_pos[1] = self.curr_pos[1]
-        elif action == 3:
+        elif action in [7, 1, 6]:
+            new_pos[0] = self.curr_pos[0]+1
+        else:
             new_pos[0] = self.curr_pos[0]
+
+        if action in [5, 3, 7]:
+            new_pos[1] = self.curr_pos[1]-1
+        elif action in [4, 2, 6]:
             new_pos[1] = self.curr_pos[1]+1
+        else:
+            new_pos[1] = self.curr_pos[1]
 
         return tuple(new_pos)
 
     def update_state_from_action(self, action, verbose=0):
         """Update state from action space.
-
         0 1 2
         3   4
         5 6 7
-
         Update state from action space as above.
-
         Parameters
         ----------
         action : int
@@ -355,7 +358,6 @@ class Grid(object):
 
     def get_state_reward(self, max_num_steps=None):
         """Return reward for the state.
-
         Returns
         -------
         reward : int
@@ -426,7 +428,6 @@ class GridDataSampler(object):
     def __init__(self, grid_data, value_data, im_size, states_xy,
                  label_data):
         """Init grid data sampler.
-
         Pararmeters
         -----------
         im_data : numpy.ndarray
@@ -532,14 +533,12 @@ class GridDataSampler(object):
 
 def sample_data(db, imsize, num_samples=0):
     """Sample data from a database.
-
     Parameters
     ----------
     db : h5py.File
         a HDF 5 file object
     num_samples : int
         the number of samples
-
     Returns
     -------
     grid_data : numpy.ndarray
@@ -594,12 +593,10 @@ def sample_data(db, imsize, num_samples=0):
 
 def sample_data_grid8(num_samples=0):
     """Sample data from 8x8 grid.
-
     Parameters
     ----------
     num_samples : int
         number of samples
-
     Return
     ------
     grid_data : numpy.ndarray
@@ -620,12 +617,10 @@ def sample_data_grid8(num_samples=0):
 
 def sample_data_grid16(split=None, num_samples=0):
     """Sample data from 16x16 grid.
-
     Parameters
     ----------
     num_samples : int
         number of samples
-
     Return
     ------
     grid_data : numpy.ndarray
@@ -646,12 +641,10 @@ def sample_data_grid16(split=None, num_samples=0):
 
 def sample_data_grid28(split=None, num_samples=0):
     """Sample data from 28x28 grid.
-
     Parameters
     ----------
     num_samples : int
         number of samples
-
     Return
     ------
     grid_data : numpy.ndarray
@@ -672,12 +665,10 @@ def sample_data_grid28(split=None, num_samples=0):
 
 def sample_data_grid40(split=None, num_samples=0):
     """Sample data from 40x40 grid.
-
     Parameters
     ----------
     num_samples : int
         number of samples
-
     Return
     ------
     grid_data : numpy.ndarray
@@ -698,7 +689,6 @@ def sample_data_grid40(split=None, num_samples=0):
 
 def create_train_grid8(db_name, save_dir, num_samples=0):
     """Create training dataset for 8x8 grid.
-
     Parameters
     ----------
     db_name : str
@@ -737,7 +727,6 @@ def create_train_grid8(db_name, save_dir, num_samples=0):
 
 def create_train_grid16(db_name, save_dir, num_samples=0):
     """Create training dataset for 16x16 grid.
-
     Parameters
     ----------
     db_name : str
@@ -782,7 +771,6 @@ def create_train_grid16(db_name, save_dir, num_samples=0):
 
 def create_train_grid28(db_name, save_dir, num_samples=0):
     """Create training dataset for 28x28 grid.
-
     Parameters
     ----------
     db_name : str
@@ -844,7 +832,6 @@ def create_train_grid28(db_name, save_dir, num_samples=0):
 
 def create_train_grid40(db_name, save_dir, num_samples=0):
     """Create training dataset for 40x40 grid.
-
     Parameters
     ----------
     db_name : str
