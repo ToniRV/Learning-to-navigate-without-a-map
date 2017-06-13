@@ -98,6 +98,8 @@ def mask_grid(pos, grid, radius, one_is_free=True):
                          shape=mask.shape)
     mask[rr, cc] = 1
     if one_is_free:
+        ##### Shu's modification
+        # return new_grid*mask, (rr, cc)
         return new_grid*mask
     else:
         masked_img = np.ones_like(new_grid)
@@ -124,7 +126,10 @@ def accumulate_map(source_grid, new_grid, one_is_free=True):
     """
     out_grid = source_grid.copy()
     if one_is_free:
-        acc_grid = out_grid+new_grid
+        # acc_grid = out_grid+(out_grid*new_grid)
+        # acc_grid[acc_grid > 0] = 1
+        # return acc_grid
+        acc_grid = out_grid + new_grid
         acc_grid[acc_grid > 0] = 1
         return acc_grid
     else:

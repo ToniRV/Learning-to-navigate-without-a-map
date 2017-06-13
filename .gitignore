@@ -101,14 +101,6 @@ bin/*
 3dv/*
 
 
-#development files
-development.ipynb
-drl_model_checkpoint.h5
-expriment-log.txt
-nohup.out
-nohup2.out
-pg_16_exp.py
-
 666.png
 gif_28_105/*.*
 gif_28_42/*.*
