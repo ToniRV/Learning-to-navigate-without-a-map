@@ -1,71 +1,43 @@
 # [Learning to navigate without a map](http://dgyblog.com/projects-term/rlvision.html)
 The goal of the project is to determine how well deep learning is suited for planning under incomplete information.
 
-## Access data in HDF5 format
 
-The Matlab format data is simply too slow to load.
-Therefore I created some APIs to convert the raw data to
-the HDF5 format and made them available in Google Drive
+## Instructions
 
-### Instructions to use the dataset
+### Requirements
 
-Before doing everything, make sure you've installed the package `h5py`,
-for Anaconda user, you can simply do:
++ Python 2.7 (In principle, this project can be run under Python 3, we didn't test it however)
++ Keras 2
++ Some specific packages in `requirements.txt`
+
+### D-star package compilation
+
+Please follow the instruction in [Dstar implementation](./dstar-lite)
+
+### How to use this package
+
+1. Clone this package:
 
 ```
-conda install h5py
+$ git clone https://github.com/ToniRV/Learning-to-navigate-without-a-map
 ```
 
-1. Check you have the project resource folder at
+2. Check you have the project resource folder at
 
 ```
 $HOME/.rlvision
 ```
 
-2. Copy HDF5 folder to following path
+__Note that this folder will be automatically created at the first time that
+you run the package, you can get the correct resource folder by__ 
 
 ```
-$HOME/.rlvision/data/
+$ python ./rlvision/__init__.py
 ```
 
-Note that `HDF5` folder should be a sub-folder of `data` folder
+3. Copy data to the `data` folder
 
-3. Check out the script `hdf5_data_test.py` in `tests` folder.
-To run the script, simply type
+## Contacts
 
-```
-make hdf5-data-test
-```
-
-You will see some lines of messages printed in the console,
-and finally a plot for one grid.
-
-4. In case you want to run the dstar algorithm with the dataset checkout `dstar_test.py` in `tests` folder
-First, you will need to build the c++ source code, for that do the following:
-* Install zeromq (\ØMQ\:): (this is only for ubuntu users, for others, please refer to (zeromq)[http://zeromq.org/intro:get-the-software])
-```
-sudo apt-get install libzmq3-dev
-```
-(**NOTE**: Currently the CMakeLists.txt assumes that libzmq is at /usr/local/lib, if you have issues while linking please refer to google: search for things like "link zmq library" zmq stands for (zeromq)[http://zeromq.org/]
-* Move to the dstar-lite directory
-* Create a build directory:
-```
-mkdir build
-```
-* Run cmake:
-```
-cmake ..
-```
-* Compile:
-```
-make
-```
-* Now you can return to the root directory of this repo where the Makefile is.
-```
-cd ../..
-```
-
-Second, to run the dstar example script, simpy type
-```
-make dstar_test.py
-```
+Yuhuang Hu, Shu Liu, Antoni Rosiñol Vidal, Yang Yu  
+Email: {hyh, liush, antonir, yuya}@student.ethz.ch
