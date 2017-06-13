@@ -9,14 +9,18 @@ from rlvision import utils
 # load file
 file_path = os.path.join(
         rlvision.RLVISION_MODEL, "grid28_paths",
-        "grid_28_42_good.pkl")
+        "grid_28_77_bad.pkl")
 
 grid, gt_path, po_path, goal = utils.load_grid_selection(file_path)
+
+gt = []
+for idx in xrange(gt_path.shape[0]):
+    gt.append((gt_path[idx, 0], gt_path[idx, 1]))
 
 # plot grid
 utils.plot_grid(1-grid, (28, 28),
                 start=po_path[0],
-                pos=po_path[1:],
+                pos=gt[1:],
                 goal=goal)
 
 # plot po grid

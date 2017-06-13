@@ -1,4 +1,8 @@
-"""VIN."""
+"""VIN.
+
+Author: Yuhuang Hu
+Email : duguyue100@gmail.com
+"""
 import numpy as np
 
 from keras.models import Model
@@ -30,7 +34,7 @@ def vin_model(l_s=16, k=10, l_h=150, l_q=10, l_a=8):
     def ext_start(inputs):
         m = inputs[0]
         s = inputs[1]
-        w = K.one_hot(s[:, 0] + l_s * s[:, 1], l_s * l_s)  # (None, l_s * l_s)
+        w = K.one_hot(s[:, 0] + l_s * s[:, 1], l_s * l_s)
         return K.transpose(
             K.sum(w * K.permute_dimensions(m, (1, 0, 2)), axis=2))
 

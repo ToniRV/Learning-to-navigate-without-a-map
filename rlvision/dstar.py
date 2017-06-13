@@ -115,29 +115,18 @@ class Dstar:
         """
         # Get start index
         start_index = np.ravel_multi_index(start, imsize, order='C')
+        print (start_index)
         if grid[start_index] == 0:
             print("[ERROR] start position falls over an obstacle")
         else:
-            # Color in grey the start position
-            # TODO Copy grid and use updated_grid
-            # Right now, do not set this to an int of 2 or more digits
             grid[start_index] = 1
 
-        # Get goal index
-        # TODO Get value data containing the reward values.
-        # The database puts a number 10 wherever the goal is (I think)
-        # value_data = db["value_data"]
         goal_index = np.ravel_multi_index(goal, imsize, order='C')
         if grid[goal_index] == 0:
             print("[ERROR] goal position falls over an obstacle")
         else:
-            # Color in grey the start position
-            # TODO Copy grid and use updated_grid
-            # Right now, do not set this to an int of 2 or more digits
             grid[goal_index] = 1
 
-        # Get current working directory
-        # TODO I don't know if there is a better way?
         dir = os.getcwd()
         exe_path = dir+"/dstar-lite/build/dstar_from_input"
         if not os.path.isfile(exe_path):
@@ -162,15 +151,9 @@ class Dstar:
         if len(path) != 0:
             path = path[:-1]
             print("[INFO] Received path: %s" % (path))
-            # Clear last path
-            #  for idx, value in enumerate(self.grid):
-            #      if value == 150:
-            #          self.grid[idx] = 1
-            # Print new path
             path_list = []
             for a in path.split('.'):
                 path_list.append(int(a))
-                #  self.grid[int(a)] = 150
             path_list = np.unravel_index(path_list, self.imsize)
             solution_list = []
             for i in xrange(path_list[0].shape[0]):
