@@ -37,6 +37,16 @@ $ python ./rlvision/__init__.py
 
 3. Copy data to the `data` folder
 
+## Run Experiments
+
+Run VIN experiments via
+
+```
+$ make vin-exp-po-8   # for 8x8 grid world
+$ make vin-exp-po-16  # for 16x16 grid world
+$ make vin-exp-po-28  # for 28x28 grid world
+```
+
 ## Contacts
 
 Yuhuang Hu, Shu Liu, Antoni Rosiñol Vidal, Yang Yu  
