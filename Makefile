@@ -26,6 +26,18 @@ dstar-16-exp:
 dstar-28-exp:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_28_exp.py
 
+
+## DQN
+dqn-8-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dqn_8_exp.py
+
+dqn-16-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dqn_16_exp.py
+
+dqn-28-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dqn_28_exp.py
+
+
 ## PG
 pg-16-exp:
 	THEANO_FLAGS=device=cpu PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/pg_16_exp.py
