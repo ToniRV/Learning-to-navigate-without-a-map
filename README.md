@@ -43,12 +43,29 @@ Uncompress the folder and place all files in `data` sub-folder
 
 ## Run Experiments
 
-Run VIN experiments via
+1. Run VIN experiments via
 
 ```
 $ make vin-exp-po-8   # for 8x8 grid world
 $ make vin-exp-po-16  # for 16x16 grid world
 $ make vin-exp-po-28  # for 28x28 grid world
+```
+
+2. Run PG experiments via
+
+```
+$ make pg-16-exp    # policy gradients
+$ make ddpg-16-exp  # deep determinstic policy gradients
+```
+
+3. Run DQN experiments via
+
+4. Run D-star experiments via
+
+```
+$ make dstar-8-exp   # for 8x8 grid world
+$ make dstar-16 exp  # for 16x16 grid world
+$ make dstar-28 exp  # for 28x28 grid world
 ```
 
 ## Contacts
