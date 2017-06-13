@@ -35,7 +35,11 @@ you run the package, you can get the correct resource folder by__
 $ python ./rlvision/__init__.py
 ```
 
-3. Copy data to the `data` folder
+3. Copy data to the `data` sub-folder in `$HOME/.rlvision/`
+
+Download the data from [here](https://goo.gl/21mk9g).
+
+Uncompress the folder and place all files in `data` sub-folder
 
 ## Run Experiments
 
