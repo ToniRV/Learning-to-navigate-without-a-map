@@ -82,7 +82,7 @@
         <self_collide>0</self_collide>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>0 0 0 0 -0 0</pose>
+      <pose frame=''>0 0 0.2 0 -0 0</pose>
     </model>
     <model name="grey_wall">
       <static>1</static>

@@ -1,8 +1,8 @@
 # This is a Python template Makefile, do modification as you want
 #
-# Project: 
-# Author:
-# Email :
+# Project: Learning to navigate without a map 
+# Author: Yuhuang Hu, Shu Liu, Antoni Rosiñol Vidal, Yang Yu
+# Email : {hyh, liush, antonir, yuya}@student.ethz.ch
 
 HOST = 127.0.0.1
 PYTHONPATH="$(shell printenv PYTHONPATH):$(PWD)"
@@ -14,8 +14,45 @@ clean:
 
 run:
 
-test:
-	PYTHONPATH=$(PYTHONPATH) python
+# Experiments
+
+## Dstar
+dstar-8-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_8_exp.py
+
+dstar-16-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_16_exp.py
+
+dstar-28-exp:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_28_exp.py
+
+## PG
+pg-16-exp:
+	THEANO_FLAGS=device=cpu PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/pg_16_exp.py
+
+ddpg-16-exp:
+	KERAS_BACKEND=tensorflow PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/ddpg_16_exp.py
+
+## VIN
+vin-exp-16:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_16.py
+
+vin-exp-28:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_28.py
+
+vin-exp-8:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_8.py
+
+vin-exp-po-16:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_po_16.py
+
+vin-exp-po-28:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_po_28.py
+
+vin-exp-po-8:
+	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_po_8.py
+
+# Tests
 
 data-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/data_test.py
@@ -44,54 +81,9 @@ sample-train-ds:
 load-train-ds:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/load_train_ds.py
 
-dstar-8-exp:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_8_exp.py
-
-dstar-8-new-exp:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_8_new_exp.py
-
-dstar-16-new-exp:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_16_new_exp.py
-
-dstar-28-new-exp:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_28_new_exp.py
-
-dstar-16-exp:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_16_exp.py
-
-dstar-28-exp:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_28_exp.py
-
-dstar-40-exp:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/dstar_40_exp.py
-
-pg-16-exp:
-	THEANO_FLAGS=device=cpu PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/pg_16_exp.py
-
-ddpg-16-exp:
-	KERAS_BACKEND=tensorflow PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/ddpg_16_exp.py
 
 world-generator:
 	PYTHONPATH=$(PYTHONPATH) python ./world_generator/scripts/world_generator.py
-
-# for 16x16
-vin-exp-16:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_16.py
-
-vin-exp-28:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_28.py
-
-vin-exp-8:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_8.py
-
-vin-exp-po-16:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_po_16.py
-
-vin-exp-po-28:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_po_28.py
-
-vin-exp-po-8:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_exp_po_8.py
 
 new-data-test:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/new_data_test.py
@@ -114,8 +106,11 @@ vin-po-benchmark-export-28:
 vin-po-benchmark-export-8:
 	THEANO_FLAGS=device=cpu PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_benchmark_export_8.py
 
-vin-pg-16-exp:
-	PYTHONPATH=$(PYTHONPATH) python ./rlvision/exps/vin_pg_16_exp.py
+vin-po-export-16:
+	THEANO_FLAGS=device=cpu PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_export_value_reward_16.py
+
+vin-po-export-28:
+	THEANO_FLAGS=device=cpu PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_export_value_reward_28.py
 
 vin-po-result:
 	PYTHONPATH=$(PYTHONPATH) python ./rlvision/tests/vin_po_result.py
