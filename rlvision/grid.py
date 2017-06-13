@@ -325,21 +325,6 @@ class Grid(object):
             new_pos[0] = self.curr_pos[0]
             new_pos[1] = self.curr_pos[1]+1
 
-        # 8 action
-        #  if action in [5, 0, 4]:
-        #      new_pos[0] = self.curr_pos[0]-1
-        #  elif action in [7, 1, 6]:
-        #      new_pos[0] = self.curr_pos[0]+1
-        #  else:
-        #      new_pos[0] = self.curr_pos[0]
-        #
-        #  if action in [5, 3, 7]:
-        #      new_pos[1] = self.curr_pos[1]-1
-        #  elif action in [4, 2, 6]:
-        #      new_pos[1] = self.curr_pos[1]+1
-        #  else:
-        #      new_pos[1] = self.curr_pos[1]
-
         return tuple(new_pos)
 
     def update_state_from_action(self, action, verbose=0):
