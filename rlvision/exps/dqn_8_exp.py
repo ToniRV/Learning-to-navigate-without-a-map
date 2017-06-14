@@ -113,9 +113,11 @@ class DQN():
     def deep_q_network(self, x, weights, biases, dropout):
         # Reshape input picture
         x = tf.reshape(x, [-1, self.state_dim[0], self.state_dim[1], 2])
+        # same network structure as VIN before VI module
         conv1 = self.conv2d(x, weights['w1'], biases['b1'])
         conv2 = self.conv2d(conv1, weights['w2'], biases['b2'])
         conv3 = self.conv2d(conv2, weights['w3'], biases['b3'])
+        # use FC instead of VI module to predict action
         fc1 = tf.reshape(conv3, [-1, dim*dim*10])
         self.Q_value = tf.add(tf.matmul(fc1, weights['out']), biases['out'])
 
