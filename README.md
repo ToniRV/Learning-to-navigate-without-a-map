@@ -61,9 +61,9 @@ $ make ddpg-16-exp  # deep determinstic policy gradients
 3. Run DQN experiments via
 
 ```
-$ make dqn-exp-po-8   # for 8x8 grid world
-$ make dqn-exp-po-16  # for 16x16 grid world
-$ make dqn-exp-po-28  # for 28x28 grid world
+$ make dqn-8-exp   # for 8x8 grid world
+$ make dqn-16-exp  # for 16x16 grid world
+$ make dqn-28-exp  # for 28x28 grid world
 ```
 
 4. Run D-star experiments via

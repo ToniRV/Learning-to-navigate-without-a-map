@@ -222,7 +222,7 @@ class Grid(object):
         if self.is_pos_valid(pos):
             if self.is_po:
                 return utils.mask_grid(pos, self.grid_map, self.mask_radius,
-                                       one_is_free=self.dstar_one_is_free)
+                                       one_is_free=self.dstar_one_is_free)[0]
             else:
                 return self.grid_map
 
@@ -242,7 +242,7 @@ class Grid(object):
         if self.is_pos_valid(pos):
             if self.is_po:
                 return utils.mask_grid(pos, self.grid_map, self.mask_radius,
-                                       one_is_free=self.one_is_free)
+                                       one_is_free=self.one_is_free)[0]
             else:
                 return self.grid_map
 

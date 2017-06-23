@@ -98,9 +98,7 @@ def mask_grid(pos, grid, radius, one_is_free=True):
                          shape=mask.shape)
     mask[rr, cc] = 1
     if one_is_free:
-        ##### Shu's modification
-        # return new_grid*mask, (rr, cc)
-        return new_grid*mask
+        return new_grid*mask, (rr, cc)
     else:
         masked_img = np.ones_like(new_grid)
         masked_img[rr, cc] = new_grid[rr, cc]
