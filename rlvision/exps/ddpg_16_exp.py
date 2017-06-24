@@ -54,8 +54,6 @@ actor = ActorNet(sess, state_dim, action_dim, batch_size, tau, lra)
 critic = CriticNet(sess, state_dim, action_dim, batch_size, tau, lrc)
 buff = ReplayBuffer(buffer_size)
 
-# TODO: load weights
-
 
 # the game loop
 for game_idx in xrange(episode_count):
