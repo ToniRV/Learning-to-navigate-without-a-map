@@ -46,6 +46,8 @@ class Grid(object):
             D* explores the states in a different way,
             if True, there will be a dual state map
         """
+        grid_map = grid_map.copy()
+        value_map = value_map.copy()
         if grid_type == "one-is-free":
             self.one_is_free = True
             self.empty_value = 1
